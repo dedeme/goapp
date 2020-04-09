@@ -1,3 +1,3 @@
-module github.com/dedeme/goapp
+module github.com/dedeme/barbery
 
 go 1.14

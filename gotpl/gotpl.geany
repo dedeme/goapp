@@ -13,7 +13,7 @@ detect_indent_width=false
 indent_mode=2
 
 [project]
-name=barbery
+name=gotpl
 base_path=./
 description=
 file_patterns=
@@ -23,8 +23,10 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
-FILE_NAME_0=1031;Go;0;EUTF-8;1;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fbarbery%2Fbarber.go;0;2
+current_page=1
+FILE_NAME_0=147;Go;0;EUTF-8;1;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2F_test%2Fcode.go;0;2
+FILE_NAME_1=1605;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Ftpls.go;0;2
+FILE_NAME_2=207;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fpcopyright.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -34,8 +36,8 @@ NF_00_LB=
 NF_00_CM=
 NF_00_WD=
 EX_00_LB=Run
-EX_00_CM=/dm/dmGo/go/bin/barbery
-EX_00_WD=%p/barbery
+EX_00_CM=/dm/dmGo/go/bin/gotpl _test/code.go
+EX_00_WD=%p
 GoFT_01_LB=Format
 GoFT_01_CM=go fmt %d/*
 GoFT_01_WD=
@@ -44,7 +46,7 @@ GoFT_02_CM=
 GoFT_02_WD=
 GoFT_00_LB=_Build
 GoFT_00_CM=go install
-GoFT_00_WD=%p/barbery
+GoFT_00_WD=%p/gotpl
 filetypes=Go;
 
 [editor]
