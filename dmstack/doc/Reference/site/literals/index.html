@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Literals - Dmstack Reference</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Literals";
+    var mkdocs_page_input_path = "literals.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Dmstack Reference</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">General Scheme</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../commandLine/">Command Line</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tokens/">Tokens</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Literals</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#blank">Blank</a></li>
+    
+
+    <li class="toctree-l2"><a href="#comment">Comment</a></li>
+    
+
+    <li class="toctree-l2"><a href="#boolean">Boolean</a></li>
+    
+
+    <li class="toctree-l2"><a href="#integer">Integer</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#decimal-integer">Decimal Integer</a></li>
+        
+            <li><a class="toctree-l3" href="#hexadecimal-integer">Hexadecimal Integer</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#float">Float</a></li>
+    
+
+    <li class="toctree-l2"><a href="#string">String</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#normal-strings">Normal Strings</a></li>
+        
+            <li><a class="toctree-l3" href="#heredoc-strings">"HereDoc" Strings</a></li>
+        
+            <li><a class="toctree-l3" href="#string-interpolation">String Interpolation</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#symbol">Symbol</a></li>
+    
+
+    <li class="toctree-l2"><a href="#procedure">Procedure</a></li>
+    
+
+    <li class="toctree-l2"><a href="#list">List</a></li>
+    
+
+    <li class="toctree-l2"><a href="#map">Map</a></li>
+    
+
+    <li class="toctree-l2"><a href="#program">Program</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../symbols/">Symbols</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../virtualMachine/">Virtual Machine</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../imports/">Imports</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../stackControl/">Stack Control</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Dmstack Reference</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Literals</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="blank">Blank</h2>
+<p>It is a character (ch) such that :</p>
+<p><code>ch &lt;= ' ' || ch == ';' || ch == ':' || ch == ','</code></p>
+<p>Blanks are separators of tokens and are skipped by the reader.</p>
+<h2 id="comment">Comment</h2>
+<p>There are two types:</p>
+<ul>
+<li>Line comment. Start with <code>//</code> and extends to end of line.</li>
+<li>Block comment. Starts with <code>/*</code> and ends with <code>*/</code>. There are not
+    nested block comments.</li>
+</ul>
+<p>Examples:</p>
+<pre><code class="c">35 : x =
+// This is a line comment.
+12 : y = // This other line comment.
+/*
+  This is a block command.
+*/
+x y + /* This is a block command too */ puts
+</code></pre>
+
+<hr />
+<p><em>NOTE</em> :</p>
+<p>Comments must be separated with a blank from the precedent token. However the
+next token can be without separation.</p>
+<p>This is incorrect:</p>
+<pre><code class="c">12 : y =// This other line comment.
+x y +/* This is a block command too */ puts
+</code></pre>
+
+<p>But this is correct:</p>
+<pre><code class="c">x y + /* This is a block command too */puts
+</code></pre>
+
+<hr />
+<h2 id="boolean">Boolean</h2>
+<p>Values <code>true</code> and <code>false</code></p>
+<h2 id="integer">Integer</h2>
+<p>Its underline value is an integer of 64 bytes.</p>
+<h4 id="decimal-integer">Decimal Integer</h4>
+<p>Digits sequence that can start with <code>-</code>. (<code>0</code>, <code>-0</code>, <code>142</code>, <code>-4532</code>).</p>
+<h4 id="hexadecimal-integer">Hexadecimal Integer</h4>
+<p>Hexadecimal digits (upper or lowercase) which must start with '0x'.</p>
+<p>Its digits part can start with <code>-</code> or <code>+</code>. (<code>0x2f</code>, <code>0x-AA</code>, <code>0x+16</code>)</p>
+<h2 id="float">Float</h2>
+<p>Its underline value is an float of 64 bytes.</p>
+<p>It is a sequence of digits whih must contain a decimal point <code>.</code> and can
+have <code>e</code> or <code>E</code> for scientific notation. (<code>-12.45</code>, <code>-0.</code>, <code>-11.e1</code>, <code>23.4E-3</code>,
+<code>45.e+2</code>.</p>
+<hr />
+<blockquote>
+<p><em>NOTE</em> :</p>
+<p>A float can not start with a point. In such case is interpreted as an object
+  key.</p>
+<p>The decimal point is mandatory. For example <code>-11e1</code> throws an error.</p>
+</blockquote>
+<hr />
+<h2 id="string">String</h2>
+<h4 id="normal-strings">Normal Strings</h4>
+<p>They are sequences of UTF-8 symbols between quotes.</p>
+<p>The following escape sequences are allowed: <code>\"</code>, <code>\\\\</code>, <code>\t</code>, <code>\n</code>, <code>\r</code>,
+<code>\b</code>, <code>\f</code> and <code>\uXXXX</code>(Hexadecimal unicode character).</p>
+<p>Charancter with integer value less than ' '(space) are not allowed. Therefore
+this strings can not be extended more than one line.</p>
+<h4 id="heredoc-strings">"HereDoc" Strings</h4>
+<p>This string starts with <code>`symbol\n</code> and ends with <code>symbol`</code>. <code>symbol</code>
+is optional.</p>
+<p>This strings have not escape sequences and allows any type of UTF-8 character.</p>
+<p><strong>Examples</strong></p>
+<pre><code>`
+a multiline
+string.`
+</code></pre>
+
+<p>produces <code>"a multiline\nstring"</code>.</p>
+<pre><code>`TX--
+a `multiline`
+string.--TX`
+</code></pre>
+
+<p>produces <code>"a `multiline`\nstring"</code>.</p>
+<p>But</p>
+<pre><code>`a multiline
+string.`
+</code></pre>
+
+<p>produces an error.</p>
+<h4 id="string-interpolation">String Interpolation</h4>
+<p>Both string classes allow interpolation. A interpolation is a expresion of
+type <code>${value}</code>, where <code>value</code> is a expresion which is calculated with <code>data</code>
+and must returns no value or one only value which procedure <code>toStr</code> can be
+applied to.</p>
+<p><strong>Examples</strong></p>
+<p><code>"2 + 2 = ${2 2 +}"</code> -&gt; <code>2 + 2 = 4</code></p>
+<p><code>'${}'</code> -&gt; <code>''</code></p>
+<hr />
+<p>NOTE:</p>
+<blockquote>
+<ul>
+<li>If you want to use the literal <code>${</code>, you should use some resourece lake spliting
+the string or using <code>${$}{</code>.</li>
+</ul>
+<blockquote>
+<p>For example:</p>
+<p><code>"The '$" "{' is a symbol" +</code> -&gt; <code>The '${' is a symbol</code></p>
+<p>or</p>
+<p><code>"The '${$}{' is a symbol"</code> -&gt; <code>The '${' is a symbol</code></p>
+</blockquote>
+<ul>
+<li>Nither you can use <code>}</code> inside the interpolation.</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="symbol">Symbol</h2>
+<p>A symbol is any sequence of ASCII characters which integer value is greater
+than 32 (space) and different of <code>,</code>(comma), <code>:</code>(colon) and <code>;</code>(semicolon).</p>
+<p>Symbols that contains <code>{</code>, <code>}</code>, <code>[</code>, <code>]</code>, <code>(</code> or <code>)</code>, apart of themselves, are
+not allowed.</p>
+<p>See <a href="../symbols">Symbols</a>.</p>
+<h2 id="procedure">Procedure</h2>
+<p>A procedure is a sequence of tokens between parentheses.</p>
+<p><strong>Examples</strong></p>
+<pre><code class="c">(4 5 +)
+</code></pre>
+
+<pre><code class="c">(
+  4 5 +
+    6 ==
+)
+</code></pre>
+
+<h2 id="list">List</h2>
+<p>A list is a sequence of tokens between square brackets.</p>
+<p>A list is read as a Procedure and adding the reserverd word <code>data</code>. That is
+<code>[...]</code> is replaced by <code>(...) data</code>. As result tokens in the list will be
+evaluated by the <code>dmstack machine</code>.</p>
+<p><strong>Examples</strong></p>
+<pre><code class="c">[4 5 +]
+</code></pre>
+
+<p>that is the same as <code>[9]</code>.</p>
+<pre><code class="c">[
+  4 5 +
+    6 &quot;a&quot;
+]
+</code></pre>
+
+<p>that is the same as <code>[9 6 "a"]</code>.</p>
+<p>For better visualization is recomended to use commas:</p>
+<pre><code class="c">[4 5 +, 6, &quot;a&quot;]
+</code></pre>
+
+<h2 id="map">Map</h2>
+<p>A map is a sequence of tokens between curly brackets. Tokens are alternatively
+"string - token" so that its number is even.</p>
+<p>It is a list that will be converted to <code>map</code>. <code>{...}</code> is replaced by
+<code>(...) data map.fromList</code>.</p>
+<p><strong>Examples</strong></p>
+<pre><code class="c">{ &quot;a&quot; 7 6 + &quot;b&quot; true }
+</code></pre>
+
+<p>that is the same as <code>{"a" 13 "b" true}</code>.</p>
+<p>It is recomended to use <code>:</code> and <code>,</code> to improve the visualization.</p>
+<pre><code class="c">{ &quot;a&quot;: 7 6 +, &quot;b&quot;: true }
+</code></pre>
+
+<p>or</p>
+<pre><code class="c">{
+  &quot;a&quot;: 7 6 +
+  &quot;b&quot;: true
+}
+</code></pre>
+
+<h2 id="program">Program</h2>
+<p>It is a sequence of tokens.</p>
+<p><strong>Example</strong></p>
+<pre><code class="c">&quot;Hello World!&quot; puts
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../symbols/" class="btn btn-neutral float-right" title="Symbols">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../tokens/" class="btn btn-neutral" title="Tokens"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../tokens/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../symbols/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

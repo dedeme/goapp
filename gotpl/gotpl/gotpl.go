@@ -7,43 +7,18 @@ import (
 	"fmt"
 	"github.com/dedeme/golib/file"
 	"github.com/dedeme/golib/sys"
-	"github.com/dedeme/gotpl/tpls"
+	"github.com/dedeme/gotpl/tpls/directs"
+	"github.com/dedeme/gotpl/tpls/structs"
 	"os"
 	"strings"
 )
 
-func process(l string) (r string, err string) {
-	key, value := tpls.Kv(l)
-
-	switch key {
-	case "for":
-		r, err = tpls.Pfor(value)
-	case "each":
-		r, err = tpls.Peach(value)
-	case "map":
-		r, err = tpls.Pmap(value)
-	case "mapTo":
-		r, err = tpls.PmapTo(value)
-	case "mapFrom":
-		r, err = tpls.PmapFrom(value)
-	case "filter":
-		r, err = tpls.Pfilter(value)
-	case "sort":
-		r, err = tpls.Psort(value)
-	case "props":
-		r, err = tpls.Pprops(value)
-	case "toJs":
-		r, err = tpls.PtoJs(value)
-	case "fromJs":
-		r, err = tpls.PfromJs(value)
-	case "copyright":
-		r, err = tpls.Pcopyright(value)
-	default:
-		err = fmt.Sprintf("Key '%v' is unknown", key)
-	}
-	//fmt.Println(r)
-	return
-}
+type state int
+const (
+  normalCode state = iota
+  definition1
+  definition2
+)
 
 func main() {
 	if len(os.Args) < 2 {
@@ -59,21 +34,54 @@ func main() {
 
 	code := strings.Split(file.ReadAll(f), "\n")
 	changed := false
+  startStruct := -1
+  var structCode []string
 	var newCode []string
-	for _, l := range code {
-		l2 := strings.TrimSpace(l)
-		if strings.HasPrefix(l2, "·") {
-			tx, emsg := process(l2[2:])
-			if emsg != "" {
-				fmt.Println(emsg)
-				os.Exit(1)
-			}
-			newCode = append(newCode, tx)
-			changed = true
-		} else {
-			newCode = append(newCode, l)
-		}
+  st := normalCode
+	for i, l := range code {
+    l2 := strings.TrimSpace(l)
+    if st == definition1 {
+      newCode = append(newCode, l)
+      structCode = append(structCode, l2)
+      if l2 == "*/" {
+        st = definition2
+      }
+    } else if st == definition2 {
+      if l2 == "//===" {
+        st = normalCode
+        newCd, err := structs.Process(startStruct, structCode)
+        startStruct = -1
+        if err != nil {
+          fmt.Println(err.Error())
+          os.Exit(1)
+        }
+        newCode = append(newCode, newCd...)
+        newCode = append(newCode, l)
+      }
+    } else {
+      if strings.HasPrefix(l2, "·") {
+        tx, emsg := directs.Process(l2[2:])
+        if emsg != "" {
+          fmt.Println(emsg)
+          os.Exit(1)
+        }
+        newCode = append(newCode, tx)
+        changed = true
+      } else if l2 == "/*·" {
+        newCode = append(newCode, "/* ·")
+        structCode = []string{}
+        st = definition1
+        startStruct = i + 1
+        changed = true
+      } else {
+        newCode = append(newCode, l)
+      }
+    }
 	}
+  if startStruct != -1 {
+    fmt.Printf("Line %v: End of file reached", startStruct)
+    os.Exit(1)
+  }
 
 	if changed {
 		file.WriteAll(f, strings.Join(newCode, "\n"))
@@ -84,5 +92,8 @@ func main() {
 			fmt.Println(string(err))
 			os.Exit(1)
 		}
-	}
+	} else {
+    fmt.Println("No template fund")
+    os.Exit(1)
+  }
 }

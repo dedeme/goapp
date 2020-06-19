@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Symbols - Dmstack Reference</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Symbols";
+    var mkdocs_page_input_path = "symbols.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Dmstack Reference</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">General Scheme</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../commandLine/">Command Line</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tokens/">Tokens</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../literals/">Literals</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Symbols</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#index">Index</a></li>
+    
+
+    <li class="toctree-l2"><a href="#symbols-with-dot">Symbols With Dot</a></li>
+    
+
+    <li class="toctree-l2"><a href="#symbols-with-int">Symbols With ! + Int</a></li>
+    
+
+    <li class="toctree-l2"><a href="#symbols">@ Symbols</a></li>
+    
+
+    <li class="toctree-l2"><a href="#import-symbol">"import" Symbol</a></li>
+    
+
+    <li class="toctree-l2"><a href="#this-symbol">"this" Symbol</a></li>
+    
+
+    <li class="toctree-l2"><a href="#reserverd-symbols">Reserverd Symbols</a></li>
+    
+
+    <li class="toctree-l2"><a href="#symbols_1"># Symbols</a></li>
+    
+
+    <li class="toctree-l2"><a href="#other-symbols">Other Symbols</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../virtualMachine/">Virtual Machine</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../imports/">Imports</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../stackControl/">Stack Control</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Dmstack Reference</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Symbols</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>A symbol is any sequence of ASCII characters which integer value is greater
+than 32 (space) and different of <code>,</code>(comma), <code>:</code>(colon) and <code>;</code>(semicolon).</p>
+<p>Symbols that contains <code>{</code>, <code>}</code>, <code>[</code>, <code>]</code>, <code>(</code> or <code>)</code>, apart of themselves, are
+not allowed.</p>
+<h2 id="index">Index</h2>
+<p>There is an index where every symbol is registered.</p>
+<p>To convert a string in a symbol is necessary call <code>symbol.New</code> that returns
+returns the corresponding symbol (If the string is already registered
+it returns its symbol, otherwise, it adds the string to index, creates a new
+symbol and returns it).</p>
+<p>There are a number of symbols intially registered: if, else, nop, +, ...</p>
+<h2 id="symbols-with-dot">Symbols With Dot</h2>
+<p>A symbol which does not start whith <code>this.</code> only can have one dot. If it start
+with <code>this.</code> is allowed:</p>
+<ul>
+<li>one dot. That of <code>this.</code></li>
+<li>two dots. That of <code>this.</code> and a final dot (e.g. <code>this.fn.</code>). This
+    construction is thought to make "private" procedures.</li>
+</ul>
+<p>If the dot is between two blanks, it is consedered a blank too.</p>
+<hr />
+<ul>
+<li>If the symbol start with <code>this.</code>, the next replacement is done:</li>
+</ul>
+<blockquote>
+<p><code>this.right</code> -&gt; <code>this right</code></p>
+<p>The symbol <code>right</code> can have a dot if it is the last character.</p>
+</blockquote>
+<hr />
+<ul>
+<li>If the symbol start with a dot the following replacement is done:</li>
+</ul>
+<blockquote>
+<p><code>.right</code> -&gt; <code>"right" map get</code></p>
+</blockquote>
+<hr />
+<ul>
+<li>If the symbol ends with a dot, it is treated like another normal symbol.</li>
+</ul>
+<hr />
+<ul>
+<li>If the dot is inner the symbol the next replacement is done:</li>
+</ul>
+<blockquote>
+<p><code>left.right</code> -&gt;  <code>left right</code></p>
+<p>In this case if <code>left</code> is an import symbol, it will be substituted  by its
+path, This operation will not be done with <code>rigth</code>.</p>
+<p>Note that, in general, you ever can write <code>left right</code> directly.</p>
+</blockquote>
+<hr />
+<h2 id="symbols-with-int">Symbols With <code>! + Int</code></h2>
+<p>These symbols are sustituted by:</p>
+<blockquote>
+<p><code>!number</code> -&gt; <code>right lst get</code></p>
+</blockquote>
+<p><code>number</code> must be an not negative Int (e.g. <code>l !3</code> -&gt; <code>l 3 lst get</code>).</p>
+<h2 id="symbols">@ Symbols</h2>
+<p>They are symbols wich start with <code>@</code>. Its semantics is shown in
+<a href="../stackControl">Stack Contol</a>.</p>
+<p><strong>@</strong></p>
+<p>It is substituted by:</p>
+<blockquote>
+<p><code>@</code> -&gt; <code>stk empty?</code></p>
+</blockquote>
+<p><strong>@?Types</strong></p>
+<p>It is substituted by:</p>
+<blockquote>
+<p><code>@?types</code> -&gt; <code>"types" stackCheckSymbol</code></p>
+</blockquote>
+<p>Where</p>
+<blockquote>
+<p><code>types</code> is a types defition (e.g. <code>@?is</code>)</p>
+</blockquote>
+<p>and</p>
+<blockquote>
+<p><code>stackCheckSymbol</code> is the reserverd symbol <code>StackCheck</code> = <code>&lt;= @?&gt;</code></p>
+</blockquote>
+<p><strong>@+Types</strong></p>
+<p>It is substituted by</p>
+<blockquote>
+<p><code>@+types</code> -&gt; <code>"types" stackOpenSymbol</code></p>
+</blockquote>
+<p>Where</p>
+<blockquote>
+<p><code>types</code> is a types defition (e.g. <code>@+is</code>)</p>
+</blockquote>
+<p>and</p>
+<blockquote>
+<p><code>stackOpenSymbol</code> is the reserverd symbol <code>StackOpen</code> = <code>&lt;= @+&gt;</code></p>
+</blockquote>
+<p><strong>@-Types</strong></p>
+<p>It is substituted by</p>
+<blockquote>
+<p><code>@-types</code> -&gt; <code>"types" stackCloseSymbol</code></p>
+</blockquote>
+<p>Where</p>
+<blockquote>
+<p><code>types</code> is a types defition (e.g. <code>@-is</code>)</p>
+</blockquote>
+<p>and</p>
+<blockquote>
+<p><code>stackCloseSymbol</code> is the reserverd symbol <code>StackClose</code> = <code>&lt;= @-&gt;</code></p>
+</blockquote>
+<p><strong>@Types</strong></p>
+<p>It is substituted by</p>
+<blockquote>
+<p><code>@types</code> -&gt; <code>"types" stackSymbol</code></p>
+</blockquote>
+<p>Where</p>
+<blockquote>
+<p><code>types</code> is a types defition (e.g. <code>@is</code>)</p>
+</blockquote>
+<p>and</p>
+<blockquote>
+<p><code>stackSymbol</code> is the reserverd symbol <code>Stack</code> = <code>&lt;= @&gt;</code></p>
+</blockquote>
+<h2 id="import-symbol">"import" Symbol</h2>
+<p>This symbol receive a special treatment when reading.
+See <a href="../imports">Imports</a></p>
+<h2 id="this-symbol">"this" Symbol</h2>
+<p>This symbol is substituted by the module path symbol.</p>
+<h2 id="reserverd-symbols">Reserverd Symbols</h2>
+<p><strong><code>=</code> Symbol</strong></p>
+<p>Used after a new symbol to save a token. If the symbol is not a new one,
+an error will be raised.</p>
+<p><strong>Global Module</strong></p>
+<p><strong>Other Primitive Modules</strong></p>
+<h2 id="symbols_1"># Symbols</h2>
+<p>Dmstack virtual machine keep a counter for singling symbols.</p>
+<p>The symbol <code>#</code> increments the counter.</p>
+<p>A synbol type <code>xxx#</code> is replaced by <code>xxx·counter</code> (e.g. <code>xxx·183</code>).</p>
+<h2 id="other-symbols">Other Symbols</h2>
+<p>They are processed in two steps:</p>
+<ol>
+<li>Verification if the symbol is an import. In this case it is procecced as
+   such import.</li>
+<li>It it is not an import is normaly processed.</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../virtualMachine/" class="btn btn-neutral float-right" title="Virtual Machine">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../literals/" class="btn btn-neutral" title="Literals"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../literals/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../virtualMachine/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

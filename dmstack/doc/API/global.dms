@@ -1,0 +1,58 @@
+// Copyright 27-Nov-2019 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Global procedures.
+
+() nop =>
+/// - -> -
+///
+/// Not Operation.
+
+() puts =>
+/// * -> -
+///
+/// Shows and cosume tk.
+///   tk: Token to show.
+
+() assert =>
+/// b -> -
+///
+/// Raise a fail if 'value' is false.
+///   value: Value to check.
+
+() expect =>
+/// *, * -> -
+///
+/// Raise a fail if 'expected' != 'actual'.
+///   expected: Expected value.
+///   actual: Actual value.
+
+() run =>
+/// p -> -
+///
+/// Excutes 'pr' using the same stack as the current procedure.
+///   pr: Procedure to execute.
+
+() data =>
+/// p -> l
+///
+/// Excutes 'pr' using a new stack. The stack of the machine which runs 'pr'
+/// is put in a list and saved in the main machine stack.
+///   pr: Procedure to execute.
+
+() import =>
+/// s -> -
+/// p -> -
+///
+/// Imports a module (a module is the relative path of a .dms file without
+/// extension).
+///   Arguments:
+///
+///   - Option1:
+///     module: Module to import. This module will be referenced by it 'base'
+///             value (e.g. "util" -> "util", "../lib/util" -> "util")
+///
+///   - Option 2:
+///     symbolModule: A procedure with two elements. The first is the symbol to
+///                   reference the import and the second is the module to
+///                   import (e.g. (u, "util") will be referenced by 'u')

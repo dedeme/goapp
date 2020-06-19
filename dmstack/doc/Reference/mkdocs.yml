@@ -1,0 +1,13 @@
+site_name: Dmstack Reference
+
+nav:
+  - General Scheme: index.md
+  - Command Line: commandLine.md
+  - Tokens: tokens.md
+  - Literals: literals.md
+  - Symbols: symbols.md
+  - Virtual Machine: virtualMachine.md
+  - Imports: imports.md
+  - Stack Control: stackControl.md
+
+theme: readthedocs

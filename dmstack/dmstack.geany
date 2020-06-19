@@ -1,0 +1,70 @@
+[file_prefs]
+final_new_line=true
+ensure_convert_new_lines=false
+strip_trailing_spaces=true
+replace_tabs=false
+
+[indentation]
+indent_width=2
+indent_type=0
+indent_hard_tab_width=8
+detect_indent=false
+detect_indent_width=false
+indent_mode=2
+
+[project]
+name=dmstack
+base_path=./
+description=
+file_patterns=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=80
+
+[files]
+current_page=1
+FILE_NAME_0=1708;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fglobal0.go;0;2
+FILE_NAME_1=656;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fprimitives.go;0;2
+FILE_NAME_2=2045;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Frunner%2Frunner.go;0;2
+FILE_NAME_3=9131;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fdmstack%2Fsrc%2FMachine.c;0;2
+FILE_NAME_4=2350;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fdmstack%2Fsrc%2Fprimitives%2Fmodglobal.c;0;2
+FILE_NAME_5=42;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Fglobal.dms;0;2
+FILE_NAME_6=29;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Fimp%2FimpTest.dms;0;2
+FILE_NAME_7=0;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Fglobal.dms;0;2
+FILE_NAME_8=3640;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Freader%2Ftkreader.go;0;2
+FILE_NAME_9=607;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Freader%2Freader.go;0;2
+FILE_NAME_10=836;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fdmstack.go;0;2
+FILE_NAME_11=1117;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fmachine%2Fmachine.go;0;2
+
+[VTE]
+last_dir=/home/deme/.local/share/Trash/files
+
+[build-menu]
+NF_00_LB=
+NF_00_CM=
+NF_00_WD=
+EX_00_LB=Examples
+EX_00_CM=go install;/dm/dmGo/go/bin/dmstack ../examples/all
+EX_00_WD=%p/dmstack
+GoFT_01_LB=Template
+GoFT_01_CM=gotpl %f
+GoFT_01_WD=
+GoFT_02_LB=Format
+GoFT_02_CM=go fmt %f
+GoFT_02_WD=
+GoFT_00_LB=_Build
+GoFT_00_CM=go install
+GoFT_00_WD=%p/dmstack
+filetypes=Go;
+EX_01_LB=Tests
+EX_01_CM=go test ./tests
+EX_01_WD=%p
+NF_03_LB=
+NF_03_CM=
+NF_03_WD=%p/dmstack
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=false

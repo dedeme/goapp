@@ -1,0 +1,9 @@
+"imp/impTest" import
+
+3 n1 =
+n1 3 expect
+
+impTest.n16 16 expect
+
+
+

@@ -1,0 +1,70 @@
+[file_prefs]
+final_new_line=true
+ensure_convert_new_lines=false
+strip_trailing_spaces=true
+replace_tabs=false
+
+[indentation]
+indent_width=2
+indent_type=0
+indent_hard_tab_width=8
+detect_indent=false
+detect_indent_width=false
+indent_mode=2
+
+[project]
+name=Reference
+base_path=./
+description=
+file_patterns=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=80
+
+[files]
+current_page=5
+FILE_NAME_0=358;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Frunner%2Frunner.go;0;2
+FILE_NAME_1=725;Markdown;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fdocs%2Fimports.md;0;2
+FILE_NAME_2=1372;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fglobal0.go;0;2
+FILE_NAME_3=2870;Markdown;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fdocs%2FvirtualMachine.md;0;2
+FILE_NAME_4=1098;Markdown;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fdocs%2Ftokens.md;0;2
+FILE_NAME_5=3083;Markdown;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fdocs%2Fsymbols.md;0;2
+
+[VTE]
+last_dir=/home/deme/.local/share/Trash/files
+
+[build-menu]
+NF_00_LB=
+NF_00_CM=
+NF_00_WD=
+EX_00_LB=Serve
+EX_00_CM=firefox http:/localhost:8000;mkdocs serve
+EX_00_WD=%p
+GoFT_01_LB=Template
+GoFT_01_CM=gotpl %f
+GoFT_01_WD=
+GoFT_02_LB=Format
+GoFT_02_CM=go fmt %f
+GoFT_02_WD=
+GoFT_00_LB=_Build
+GoFT_00_CM=go install
+GoFT_00_WD=%p/dmstack
+filetypes=Go;Markdown;
+EX_01_LB=
+EX_01_CM=
+EX_01_WD=
+MarkdownFT_00_LB=Compile
+MarkdownFT_00_CM=mkdocs build
+MarkdownFT_00_WD=%p
+MarkdownFT_01_LB=
+MarkdownFT_01_CM=
+MarkdownFT_01_WD=
+MarkdownFT_02_LB=
+MarkdownFT_02_CM=
+MarkdownFT_02_WD=
+
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=false

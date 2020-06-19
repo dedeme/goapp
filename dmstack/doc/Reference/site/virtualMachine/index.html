@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Virtual Machine - Dmstack Reference</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Virtual Machine";
+    var mkdocs_page_input_path = "virtualMachine.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Dmstack Reference</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">General Scheme</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../commandLine/">Command Line</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tokens/">Tokens</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../literals/">Literals</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../symbols/">Symbols</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Virtual Machine</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#structure">Structure</a></li>
+    
+
+    <li class="toctree-l2"><a href="#working">Working</a></li>
+    
+
+    <li class="toctree-l2"><a href="#normal-and-isolate-virtual-machine">Normal And Isolate Virtual Machine</a></li>
+    
+
+    <li class="toctree-l2"><a href="#heap-access">Heap Access</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../imports/">Imports</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../stackControl/">Stack Control</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Dmstack Reference</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Virtual Machine</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="structure">Structure</h2>
+<p>A virtual machine processes a token of type Procedure.</p>
+<p>Each virtual machine have:</p>
+<ul>
+<li>A stack (implemented as a pointer to a slice of tokens).</li>
+<li>A heap (implemented as a map from symbol to token).</li>
+<li>A list of modules imported (implemented as a slice of symbols).</li>
+</ul>
+<h2 id="working">Working</h2>
+<p>The virtual machine process a procedure token by token with the following
+steps:</p>
+<ul>
+<li>
+<p>The token is a symbol:</p>
+<ul>
+<li>
+<p>Is <code>=</code>?: Raise an error.</p>
+</li>
+<li>
+<p>Is <code>&amp;</code>?: Skip the token.</p>
+</li>
+<li>
+<p>Is a global symbol?: It is run.</p>
+</li>
+<li>
+<p>It is a primitive module?: Next token, that must be a symbol, is read
+  and run.</p>
+</li>
+<li>
+<p>It is an imported module?: Next token, that must be a symbol, is read
+  and then:</p>
+<ul>
+<li>
+<p>If the last symbol is defined in the import:</p>
+<ul>
+<li>
+<p>If it references a procedure:</p>
+<ul>
+<li>
+<p>If an <code>&amp;</code> fallows: The procedure is pushed into the stack.</p>
+</li>
+<li>
+<p>Otherwise: The procedure is run.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Otherwise the token referenced is pushed into the stack.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Otherwise an error is raised.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>It is a module in heap?:</p>
+<ul>
+<li>
+<p>If it references a procedure:</p>
+<ul>
+<li>
+<p>If an <code>&amp;</code> fallows: The procedure is pushed into the stack.</p>
+</li>
+<li>
+<p>Otherwise: The procedure is run.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Otherwise the token referenced is pushed into the stack.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>It is followed by <code>=</code>?: The token is put into the heap.</p>
+</li>
+<li>
+<p>Otherwise an error is raised ("unknown symbol")</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Otherwise is pushed into the stack.</p>
+</li>
+</ul>
+<hr />
+<p>NOTE: Observe that is not possible to redefine (push into heap) a symbol.</p>
+<hr />
+<h2 id="normal-and-isolate-virtual-machine">Normal And Isolate Virtual Machine</h2>
+<p>A normal virtual machine share its stack with the virtual machine which
+call it.</p>
+<p>An isolate virtual machine has its own stack.</p>
+<h2 id="heap-access">Heap Access</h2>
+<p>Virtual machines create an call other virtual machines to execute procedures.</p>
+<p>This sets a hierarchy m1 -&gt; m2 -&gt; ... -&gt; mN.</p>
+<p>When a machine finds reference for a symbol, it accesses orderly the heap of
+every ancestor.</p>
+<p>A problem can apear when a procedure is send to be executed by other virtual
+machine. Let see the following program.</p>
+<pre><code class="c">( fn =
+  5 n =
+  5 fn puts
+) sub = // Execute fn with 'n' as argument and shows the result.
+
+( 3 s =
+  (s +) sub
+) pr0 =
+
+( 3 n =
+  (n +) sub
+) pr1 =
+
+pr0 // Shows 8 as expected.
+pr1 // Shows unexpectedly 10.
+
+</code></pre>
+
+<p><code>pr1</code> fails because when in <code>sub</code> the reference of <code>n</code> is searched, the
+value <code>5</code> is found before <code>3</code>.</p>
+<p>For fix that there are two ways (see <a href="../symbols/#symbols_1">Symbol #</a>):</p>
+<p>1</p>
+<pre><code class="c">( fn =
+  # 5 n# =  // Make n unique.
+  n# fn puts
+) sub =
+
+( 3 n =
+  (n +) sub
+) pr1 =
+
+pr1 // Shows 8.
+</code></pre>
+
+<p>2</p>
+<pre><code class="c">( fn =
+  5 n =
+  n fn puts
+) sub =
+
+( # 3 n# = // Make n unique.
+  (n# +) sub
+) pr1 =
+
+pr1 // Shows 8.
+</code></pre>
+
+<p>The first way is better because avoid complications to the procedure client.</p>
+<p>Also is posible a more complicated form:</p>
+<pre><code class="c">( fn =
+  # 5 n# =  // Make n unique.
+  n# fn puts
+) sub =
+
+( # 3 n# = // Make n unique.
+  (n# +) sub
+) pr1 =
+
+pr1 // Shows 8.
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../imports/" class="btn btn-neutral float-right" title="Imports">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../symbols/" class="btn btn-neutral" title="Symbols"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../symbols/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../imports/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

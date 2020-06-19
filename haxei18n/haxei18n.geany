@@ -13,7 +13,7 @@ detect_indent_width=false
 indent_mode=2
 
 [project]
-name=gotpl
+name=haxei18n
 base_path=./
 description=
 file_patterns=
@@ -23,11 +23,12 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=3
-FILE_NAME_0=1365;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Fgotpl%2Fgotpl.go;0;2
-FILE_NAME_1=124;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fdirects%2Fpcopyright.go;0;2
-FILE_NAME_2=1511;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fdirects%2Fptests.go;0;2
-FILE_NAME_3=250;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fdirects%2Fdoc.go;0;2
+current_page=0
+FILE_NAME_0=3881;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fhaxei18n%2Fhaxei18n.go;0;2
+FILE_NAME_1=840;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fjslang%2Fjsi18n%2Fsrc%2Fjsi18n.c;0;2
+FILE_NAME_2=445;Haxe;0;EUTF-8;0;1;0;%2Fdm%2FdmWeb%2Fapp%2FHxDoc%2Fhx%2Fsrc%2FMain.hx;0;2
+FILE_NAME_3=210;Haxe;0;EUTF-8;0;1;0;%2Fdm%2FdmWeb%2Fapp%2FHxDoc%2Fhx%2Fsrc%2FI18n2.hx;0;2
+FILE_NAME_4=73;Haxe;0;EUTF-8;0;1;0;%2Fdm%2FdmWeb%2Fapp%2FHxDoc%2Fhx%2Fsrc%2FI18n.hx;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -37,8 +38,8 @@ NF_00_LB=
 NF_00_CM=
 NF_00_WD=
 EX_00_LB=Run
-EX_00_CM=/dm/dmGo/go/bin/gotpl _tests/code.go
-EX_00_WD=%p
+EX_00_CM=/dm/dmGo/go/bin/haxei18n "en:es" /dm/dmWeb/app/HxDoc/hx/src /dm/dmWeb/app/HxDoc/hx
+EX_00_WD=
 GoFT_01_LB=Format
 GoFT_01_CM=go fmt %d/*
 GoFT_01_WD=
@@ -47,7 +48,7 @@ GoFT_02_CM=
 GoFT_02_WD=
 GoFT_00_LB=_Build
 GoFT_00_CM=go install
-GoFT_00_WD=%p/gotpl
+GoFT_00_WD=%p/haxei18n
 filetypes=Go;
 
 [editor]
