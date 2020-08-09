@@ -16,7 +16,7 @@ import (
 // Machine structure
 type T struct {
 	SourceDir string // Path of parent to source file.
-	Pmachines []*T   // Parent machines
+	Pmachines []*T   // Parent machines including this.
 	Stack     *[]*token.T
 	imports   []symbol.T
 	Heap      map[symbol.T]*token.T
@@ -34,13 +34,12 @@ func New(sourceDir string, pmachines []*T, prg []*token.T) *T {
 	}
 
 	stack := &[]*token.T{}
-  imports := []symbol.T{}
-  heap := map[symbol.T]*token.T{}
+	imports := []symbol.T{}
+	heap := map[symbol.T]*token.T{}
 	l := len(pmachines) - 1
 	if l >= 0 {
 		stack = pmachines[l].Stack
-    imports = pmachines[l].imports
-    heap = pmachines[l].Heap
+		imports = pmachines[l].imports
 	}
 
 	m := &T{
@@ -69,12 +68,11 @@ func NewIsolate(sourceDir string, pmachines []*T, prg []*token.T) *T {
 		panic("sourceDir is missing")
 	}
 
-  imports := []symbol.T{}
-  heap := map[symbol.T]*token.T{}
+	imports := []symbol.T{}
+	heap := map[symbol.T]*token.T{}
 	l := len(pmachines) - 1
 	if l >= 0 {
-    imports = pmachines[l].imports
-    heap = pmachines[l].Heap
+		imports = pmachines[l].imports
 	}
 
 	m := &T{
@@ -94,9 +92,9 @@ func NewIsolate(sourceDir string, pmachines []*T, prg []*token.T) *T {
 // Returns the stack trace of 'm'
 func (m *T) StackTrace() []string {
 	var r []string
-  l := len(m.Pmachines) - 1
+	l := len(m.Pmachines) - 1
 	for i := range m.Pmachines {
-    mch := m.Pmachines[l - i]
+		mch := m.Pmachines[l-i]
 		ix := mch.ix - 1
 		tk := mch.prg[ix]
 		pos := tk.Pos
@@ -104,6 +102,7 @@ func (m *T) StackTrace() []string {
 			pos.Source, cts.SourceExtension, pos.Nline, tk.StringDraft(),
 		))
 	}
+
 	return r
 }
 
@@ -156,7 +155,7 @@ func (m *T) Pop() (tk *token.T) {
 
 // Pops a token of type 'tp'. If there are no more tokens or the last token
 // is not of type 'tp', the machine fails.
-func (m *T) Pop1(tp token.TypeT) (tk *token.T) {
+func (m *T) PopT(tp token.TypeT) (tk *token.T) {
 	tk = m.Pop()
 	if tk.Type() != tp {
 		m.Failf(
@@ -202,8 +201,8 @@ func (m *T) HeapGet(sym symbol.T) (tk *token.T, ok bool) {
 }
 
 // Returns a position (symbol, 0) for created tokens.
-func (m *T) MkPos() *token.PosT{
-  return token.NewPos(m.prg[0].Pos.Source, 0)
+func (m *T) MkPos() *token.PosT {
+	return token.NewPos(m.prg[0].Pos.Source, 0)
 }
 
 // Shows an error message and exit with value 0.

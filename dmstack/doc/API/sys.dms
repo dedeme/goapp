@@ -1,0 +1,71 @@
+// Copyright 25-Jul-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// System procedures.
+
+() init =>
+/// s -> -
+///
+/// Set values for 'sys.uname', 'sys.udir', 'sys.locale' and 'sys.home'.
+/// It creates the 'sys.home' directory if it does not exist.
+/// Initialize sequence for random numbers.
+///   dir: Relative path of application home directory. It can not be an
+///        empty string.
+///        The 'home' directory is formed 'sys.udir'/.dmStackApp/'s'.
+
+() uname =>
+/// - -> s
+///
+/// Returns user name. If 'sys.init' has not previously been called, it
+/// returns "".
+
+() udir =>
+/// - -> s
+///
+/// Returns user directory. If 'sys.init' has not previously been called,
+/// it returns "".
+
+() locale =>
+/// - -> s
+///
+/// Returns system locale. If 'sys.init' has not previously been called,
+/// it returns "".
+
+() home =>
+/// - -> s
+///
+/// Returns application home directory. If 'sys.init' has not previously been
+/// called, it returns "".
+
+() sleep =>
+/// i -> -
+///
+/// Stop the current thread 'n' milliseconds.
+///   n: Milliseconds.
+
+() freeThread =>
+/// p -> -
+///
+/// Executes 'proc' in an independent thread.
+///   p: Procdure.
+
+() thread =>
+/// p -> <.= Thread.>
+///
+/// Executes 'proc' in an independent thread and returns a handle to wait
+/// for its ending.
+/// This procedure is called in combination with 'sys.join'.
+///
+///   - Example:
+///
+///   (5 (pop; "Thread" puts) for) sys.thread : th =
+///   "Waiting..." puts
+///   th sys.join
+///   "Finished" puts
+///   p: Procedure.
+
+() join =>
+/// <.= Thread.> -> -
+///
+/// Waits until the procedure linked to 'thread' finishes. See 'sys.thread'.
+///   thread: Link retrieved with 'sys.thread'.

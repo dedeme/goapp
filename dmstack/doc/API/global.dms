@@ -1,31 +1,14 @@
-// Copyright 27-Nov-2019 ºDeme
+// Copyright 24-Apr-2020 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 /// Global procedures.
 
-() nop =>
-/// - -> -
+() !0 =>
+/// l -> *
 ///
-/// Not Operation.
-
-() puts =>
-/// * -> -
-///
-/// Shows and cosume tk.
-///   tk: Token to show.
-
-() assert =>
-/// b -> -
-///
-/// Raise a fail if 'value' is false.
-///   value: Value to check.
-
-() expect =>
-/// *, * -> -
-///
-/// Raise a fail if 'expected' != 'actual'.
-///   expected: Expected value.
-///   actual: Actual value.
+/// Returns the element 0 of ls. It is possible to use !1, !2, ..., !9 for
+/// returning elements 1, 2, ..., 9.
+///   ls: A list.
 
 () run =>
 /// p -> -
@@ -56,3 +39,451 @@
 ///     symbolModule: A procedure with two elements. The first is the symbol to
 ///                   reference the import and the second is the module to
 ///                   import (e.g. (u, "util") will be referenced by 'u')
+
+() if =>
+/// bp -> -
+/// pp<else>pp<else>...<else> -> -
+/// pp<else>pp<else>...<else>p -> -
+///
+/// Conditional fork.
+///   Arguments:
+///
+///   Option1:
+///   cond: Bool value.
+///   proc: Procedure which is executed if 'cond' is true.
+///
+///   Option2:
+///   condPr1: Procedure isoalately executed, which returns a Bool value.
+///   proc1  : Procedure which is exectued if 'condPr1' returns true.
+///   condPr2: Procedure isoalately executed, which returns a Bool value.
+///   proc2  : Procedure which is exectued if 'condPr2' returns true.
+///
+///   Option3:
+///   condPr1: Procedure isoalately executed, which returns a Bool value.
+///   proc1  : Procedure which is exectued if 'condPr1' returns true.
+///   condPr2: Procedure isoalately executed, which returns a Bool value.
+///   proc2  : Procedure which is exectued if 'condPr2' returns true.
+///   FinalPr: Procedure which is exectued if every condition returns false.
+
+() elif =>
+/// bpp -> -
+///
+/// Conditional fork.
+///   cond : Bool value.
+///   proc1: Procedure which is executed if 'cond' is true.
+///   proc2: Procedure which is executed if 'cond' is false.
+
+() else =>
+/// Used in combination with if.
+
+() loop =>
+/// p -> -
+///
+/// Execute a procedure until it returns 'break'.
+///
+/// - Example:
+///
+///   0 1
+///   (dup 10 <= (dup; ix =; +; ix 1 +) (pop; break) elif) loop
+///   55 expect
+///
+///   proc: Procedure to execute.
+
+() break =>
+/// Symbol used to stop loops (loop, while, for)
+
+() while =>
+/// pp -> -
+///
+/// Executes 'proc' while 'cond' is true. Execution is stopped if 'proc' returns
+/// 'break' .
+///   cond: Procedure which returns a Bool value.
+///   proc: Procedure to run while cond is true and 'proc' does not return
+///         'break'.
+
+() for =>
+/// ip -> -
+/// lp -> -
+///
+/// Executes 'proc' a number of times.
+///   Arguments:
+///
+///   - Option1
+///     n    : Times number. The loop will repeat n times. If n <= 0, no
+///            repetition will be done.
+///     proc : Procedure to run n times. Every time an Int with values from 0
+///            (inclusive) to n (exclusive) will be passed to 'proc'.
+///
+///   - Option2
+///     ls  : List with the following values:
+///           - If len(ls) == 2: begin = ls[0], end = ls[1], step = 1.
+///           - If len(ls) == 3: begin = ls[0], end = ls[1], step = ls[2]
+///             (step can be negative but not 0).
+///     proc: Procedure to run several times. Every time an Int with values
+///           from 'begin' (inclusive) to 'end' (exclusive) and jumping 'step'
+///           values will be passed to 'proc'.
+
+() sync =>
+/// p -> -
+///
+/// Execute proc synchronized.
+/// No other thread can run 'proc' until it is finished.
+///   proc: Procedure synchornized.
+
+() nop =>
+/// - -> -
+///
+/// Not Operation.
+
+() puts =>
+/// * -> -
+///
+/// Shows and cosume tk.
+///   value: Value to show.
+
+() toStr =>
+/// * -> s
+///
+/// Returns a representation of tk.
+///   value: A value.
+
+() clone =>
+/// * -> *
+///
+/// Returns a deep copy of value, but if it is a native value. In such case
+/// only return a shallow copy (copy of pointer).
+///   value: A value.
+
+() assert =>
+/// b -> -
+///
+/// Raise a fail if 'value' is false.
+///   value: Value to check.
+
+() expect =>
+/// ** -> -
+///
+/// Raise a fail if 'expected' != 'actual'.
+///   expected: Expected value.
+///   actual: Actual value.
+
+() fail =>
+/// s -> -
+///
+/// Stops dmstack with the message error "Generic: " + err.
+///   err: Error message
+
+() throw =>
+/// ss -> -
+///
+/// Stops dmstack with the message error type + ": " + err.
+///   type: Error type
+///   err : Error message
+
+() try =>
+/// pp -> -
+///
+/// Executes proc and if there is some error passes its message and execute
+/// procErr.
+///
+/// - Example 1:
+///   ("error" fail) ("Generic: error" expect) try
+///
+/// - Example 2:
+/// |  ("IndexOutOfRange" "error" throw)
+/// |  ("IndexOutOfRange: error" expect)
+/// |  try
+///
+///   proc     : Procedure to execute
+///   procError: Procedure to execute in case of error.
+
+() swap =>
+/// ** -> **
+///
+/// Interchanges the two last values of stack.
+///   e1: A value.
+///   e2: Another value.
+
+() pop =>
+/// * -> -
+///
+/// Removes the last value of stack.
+///   e1: A value.
+
+() dup =>
+/// * -> **
+///
+/// Duplicates the las value of stack. The new value is a reference to the
+/// former.
+///   e1: A value.
+
+() @? =>
+/// s -> b
+///
+/// Returns true if 'types' is a valid description of the last values of stack.
+/// If "xxx" is a value of 'types'
+///   "xxx" @?
+/// must be written as
+///   @?xxx
+/// If 'types' is an empty string (indicating an empty stack) '@?' must be
+/// written.
+///   types: Description of types as following:
+///     "Bool" -> b
+///     "Int" -> i
+///     "Float" -> f
+///     "String" -> s
+///     "Procedure -> p
+///     "List" -> l
+///     "Map" -> m
+///     "Symbol" -> y
+///     "Native" -> <Identifier>
+
+() @ =>
+/// s -> b
+///
+/// Throws a exception if 'types' is not a valid description of the last values
+/// of stack.
+/// If "xxx" is a value of 'types'
+///   "xxx" @?
+/// must be written as
+///   @?xxx
+/// If 'types' is an empty string (indicating an empty stack) '@?' must be
+/// written.
+///   types: Description of types. See '@?'.
+///
+///   ========================================================
+///   NOTE: Only active if dmstack is called with option '-d'.
+///   ========================================================
+
+() @+ =>
+/// *...s -> *...<= @!>*...
+///
+/// If 'types' is a valid description of the last values of stack, insert the
+/// symbol <= @!> before them. Otherwise throw a exception.
+/// If "xxx" is a value of 'types'
+///   "xxx" @+
+/// must be written as
+///   @+xxx
+/// If 'types' is an empty string (indicating an empty stack) '@+' must be
+/// written.
+///   vs   : Values which precede 'types' (casually emtpy).
+///   types: Description of types. See '@?'.
+///
+///   ========================================================
+///   NOTE: Only active if dmstack is called with option '-d'.
+///   ========================================================
+
+() @- =>
+/// *...<= @!>*...s -> *...*...
+///
+/// If 'types' is a valid description of the last values of stack after 'stop',
+/// remove the symbol <= @!>. Otherwise throw a exception.
+/// If "xxx" is a value of 'types'
+///   "xxx" @-
+/// must be written as
+///   @-xxx
+/// If 'types' is an empty string (indicating an empty stack) '@-' must be
+/// written.
+///   vs1  : Values before 'stop' (casually emtpy).
+///   stop : Symbol pushed by '@+'
+///   vs2  : Values after 'stop' (casually emtpy).
+///   types: Description of types. See '@?'.
+///
+///   ========================================================
+///   NOTE: Only active if dmstack is called with option '-d'.
+///   ========================================================
+
+() + =>
+/// ii -> i
+/// if -> f
+/// fi -> f
+/// ff -> f
+/// ss -> s
+///
+/// Adds e1 and e2
+///   Arguments:
+///
+///   - Options 1 to 4:
+///     Returns a number e1 + e2.
+///     e1: a number (Float or Int)
+///     e2: a number (Float or Int)
+///
+///   - Option 5
+///     Returns a string joining e1 + e2.
+///     e1: a string.
+///     e2: a string.
+
+() - =>
+/// ii -> i
+/// if -> f
+/// fi -> f
+/// ff -> f
+///
+/// Substract e1 - e2.
+///   e1: a number (Float or Int)
+///   e2: a number (Float or Int)
+
+() * =>
+/// ii -> i
+/// if -> f
+/// fi -> f
+/// ff -> f
+///
+/// Multiply e1 * e2.
+///   e1: a number (Float or Int)
+///   e2: a number (Float or Int)
+
+() / =>
+/// ii -> i
+/// if -> f
+/// fi -> f
+/// ff -> f
+///
+/// Divide e1 / e2. If both arguments are Int, it makes an integer division
+/// (e.g. 8 / 6 = 1).
+///   e1: a number (Float or Int)
+///   e2: a number (Float or Int)
+
+() % =>
+/// ii -> i
+///
+/// Returns the module e1 % 2 (e.g. 8 / 6 = 2).
+///   e1: a number
+///   e2: a number
+
+() ++ =>
+/// i -> i
+/// s... -> s
+/// l... -> l
+///
+/// Increment or concatenation.
+///   Arguments:
+///
+///   - Option 1
+///     n: Number to increment.
+///
+///   - Option 2
+///     s...: One or more strings to concatenate ("a" "b" ++ -> "ab")
+///
+///   - Option 3
+///     l...: One or more list to concatenate ([1] [2] ++ -> [1, 2])
+
+() -- =>
+/// i -> i
+///
+/// Decrement.
+///   n: Number to decrement.
+///
+
+() == =>
+/// ** -> b
+///
+/// Returns 'true' if e1 == e2.
+/// Native values are compared by identity.
+///   e1: A value.
+///   e2: Other value.
+
+() != =>
+/// ** -> b
+///
+/// Returns 'true' if e1 != e2.
+/// Native values are compared by identity.
+///   e1: A value.
+///   e2: Other value.
+
+() < =>
+/// bb -> b
+/// ii -> b
+/// ff -> b
+/// ss -> b
+///
+/// Returns 'true' if e1 < e2
+///   e1: A value.
+///   e2: Other value.
+
+() <= =>
+/// bb -> b
+/// ii -> b
+/// ff -> b
+/// ss -> b
+///
+/// Returns 'true' if e1 <= e2
+///   e1: A value.
+///   e2: Other value.
+
+() > =>
+/// bb -> b
+/// ii -> b
+/// ff -> b
+/// ss -> b
+///
+/// Returns 'true' if e1 > e2
+///   e1: A value.
+///   e2: Other value.
+
+() >= =>
+/// bb -> b
+/// ii -> b
+/// ff -> b
+/// ss -> b
+///
+/// Returns 'true' if e1 >= e2
+///   e1: A value.
+///   e2: Other value.
+
+() && =>
+/// bb -> b
+/// pp -> b
+///
+/// Returns 'true' if e1 and e2 are 'true'
+///   Arguments:
+///
+///   - Option1
+///     e1: Boolean value.
+///     e2: Boolean value.
+///
+///   - Option2
+///     e1: Procedure which returns a boolean value.
+///     e2: Procedure which returns a boolean value.
+
+() || =>
+/// bb -> b
+/// pp -> b
+///
+/// Returns 'true' if e1 or e2 are 'true'
+///   Arguments:
+///
+///   - Option1
+///     e1: Boolean value.
+///     e2: Boolean value.
+///
+///   - Option2
+///     e1: Procedure which returns a boolean value.
+///     e2: Procedure which returns a boolean value.
+
+() ! =>
+/// b -> b
+///
+/// Returns the negation of 'e'.
+///   e: A boolean value.
+
+() >> =>
+/// l -> *
+///
+/// Returns the value of a reference.
+///   rf: Reference
+
+() << =>
+/// l* -> -
+///
+/// Sets the value of a reference.
+///   rf: Reference.
+///   v : Value.
+
+() ^^ =>
+/// lp -> -
+///
+/// Update the value of a reference.
+///   rf: Reference.
+///   p : Procedure which the reference value is passed to. It is executed
+///       in an isolate machine and must return only one value.

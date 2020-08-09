@@ -71,7 +71,7 @@ func extractFile(keys map[string][]*pos, source string) {
 	var bf strings.Builder
 	state := CODE
 	nl := 0
-	file.Lines(source, func(l string) {
+	file.Lines(source, func(l string) bool {
 		l = l + "\n"
 		nl++
 		length := len(l)
@@ -173,6 +173,7 @@ func extractFile(keys map[string][]*pos, source string) {
 				state = codeState(ch)
 			}
 		}
+    return false
 	})
 }
 

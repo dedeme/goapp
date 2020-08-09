@@ -23,11 +23,12 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=3
+current_page=4
 FILE_NAME_0=1365;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Fgotpl%2Fgotpl.go;0;2
 FILE_NAME_1=124;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fdirects%2Fpcopyright.go;0;2
 FILE_NAME_2=1511;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fdirects%2Fptests.go;0;2
 FILE_NAME_3=250;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Ftpls%2Fdirects%2Fdoc.go;0;2
+FILE_NAME_4=41;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fgotpl%2Fgo.mod;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

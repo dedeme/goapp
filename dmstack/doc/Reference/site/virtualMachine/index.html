@@ -143,6 +143,12 @@
 <li>A heap (implemented as a map from symbol to token).</li>
 <li>A list of modules imported (implemented as a slice of symbols).</li>
 </ul>
+<p>Virtual machines can run other ones. In such case:</p>
+<ul>
+<li>The stack can be inherited (normal case) or not (isolate machine).</li>
+<li>The heap is neve inherited.</li>
+<li>The list of modules imported is ever inherited.</li>
+</ul>
 <h2 id="working">Working</h2>
 <p>The virtual machine process a procedure token by token with the following
 steps:</p>

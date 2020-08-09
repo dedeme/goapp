@@ -18,7 +18,7 @@ There are a number of symbols intially registered: if, else, nop, +, ...
 ## Symbols With Dot
 
 A symbol which does not start whith `this.` only can have one dot. If it start
-with `this.` is allowed:
+with `this.`, is allowed:
 
   - one dot. That of `this.`
   - two dots. That of `this.` and a final dot (e.g. `this.fn.`). This
@@ -51,7 +51,7 @@ If the dot is between two blanks, it is consedered a blank too.
 > `left.right` ->  `left right`
 
 > In this case if `left` is an import symbol, it will be substituted  by its
-> path, This operation will not be done with `rigth`.
+> path.
 
 > Note that, in general, you ever can write `left right` directly.
 
@@ -150,6 +150,8 @@ an error will be raised.
 
 **Global Module**
 
+See [API](http://localhost/dmcgi/DmsDoc/?_system@global).
+
 **Other Primitive Modules**
 
 ## # Symbols
@@ -158,13 +160,13 @@ Dmstack virtual machine keep a counter for singling symbols.
 
 The symbol `#` increments the counter.
 
-A synbol type `xxx#` is replaced by `xxx·counter` (e.g. `xxx·183`).
+A symbol type `xxx#` is replaced by `xxx·counter` (e.g. `xxx·183`).
 
 ## Other Symbols
 
 They are processed in two steps:
 
-1. Verification if the symbol is an import. In this case it is procecced as
+1. Verification if the symbol is an import. In this case it is processed as
    such import.
 2. It it is not an import is normaly processed.
 

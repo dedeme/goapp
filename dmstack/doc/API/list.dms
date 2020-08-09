@@ -1,0 +1,266 @@
+// Copyright 22-Jul-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// List procedures.
+///
+/// It includes procedures for:
+///
+///   - References
+///     ref
+///
+///   - Tuples
+///     tp tp3 e1 e2 e3
+///
+///   - Options
+///     none, some
+///
+///   - Eithers
+///     left, right
+///
+///   - Results
+///     error, ok
+
+() new =>
+/// - -> l
+///
+/// Creates an empty list.
+
+() make =>
+/// *i -> l
+///
+/// Creates a list with 'n' elements 'e'. The element is cloned. (See
+/// global.clone).
+///   e: Element to clone.
+///   n: Length of list. Its value must be >= 0.
+
+() size =>
+/// l -> i
+///
+/// Returns the size of ls.
+///   ls: A list.
+
+() push =>
+/// l* -> -
+///
+/// Adds an element at the end of ls.
+///   ls: A list.
+///   v : Value.
+
+() push0 =>
+/// l* -> -
+///
+/// Adds an element at the beginning of ls.
+///   ls: A list.
+///   v : Value.
+
+() pop =>
+/// l -> *
+///
+/// Removes and returns the last element of ls.
+/// Adds an element at the beginning of ls.
+///   ls: A list.
+
+() pop0 =>
+/// l -> *
+///
+/// Removes and returns the first element of ls.
+/// Adds an element at the beginning of ls.
+///   ls: A list.
+
+() peek =>
+/// l -> *
+///
+/// Returns, but not remove, the last element of ls.
+/// Adds an element at the beginning of ls.
+///   ls: A list.
+
+() peek0 =>
+/// l -> *
+///
+/// Returns, but not remove, the first element of ls.
+/// Adds an element at the beginning of ls.
+///   ls: A list.
+
+() insert =>
+/// li* -> -
+///
+/// Inserts an element in 'l' at 'i'.
+///   l: List to modify.
+///   i: Index of insertion [0-size(l))
+
+() insertList =>
+/// li* -> -
+///
+/// Inserts every element of lSub in 'l' at 'i'.
+///   l   : List to modify.
+///   i   : Index of insertion [0-size(l))
+///   lSub: List to insert.
+
+() remove =>
+/// li -> -
+///
+/// Removes the element at position 'i' in 'l'.
+///   l: List to modify.
+///   i: Index to remove [0-(size(l)-1))
+
+() removeRange =>
+/// li -> -
+///
+/// Removes elements from begin (inclusive) to end (exclusive) in 'l'.
+/// If 'end' <= 'begin', 'l' remains untouched.
+///   l    : List to modify.
+///   begin: Index to begin removing [0-(size(l)-1))
+///   end  : Index to end removing [0-size(l))
+
+() clear =>
+/// l -> -
+///
+/// Removes every element of 'l'.
+///   l    : List to modify.
+
+() reverse =>
+/// l -> -
+///
+/// Reverses elements of 'l'.
+///   l: List to modify.
+
+() suffle =>
+/// l -> -
+///
+/// Resorts randomly elements of 'l'.
+///   l: List to modify.
+
+() sort =>
+/// lp -> -
+///
+/// Sorts 'l' using 'p'.
+///
+/// - Examples:
+///
+/// [1, 4, 2] : lst =
+/// lst (<) list.sort; lst [1, 2, 4] expect
+/// lst (>) list.sort; lst [4, 2, 1] expect
+///
+///   l: List to modify
+///   p: Procedure (** -> b) for sorting.
+
+() get =>
+/// li -> *
+///
+/// Returns the element ix of ls.
+///   ls: A list.
+///   ix: Index. If it is not valid an exception is thrown.
+///       For values between 0 and 9 can be used !0, !1 ... !9. For example,
+///       'l !1' is equals to 'l 1 list.get'.
+
+() set =>
+/// li* -> -
+///
+/// Sets the value of the element ix of ls.
+///   ls: A list.
+///   ix: Index. If it is not valid an exception is thrown.
+///   v : Value.
+
+() up =>
+/// lip -> -
+///
+/// Updates the value of the element ix of ls.
+///   ls: A list.
+///   ix: Index. If it is not valid an exception is thrown.
+///   p : Procedure which the element 'ix' is passed to. It is executed
+///       in an isolate machine and must return only one value.
+
+() fill =>
+/// l* -> -
+///
+/// Fills a list with elements 'e'. The element is cloned. (See global.clone).
+///   l: List to fill.
+///   e: Element to clone.
+
+
+
+() ref =>
+/// * -> l
+///
+/// Creates a reference with the value 'v'. A reference is a list of one
+/// element.
+///   v: Value.
+
+() none =>
+/// - -> l
+///
+/// Creates an empty option. It is equals to 'new'.
+
+() some =>
+/// * -> l
+///
+/// Creates a full option. A some option is a list of one element.
+///   v: Value.
+
+() tp =>
+/// ** -> l
+///
+/// Creates a tuple of two elements. A tuple of two elements is a list of
+/// two elements.
+///   v1: First value.
+///   v2: Second value.
+
+() tp3 =>
+/// *** -> l
+///
+/// Creates a tuple of three elements. A tuple of three elements is a list of
+/// three elements.
+///   v1: First value.
+///   v2: Second value.
+///   v3: Third value.
+
+() e1 =>
+/// l* -> -
+///
+/// Sets the first value of a tuple. Equals to '!0' or '0 list.get'
+///   ls: Tuple.
+///   v : Value
+
+() e2 =>
+/// l* -> -
+///
+/// Sets the second value of a tuple. Equals to '!1' or '1 list.get'
+///   ls: Tuple.
+///   v : Value
+
+() e3 =>
+/// l* -> -
+///
+/// Sets the third value of a tuple. Equals to '!2' or '2 list.get'
+///   ls: Tuple.
+///   v : Value
+
+() left =>
+/// l* -> -
+///
+/// Sets the left value of a either list. Equals to a tuple '(false, v)'
+///   ls: Either list.
+///   v : Value.
+
+() right =>
+/// l* -> -
+///
+/// Sets the right value of a either list. Equals to a tuple '(true, v)'
+///   ls: Either list.
+///   v : Value.
+
+() error =>
+/// ls -> -
+///
+/// Sets the error value of a result list. Equals to a tuple '(false, s)'
+///   ls: Result list.
+///   s : String value.
+
+() ok =>
+/// l* -> -
+///
+/// Sets the ok value of a result list. Equals to a tuple '(true, v)'
+///   ls: Result list.
+///   v : Value.
+
+

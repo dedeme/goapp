@@ -1,5 +1,7 @@
 github.com/dedeme/golib v0.0.0-20200406103354-a45e1d0976b1 h1:trHm0VuEyrLS5DApge1tsTu35nPxV+V0caFNHGQ//Ck=
 github.com/dedeme/golib v0.0.0-20200406103354-a45e1d0976b1/go.mod h1:noFvniK3uFLAYzP/upJSBBzyHL8OzYq2NOTQVwyHXlE=
+github.com/dedeme/golib v0.0.0-20200622101558-26a19cb0235a h1:Z3RL/fgFhJI52CEbNm855M3evzGXmbKmyZlaPsW+DwY=
+github.com/dedeme/golib v0.0.0-20200622101558-26a19cb0235a/go.mod h1:noFvniK3uFLAYzP/upJSBBzyHL8OzYq2NOTQVwyHXlE=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=

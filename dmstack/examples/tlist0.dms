@@ -1,0 +1,120 @@
+// Copyright 02-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+list.new : l0 =
+"X" 3 list.make : l3 =
+l3 list.size 3 expect
+l0 list.size 0 expect
+l0 2 list.push
+l0 toStr "[2]" expect
+l0 1 list.push0
+l0 toStr "[1,2]" expect
+l0 list.peek 2 expect
+l0 list.peek0 1 expect
+l0 list.pop 2 expect
+l0 list.pop0 1 expect
+l0 list.size 0 expect
+l0 dup 1 list.push 2 list.push
+l0 !0 1 expect
+l0 !1 2 expect
+l0 0 "a" list.set
+l0 !0 "a" expect
+l0 0 (e =; ">" e "<" ++) list.up
+l0 !0 ">a<" expect
+l3 !0 "X" expect
+l3 !1 "X" expect
+l3 !2 "X" expect
+l3 "Z" list.fill
+l3 !0 "Z" expect
+l3 !1 "Z" expect
+l3 !2 "Z" expect
+l3 1 true list.set
+l3 !0 "Z" expect
+l3 !1 assert
+l3 !2 "Z" expect
+
+list.new : lb0 =
+"X" 3 list.make : lb3 =
+
+lb0 0 "a" list.insert; lb0 list.size 1 expect; lb0 !0 "a" expect
+lb3 1 "a" list.insert; lb3 list.size 4 expect
+lb3 !0 "X" expect
+lb3 !1 "a" expect
+lb3 !2 "X" expect
+lb3 !3 "X" expect
+lb3 4 "b" list.insert; lb3 list.size 5 expect
+lb3 !0 "X" expect
+lb3 !1 "a" expect
+lb3 !2 "X" expect
+lb3 !3 "X" expect
+lb3 !4 "b" expect
+
+list.new : li0 =
+list.new : lc0 =
+"X" 3 list.make : lc3 =
+lc0 0 li0 list.insertList; lc0 list.size 0 expect
+lc3 1 li0 list.insertList; lc3 list.size 3 expect
+lc3 !0 "X" expect
+lc3 !1 "X" expect
+lc3 !2 "X" expect
+lc3 3 li0 list.insertList; lc3 list.size 3 expect
+lc3 !0 "X" expect
+lc3 !1 "X" expect
+lc3 !2 "X" expect
+
+["a", "b", "c"] : li3 =
+list.new : ld0 =
+"X" 3 list.make : ld3 =
+ld0 0 li3 list.insertList; ld0 list.size 3 expect
+ld0 !0 "a" expect
+ld0 !1 "b" expect
+ld0 !2 "c" expect
+ld3 1 li3 list.insertList; ld3 list.size 6 expect
+ld3 !0 "X" expect
+ld3 !1 "a" expect
+ld3 !2 "b" expect
+ld3 !3 "c" expect
+ld3 !4 "X" expect
+ld3 !5 "X" expect
+ld3 6 li3 list.insertList; ld3 list.size 9 expect
+ld3 !0 "X" expect
+ld3 !1 "a" expect
+ld3 !2 "b" expect
+ld3 !3 "c" expect
+ld3 !4 "X" expect
+ld3 !5 "X" expect
+ld3 !6 "a" expect
+ld3 !7 "b" expect
+ld3 !8 "c" expect
+
+ld3 1 4 list.removeRange; ld3 list.size 6 expect
+ld3 !0 "X" expect
+ld3 !1 "X" expect
+ld3 !2 "X" expect
+ld3 !3 "a" expect
+ld3 !4 "b" expect
+ld3 !5 "c" expect
+
+ld3 5 list.remove; ld3 2 list.remove; ld3 0 list.remove
+ld3 list size 3 expect
+ld3 !0 "X" expect
+ld3 !1 "a" expect
+ld3 !2 "b" expect
+
+ld3 list.reverse
+ld3 !0 "b" expect
+ld3 !1 "a" expect
+ld3 !2 "X" expect
+
+ld3 (<) list.sort; ld3 ["X","a","b"] expect
+ld3 (>) list.sort; ld3 ["b","a","X"] expect
+
+[1, 4, 2] : lst =
+lst (<) list.sort; lst [1, 2, 4] expect
+lst (>) list.sort; lst [4, 2, 1] expect
+
+// ld3 list.shuffle; ld3 puts
+
+ld3 list.clear; ld3 list.size 0 expect
+
+@

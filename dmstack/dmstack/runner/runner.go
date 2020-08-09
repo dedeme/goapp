@@ -5,7 +5,6 @@
 package runner
 
 import (
-	"fmt"
 	"github.com/dedeme/dmstack/imports"
 	"github.com/dedeme/dmstack/machine"
 	"github.com/dedeme/dmstack/primitives"
@@ -14,7 +13,7 @@ import (
 )
 
 func primitiveModule(m *machine.T, sym symbol.T) bool {
-	return false
+	return primitives.Modules(m, sym, Run);
 }
 
 func module(m *machine.T, sym symbol.T) bool {
@@ -35,18 +34,18 @@ func module(m *machine.T, sym symbol.T) bool {
 		if !ok {
 			m.Failf("Module '%v' does not defines the symbol '%v'", sym, sym2)
 		}
-    m.Push(tk2)
-    if tk2.Type() == token.Procedure {
-      tk, ok = m.PrgPeek()
-      if ok {
-        sym, ok = tk.Sy()
-      }
-      if ok && sym == symbol.Ampersand {
-        m.PrgNext()
-        return true
-      }
-      primitives.Global(m, symbol.Run, Run)
-    }
+		m.Push(tk2)
+		if tk2.Type() == token.Procedure {
+			tk, ok = m.PrgPeek()
+			if ok {
+				sym, ok = tk.Sy()
+			}
+			if ok && sym == symbol.Ampersand {
+				m.PrgNext()
+				return true
+			}
+			primitives.Global(m, symbol.Run, Run)
+		}
 		return true
 	}
 	return false
@@ -86,12 +85,6 @@ func equals(m *machine.T, sym symbol.T) bool {
 // Runs a machine
 //    m: Machine to run.
 func Run(m *machine.T) {
-	defer func() {
-		if err := recover(); err != nil {
-			m.Fail(fmt.Sprint(err))
-		}
-	}()
-
 	for {
 		if tk, ok := m.PrgNext(); ok {
 			if tk.Type() == token.Symbol {

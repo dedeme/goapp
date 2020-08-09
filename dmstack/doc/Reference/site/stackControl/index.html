@@ -88,6 +88,21 @@
     <a class="current" href="./">Stack Control</a>
     <ul class="subnav">
             
+    <li class="toctree-l2"><a href="#stack-sequence-descriptor">Stack Sequence Descriptor</a></li>
+    
+
+    <li class="toctree-l2"><a href="#xxx">@?xxx</a></li>
+    
+
+    <li class="toctree-l2"><a href="#xxx_1">@+xxx</a></li>
+    
+
+    <li class="toctree-l2"><a href="#-xxx">@-xxx</a></li>
+    
+
+    <li class="toctree-l2"><a href="#xxx_2">@xxx</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -123,7 +138,66 @@
           <div role="main">
             <div class="section">
               
-                
+                <p>Stack control has a symbol ever allowed (<code>@?xxx</code>) and others (<code>@</code>, <code>@xxx</code>,
+<code>@+xxx</code>, <code>@-xxx</code>) only actives if <code>dmsatck</code> has been called with the option
+'-d'.</p>
+<h3 id="stack-sequence-descriptor">Stack Sequence Descriptor</h3>
+<p>It is a sequence of characters which especify value types in the machine stack.
+A sequence descriptor is a sequence (possibly empty) of descriptor of type.</p>
+<p>For example:</p>
+<ul>
+<li><code>is</code> specify <code>Int-String</code>-TopStack.</li>
+<li><code>b&lt;= File&gt;i</code> specfiy <code>Bool-Object File-Int</code>-TopStack</li>
+</ul>
+<p>Valid values for descriptors are:</p>
+<ul>
+<li><code>b</code> Boolean</li>
+<li><code>i</code> Integer</li>
+<li><code>f</code> Float</li>
+<li><code>s</code> String</li>
+<li><code>p</code> Procedure</li>
+<li><code>l</code> List</li>
+<li><code>m</code> Map</li>
+<li><code>y</code> Symbol</li>
+<li><code>&lt;= Ob&gt;</code> Native object "Ob"</li>
+</ul>
+<h3 id="xxx">@?xxx</h3>
+<p>The reader replaces it by <code>"xxx" &lt;= @?&gt;</code>, where "xxx" is a sequence descriptor.</p>
+<p><code>&lt;= @?&gt;</code> returns true if the machine stack last positions match "xxx".</p>
+<p>For example:</p>
+<hr />
+<pre><code class="c">4 &quot;a&quot; @?is
+</code></pre>
+
+<p>Returns <code>true</code>.</p>
+<hr />
+<p><code>@?</code> without sequence descriptor (an empty sequence descriptor) returns <code>true</code>
+if the machine stack is empty.</p>
+<h3 id="xxx_1">@+xxx</h3>
+<p>Only active with the option '-d'.</p>
+<p>The reader replaces it by <code>"xxx" &lt;= @+&gt;</code>, where "xxx" is a sequence descriptor.</p>
+<p><code>&lt;= @!&gt;</code> throws an exception if the machine stack last positions does not
+match "xxx". Otherwise push the symbol <code>&lt;= @!&gt;</code> on the stack before the values
+which match the sequence descriptor.</p>
+<p><code>@+</code> without sequence descriptor (an empty sequence descriptor) throws an
+exception if the machine stack is empty. Otherwise push the symbol <code>&lt;= @!&gt;</code>
+on the stack.</p>
+<h3 id="-xxx">@-xxx</h3>
+<p>Only active with the option '-d'.</p>
+<p>The reader replaces it by <code>"xxx" &lt;= @-&gt;</code>, where "xxx" is a sequence descriptor.</p>
+<p><code>&lt;= @!&gt;</code> throws an exception if the machine stack positions from <code>&lt;= @!&gt;</code>
+does notmatch "xxx" or if <code>&lt;= @!&gt;</code> is not found. Otherwise remove the symbol
+<code>&lt;= @!&gt;</code>.</p>
+<p><code>@-</code> without sequence descriptor (an empty sequence descriptor) throws an
+exception if the machine stack is empty  or if <code>&lt;= @!&gt;</code> is not found. Otherwise
+remove the symbol <code>&lt;= @!&gt;</code>.</p>
+<h3 id="xxx_2">@xxx</h3>
+<p>Only active with the option '-d'.</p>
+<p>The reader replaces it by <code>"xxx" &lt;= @&gt;</code>, where "xxx" is a sequence descriptor.</p>
+<p><code>&lt;= @&gt;</code> throws an exception if the machine stack last positions does not
+match "xxx".</p>
+<p><code>@</code> without sequence descriptor (an empty sequence descriptor) throws an
+exception if the machine stack is empty.</p>
               
             </div>
           </div>

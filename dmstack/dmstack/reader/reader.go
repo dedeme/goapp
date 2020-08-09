@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
-  "os"
-  "strings"
+	"os"
+	"strings"
 )
 
 type T struct {
@@ -20,7 +20,7 @@ type T struct {
 	prgIx        int
 	nextsTk      []*token.T
 	stackCounter int
-  syms []*symbol.Kv
+	syms         []*symbol.Kv
 }
 
 // Creates a new Reader from a file.
@@ -35,21 +35,21 @@ func New(module, prg string) *T {
 		0,
 		nil,
 		0,
-    []*symbol.Kv{},
+		[]*symbol.Kv{},
 	}
 }
 
 func newFromReader(rd *T, prg string, nline int) *T {
-  return &T {
-    false,
-    rd.source,
-    nline,
-    prg,
-    0,
-    nil,
-    0,
-    rd.syms,
-  }
+	return &T{
+		false,
+		rd.source,
+		nline,
+		prg,
+		0,
+		nil,
+		0,
+		rd.syms,
+	}
 }
 
 // Returns a token type Procedure after parsing 'rd.Prg()'
@@ -82,61 +82,60 @@ func (rd *T) Process() *token.T {
 
 // Process a String interpolation
 func (rd *T) processInterpolation(tk *token.T) []*token.T {
-  fpos := func (nline int) *token.PosT {
-    return token.NewPos(tk.Pos.Source, nline)
-  }
+	fpos := func(nline int) *token.PosT {
+		return token.NewPos(tk.Pos.Source, nline)
+	}
 
-  s, _ := tk.S()
-  nline := tk.Pos.Nline
+	s, _ := tk.S()
+	nline := tk.Pos.Nline
 
-  pos := 0
+	pos := 0
 	var tks []*token.T
-  ix := strings.Index(s, "${")
-  for ix != -1 {
-    tks = append(tks, token.NewS(s[pos:pos + ix], fpos(nline)),
-    )
-    if pos > 0 {
-      tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
-    }
-    nline += strings.Count(s[pos:pos+ix], "\n")
-    pos += ix + 2
+	ix := strings.Index(s, "${")
+	for ix != -1 {
+		tks = append(tks, token.NewS(s[pos:pos+ix], fpos(nline)))
+		if pos > 0 {
+			tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
+		}
+		nline += strings.Count(s[pos:pos+ix], "\n")
+		pos += ix + 2
 
-    ix2 := strings.IndexByte(s[pos:], '}')
-    if ix2 == -1 {
-      rd.nLine = nline
-      rd.fail("Interpolation not closed")
-    }
-    subr := newFromReader(rd, s[pos:pos+ix2], nline)
-    prg, _ := subr.Process().P()
-    nline += strings.Count(s[pos:pos+ix2], "\n")
+		ix2 := strings.IndexByte(s[pos:], '}')
+		if ix2 == -1 {
+			rd.nLine = nline
+			rd.fail("Interpolation not closed")
+		}
+		subr := newFromReader(rd, s[pos:pos+ix2], nline)
+		prg, _ := subr.Process().P()
+		nline += strings.Count(s[pos:pos+ix2], "\n")
 
-    lprg := len(prg)
-    if lprg == 0 {
-      tks = append(tks, token.NewS("", fpos(nline)))
-      tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
-    } else if len(prg) == 1 {
-      tks = append(tks, token.NewL(prg, fpos(nline)))
-      tks = append(tks, token.NewSy(symbol.Data, fpos(nline)))
-      tks = append(tks, token.NewI(0, fpos(nline)))
-      tks = append(tks, token.NewSy(symbol.Lst, fpos(nline)))
-      tks = append(tks, token.NewSy(symbol.Get, fpos(nline)))
-      tks = append(tks, token.NewSy(symbol.ToStr, fpos(nline)))
-      tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
-    } else {
-      rd.fail(fmt.Sprintf(
-        "Interpolation '%v' yield more tha one value (%v)", subr, lprg,
-      ))
-    }
+		lprg := len(prg)
+		if lprg == 0 {
+			tks = append(tks, token.NewS("", fpos(nline)))
+			tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
+		} else if len(prg) == 1 {
+			tks = append(tks, token.NewL(prg, fpos(nline)))
+			tks = append(tks, token.NewSy(symbol.Data, fpos(nline)))
+			tks = append(tks, token.NewI(0, fpos(nline)))
+			tks = append(tks, token.NewSy(symbol.List, fpos(nline)))
+			tks = append(tks, token.NewSy(symbol.Get, fpos(nline)))
+			tks = append(tks, token.NewSy(symbol.ToStr, fpos(nline)))
+			tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
+		} else {
+			rd.fail(fmt.Sprintf(
+				"Interpolation '%v' yield more tha one value (%v)", subr, lprg,
+			))
+		}
 
-    pos += ix2 + 1
-    ix = strings.Index(s[pos:], "${")
-  }
+		pos += ix2 + 1
+		ix = strings.Index(s[pos:], "${")
+	}
 
-  tks = append(tks, token.NewS(s[pos:], fpos(nline)))
-  if len(tks) > 1 {
-    nline += strings.Count(s[pos:], "\n")
-    tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
-  }
+	tks = append(tks, token.NewS(s[pos:], fpos(nline)))
+	if len(tks) > 1 {
+		nline += strings.Count(s[pos:], "\n")
+		tks = append(tks, token.NewSy(symbol.Plus, fpos(nline)))
+	}
 
 	return tks
 }

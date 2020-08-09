@@ -24,11 +24,10 @@ long_line_column=80
 
 [files]
 current_page=0
-FILE_NAME_0=3881;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fhaxei18n%2Fhaxei18n.go;0;2
-FILE_NAME_1=840;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fjslang%2Fjsi18n%2Fsrc%2Fjsi18n.c;0;2
+FILE_NAME_0=2950;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fhaxei18n%2Fhaxei18n.go;0;2
+FILE_NAME_1=7100;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fjslang%2Fjsi18n%2Fsrc%2Fjsi18n.c;0;2
 FILE_NAME_2=445;Haxe;0;EUTF-8;0;1;0;%2Fdm%2FdmWeb%2Fapp%2FHxDoc%2Fhx%2Fsrc%2FMain.hx;0;2
-FILE_NAME_3=210;Haxe;0;EUTF-8;0;1;0;%2Fdm%2FdmWeb%2Fapp%2FHxDoc%2Fhx%2Fsrc%2FI18n2.hx;0;2
-FILE_NAME_4=73;Haxe;0;EUTF-8;0;1;0;%2Fdm%2FdmWeb%2Fapp%2FHxDoc%2Fhx%2Fsrc%2FI18n.hx;0;2
+FILE_NAME_3=84;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fgo.mod;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

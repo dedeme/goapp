@@ -1,0 +1,95 @@
+// Copyright 02-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+"imp/impTest" import
+impTest.n16 16 expect
+
+(
+  4 true (pop 1) if 1 expect
+  4 0 3 > (pop 1) if 4 expect
+
+  40
+    (false)
+    (pop 1)
+  else
+    (false)
+    (pop 2)
+  else
+    (false)
+    (pop 3)
+  else
+  if
+  40 expect
+
+  40
+    (false)
+    (pop 1)
+  else
+    (true)
+    (pop 2)
+  else
+  if
+  2 expect
+
+  40
+    (true)
+    (pop 1)
+  else
+    (true)
+    (pop 2)
+  else
+  if
+  1 expect
+
+  40
+    (false)
+    (pop 1)
+  else
+    (false)
+    (pop 2)
+  else
+    (pop 3)
+  if
+  3 expect
+
+  true (1) (2) elif 1 expect
+  false (1) (2) elif 2 expect
+
+  0 1
+  (dup 10 <= (dup; ix =; +; ix 1 +) (pop; break) elif) loop
+  55 expect
+
+
+  0 list.ref sum =
+  1 list.ref v =
+  (v >> : 10 <=) (sum (v >> : +) ^^; v (++) ^^) while
+  sum >> 55 expect
+
+  sum 0 <<
+  v 1 <<
+   (true)
+  ( v >> : 10 >
+    (break)
+    (sum (v >> : +) ^^; v (++) ^^)
+    elif
+  ) while
+  sum >> 55 expect
+
+  sum 0 <<
+  11 (i =; sum (i +) ^^) for
+  sum >> 55 expect
+
+  sum 0 <<
+  [1, 11] (i =; sum (i +) ^^) for
+  sum >> 55 expect
+
+  sum 0 <<
+  [10, 2 3 -, -1] (i =; sum (i +) ^^) for
+  sum >> 55 expect
+
+  @
+) run
+
+
+
+

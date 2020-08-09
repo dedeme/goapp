@@ -42,12 +42,12 @@ call this procedure from `main.dms` in any of the next ways:
 
 #### Syntax Implementation
 
-The reader has a map from symbols to path.
+The reader has a map for each file from symbols to path.
 
 Every import generates a new entry "symbol: path". After that following
 cases of "symbol" are replaced by "path".
 
-Note that a redefinition of "symbol" hiddes the previous one.
+Note that a redefinition in the same file of "symbol" hiddes the previous one.
 
 The efective importation is made by _dmstack machine_, when code is
 processed.

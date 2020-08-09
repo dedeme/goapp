@@ -228,15 +228,16 @@ have <code>e</code> or <code>E</code> for scientific notation. (<code>-12.45</co
 <p><em>NOTE</em> :</p>
 <p>A float can not start with a point. In such case is interpreted as an object
   key.</p>
-<p>The decimal point is mandatory. For example <code>-11e1</code> throws an error.</p>
+<p>The decimal point is mandatory. For example <code>-11e1</code> throws an error, but
+  <code>-11.e1</code> is correct.</p>
 </blockquote>
 <hr />
 <h2 id="string">String</h2>
 <h4 id="normal-strings">Normal Strings</h4>
 <p>They are sequences of UTF-8 symbols between quotes.</p>
-<p>The following escape sequences are allowed: <code>\"</code>, <code>\\\\</code>, <code>\t</code>, <code>\n</code>, <code>\r</code>,
+<p>The following escape sequences are allowed: <code>\"</code>, <code>\\</code>, <code>\t</code>, <code>\n</code>, <code>\r</code>,
 <code>\b</code>, <code>\f</code> and <code>\uXXXX</code>(Hexadecimal unicode character).</p>
-<p>Charancter with integer value less than ' '(space) are not allowed. Therefore
+<p>Charancter with integer value less than " "(space) are not allowed. Therefore
 this strings can not be extended more than one line.</p>
 <h4 id="heredoc-strings">"HereDoc" Strings</h4>
 <p>This string starts with <code>`symbol\n</code> and ends with <code>symbol`</code>. <code>symbol</code>
@@ -264,8 +265,8 @@ string.`
 <h4 id="string-interpolation">String Interpolation</h4>
 <p>Both string classes allow interpolation. A interpolation is a expresion of
 type <code>${value}</code>, where <code>value</code> is a expresion which is calculated with <code>data</code>
-and must returns no value or one only value which procedure <code>toStr</code> can be
-applied to.</p>
+and must returns no value or one only value. In the last case the procedure
+<code>toStr</code> will be applied to the value if it is not a String.</p>
 <p><strong>Examples</strong></p>
 <p><code>"2 + 2 = ${2 2 +}"</code> -&gt; <code>2 + 2 = 4</code></p>
 <p><code>'${}'</code> -&gt; <code>''</code></p>
@@ -336,7 +337,7 @@ evaluated by the <code>dmstack machine</code>.</p>
 </code></pre>
 
 <p>that is the same as <code>{"a" 13 "b" true}</code>.</p>
-<p>It is recomended to use <code>:</code> and <code>,</code> to improve the visualization.</p>
+<p>It is recomended to use <code>:</code> and <code>,</code> to improve visualization.</p>
 <pre><code class="c">{ &quot;a&quot;: 7 6 +, &quot;b&quot;: true }
 </code></pre>
 

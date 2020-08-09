@@ -1,7 +1,20 @@
+// Copyright 02-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-"global" import
+"baseTests" sys.init
 
-
-
-
-
+/*
+"global0" import
+"global1" import
+"global2" import
+"global3" import
+*/
+"tlist0" import
+"tlist1" import
+/*
+"tsys" import
+"tstr" import
+"tint" import
+"tfloat" import
+"tmath" import
+*/

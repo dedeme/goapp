@@ -1,0 +1,71 @@
+// Copyright 02-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  // "a string very long €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€" puts
+
+  true toStr "true" expect
+  false toStr "false" expect
+  3 toStr "3" expect
+  -1.2 toStr "-1.2" expect
+  "abc" toStr "\"abc\"" expect
+  [-2, "a", []] toStr "[-2,\"a\",[]]" expect
+  ["a": 1, "b": [1, 2], "c": []] toStr "[\"a\",1,\"b\",[1,2],\"c\",[]]" expect
+  (3 2 +) toStr "(3,2,<.+.>)" expect
+
+  3 n1 =
+  n1 3 expect
+
+  true clone true expect
+  -32 clone -32 expect
+  21.2 clone 21.2 expect
+  "a" clone "a" expect
+  "" clone "" expect
+  [-2, "a", []] clone [-2, "a", []] expect
+  ["a": 1, "b": [1, 2], "c": []] clone ["a": 1, "b": [1, 2], "c": []] expect
+  (3 2 +) clone (3 2 +) expect
+
+  (
+    "IndexOutOfRange" "error" throw
+  )
+  ("IndexOutOfRange: error" expect)
+  try
+
+  ("error" fail) ("Generic: error" expect) try
+
+  3 4 swap - 1 expect
+  2 dup + 4 expect
+  3 2 25 pop + 5 expect
+
+  true @b pop
+  true @* pop
+  false @b pop
+  4 @i
+  4.5 "a" @ifs
+  [21] @ifsl @****
+  pop pop pop pop
+  @
+
+  true @?b assert pop
+  false @?b assert pop
+  4 @?i assert
+  4.5 "a" @?ifs assert
+  [21] @?ifsl assert
+  @?i**l assert
+  pop pop pop pop
+  @? assert
+
+  true @?i ! assert pop
+  false @?f ! assert pop
+  4 @?s ! assert
+  4.5 "a" @?sfs ! assert
+  [21] @?sfsl ! assert
+  @?***** ! assert
+  pop pop pop pop
+  @?i ! assert
+
+  (@+iii + * @-i) sumMul =
+  3 2 10 sumMul 36 expect
+
+  @
+) run

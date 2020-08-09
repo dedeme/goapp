@@ -1,0 +1,29 @@
+// Copyright 02-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  sys.uname "" != assert
+  sys.udir "" != assert
+  sys.locale "" != assert
+  sys.home "" != assert
+
+  /*
+  (@+s puts; 100 sys.sleep @-) : fn =
+
+  (10 (pop; "FreeThread" fn) for) sys.freeThread
+  10 (pop; "Main" fn) for
+
+  (5 (pop; "Thread" fn) for) sys.thread : th =
+
+  "Waiting..." puts
+  th sys.join
+
+  // Synchronization
+  ((tx =; 10 (pop; tx puts; 100 sys.sleep) for) sync) : fn2 =
+  ("FreeThread2" fn2) sys.thread : th2 =
+  "Main2" fn2
+  th2 sys.join
+  */
+
+  @
+) run

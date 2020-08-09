@@ -9,6 +9,7 @@ import (
 	"github.com/dedeme/dmstack/args"
 	"github.com/dedeme/dmstack/imports"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/primitives"
 	"github.com/dedeme/dmstack/reader"
 	"github.com/dedeme/dmstack/runner"
 	"github.com/dedeme/dmstack/symbol"
@@ -18,6 +19,22 @@ import (
 	"runtime/debug"
 	"strings"
 )
+
+// Run main process and recover machine panics
+func run(m *machine.T) {
+	defer func() {
+		if err := recover(); err != nil {
+			e, ok := err.(*primitives.Error)
+			if ok {
+				e.Machine.Fail(e.Type + ": " + e.Message)
+			} else {
+				panic(err)
+			}
+		}
+	}()
+
+	runner.Run(m)
+}
 
 // Process main .dms file.
 func process(file, module string) {
@@ -41,7 +58,7 @@ func process(file, module string) {
 	}
 
 	m := machine.NewIsolate(path.Dir(file), []*machine.T{}, prg)
-	runner.Run(m)
+	run(m)
 }
 
 // Program entry.

@@ -163,7 +163,7 @@ symbol and returns it).</p>
 <p>There are a number of symbols intially registered: if, else, nop, +, ...</p>
 <h2 id="symbols-with-dot">Symbols With Dot</h2>
 <p>A symbol which does not start whith <code>this.</code> only can have one dot. If it start
-with <code>this.</code> is allowed:</p>
+with <code>this.</code>, is allowed:</p>
 <ul>
 <li>one dot. That of <code>this.</code></li>
 <li>two dots. That of <code>this.</code> and a final dot (e.g. <code>this.fn.</code>). This
@@ -196,7 +196,7 @@ with <code>this.</code> is allowed:</p>
 <blockquote>
 <p><code>left.right</code> -&gt;  <code>left right</code></p>
 <p>In this case if <code>left</code> is an import symbol, it will be substituted  by its
-path, This operation will not be done with <code>rigth</code>.</p>
+path.</p>
 <p>Note that, in general, you ever can write <code>left right</code> directly.</p>
 </blockquote>
 <hr />
@@ -276,15 +276,16 @@ See <a href="../imports">Imports</a></p>
 <p>Used after a new symbol to save a token. If the symbol is not a new one,
 an error will be raised.</p>
 <p><strong>Global Module</strong></p>
+<p>See <a href="http://localhost/dmcgi/DmsDoc/?_system@global">API</a>.</p>
 <p><strong>Other Primitive Modules</strong></p>
 <h2 id="symbols_1"># Symbols</h2>
 <p>Dmstack virtual machine keep a counter for singling symbols.</p>
 <p>The symbol <code>#</code> increments the counter.</p>
-<p>A synbol type <code>xxx#</code> is replaced by <code>xxx·counter</code> (e.g. <code>xxx·183</code>).</p>
+<p>A symbol type <code>xxx#</code> is replaced by <code>xxx·counter</code> (e.g. <code>xxx·183</code>).</p>
 <h2 id="other-symbols">Other Symbols</h2>
 <p>They are processed in two steps:</p>
 <ol>
-<li>Verification if the symbol is an import. In this case it is procecced as
+<li>Verification if the symbol is an import. In this case it is processed as
    such import.</li>
 <li>It it is not an import is normaly processed.</li>
 </ol>

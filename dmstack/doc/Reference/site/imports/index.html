@@ -171,10 +171,10 @@ call this procedure from <code>main.dms</code> in any of the next ways:</p>
 </code></pre>
 
 <h4 id="syntax-implementation">Syntax Implementation</h4>
-<p>The reader has a map from symbols to path.</p>
+<p>The reader has a map for each file from symbols to path.</p>
 <p>Every import generates a new entry "symbol: path". After that following
 cases of "symbol" are replaced by "path".</p>
-<p>Note that a redefinition of "symbol" hiddes the previous one.</p>
+<p>Note that a redefinition in the same file of "symbol" hiddes the previous one.</p>
 <p>The efective importation is made by <em>dmstack machine</em>, when code is
 processed.</p>
 <h2 id="working">Working</h2>

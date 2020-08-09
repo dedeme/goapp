@@ -81,7 +81,8 @@ have `e` or `E` for scientific notation. (`-12.45`, `-0.`, `-11.e1`, `23.4E-3`,
 > A float can not start with a point. In such case is interpreted as an object
   key.
 
-> The decimal point is mandatory. For example `-11e1` throws an error.
+> The decimal point is mandatory. For example `-11e1` throws an error, but
+  `-11.e1` is correct.
 
 ---
 
@@ -91,10 +92,10 @@ have `e` or `E` for scientific notation. (`-12.45`, `-0.`, `-11.e1`, `23.4E-3`,
 
 They are sequences of UTF-8 symbols between quotes.
 
-The following escape sequences are allowed: `\"`, `\\\\`, `\t`, `\n`, `\r`,
+The following escape sequences are allowed: `\"`, `\\`, `\t`, `\n`, `\r`,
 `\b`, `\f` and `\uXXXX`(Hexadecimal unicode character).
 
-Charancter with integer value less than ' '(space) are not allowed. Therefore
+Charancter with integer value less than " "(space) are not allowed. Therefore
 this strings can not be extended more than one line.
 
 #### "HereDoc" Strings
@@ -131,8 +132,8 @@ produces an error.
 
 Both string classes allow interpolation. A interpolation is a expresion of
 type `${value}`, where `value` is a expresion which is calculated with `data`
-and must returns no value or one only value which procedure `toStr` can be
-applied to.
+and must returns no value or one only value. In the last case the procedure
+`toStr` will be applied to the value if it is not a String.
 
 **Examples**
 
@@ -230,7 +231,7 @@ It is a list that will be converted to `map`. `{...}` is replaced by
 ```
 that is the same as `{"a" 13 "b" true}`.
 
-It is recomended to use `:` and `,` to improve the visualization.
+It is recomended to use `:` and `,` to improve visualization.
 
 ```c
 { "a": 7 6 +, "b": true }

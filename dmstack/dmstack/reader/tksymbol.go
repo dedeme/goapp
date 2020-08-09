@@ -37,8 +37,8 @@ func (rd *T) processSymbol(prg []*token.T, tk *token.T) []*token.T {
 			rd.fail(err.Error())
 		}
 		mod := path.Clean(
-      path.Join(path.Dir(rd.source.String()), smap.Value.String()),
-    )
+			path.Join(path.Dir(rd.source.String()), smap.Value.String()),
+		)
 		key := smap.Key
 		if key == -1 {
 			key = symbol.New(path.Base(mod))
@@ -61,22 +61,22 @@ func (rd *T) processSymbol(prg []*token.T, tk *token.T) []*token.T {
 		if ix != -1 {
 			left := symStr[0:ix]
 			right := symStr[ix+1:]
-      if left == "this" {
-        ix2 := strings.IndexByte(right, '.')
-        if ix2 != -1 {
-          l1 := len(right) - 1
-          if l1 == 0 || ix2 != l1 {
-            rd.fail(fmt.Sprintf("Too many dots in '%v'", symStr))
-          }
-        }
-        if len(right) > 0 {
-            tks = append(tks, token.NewSy(rd.source, tk.Pos))
-            return append(tks, token.NewSy(symbol.New(right), tk.Pos))
-        } else {
-          rd.fail("Syntax error: 'this.'")
-        }
+			if left == "this" {
+				ix2 := strings.IndexByte(right, '.')
+				if ix2 != -1 {
+					l1 := len(right) - 1
+					if l1 == 0 || ix2 != l1 {
+						rd.fail(fmt.Sprintf("Too many dots in '%v'", symStr))
+					}
+				}
+				if len(right) > 0 {
+					tks = append(tks, token.NewSy(rd.source, tk.Pos))
+					return append(tks, token.NewSy(symbol.New(right), tk.Pos))
+				} else {
+					rd.fail("Syntax error: 'this.'")
+				}
 			} else if right != "" {
-        if strings.IndexByte(right, '.') != -1 {
+				if strings.IndexByte(right, '.') != -1 {
 					rd.fail(fmt.Sprintf("Too many dots in '%v'", symStr))
 				}
 				if left == "" {
@@ -85,32 +85,32 @@ func (rd *T) processSymbol(prg []*token.T, tk *token.T) []*token.T {
 					return append(tks, token.NewSy(symbol.Get, tk.Pos))
 				} else {
 					leftSym := symbol.New(left)
-          if leftSym == symbol.This {
-            leftSym = rd.source
-          } else {
-            for _, sy := range rd.syms {
-              if leftSym == sy.Key {
-                leftSym = sy.Value
-                break
-              }
-            }
-          }
+					if leftSym == symbol.This {
+						leftSym = rd.source
+					} else {
+						for _, sy := range rd.syms {
+							if leftSym == sy.Key {
+								leftSym = sy.Value
+								break
+							}
+						}
+					}
 					tks = append(tks, token.NewSy(leftSym, tk.Pos))
 					return append(tks, token.NewSy(symbol.New(right), tk.Pos))
 				}
 			} else {
-        rd.fail(fmt.Sprintf(
-          "Only 'this.xxx.' expresions can finish at dot (%v).", symStr,
-        ))
-      }
+				rd.fail(fmt.Sprintf(
+					"Only 'this.xxx.' expresions can finish at dot (%v).", symStr,
+				))
+			}
 		}
 
 		// ------------------------------------------------------- Exclamation mark
 		if strings.HasPrefix(symStr, "!") && len(symStr) > 1 {
 			n, err := strconv.ParseInt(symStr[1:], 10, 64)
-			if err != nil && n >= 0 {
+			if err == nil && n >= 0 {
 				tks = append(tks, token.NewI(n, tk.Pos))
-				tks = append(tks, token.NewSy(symbol.Lst, tk.Pos))
+				tks = append(tks, token.NewSy(symbol.List, tk.Pos))
 				return append(tks, token.NewSy(symbol.Get, tk.Pos))
 			}
 			// if dgs is not an Int constinue as normal symbol
@@ -123,10 +123,7 @@ func (rd *T) processSymbol(prg []*token.T, tk *token.T) []*token.T {
 				tks = append(tks, t)
 				return append(tks, token.NewSy(symbol.StackCheck, tk.Pos))
 			}
-			if args.Production {
-        if symStr == "@" {
-          return append(tks, token.NewSy(symbol.Stack, tk.Pos))
-        }
+			if !args.Production {
 				if strings.HasPrefix(symStr, "@+") {
 					rd.stackCounter++
 					t := token.NewS(symStr[2:], tk.Pos)

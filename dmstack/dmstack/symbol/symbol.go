@@ -17,10 +17,12 @@ type Kv struct {
 
 const (
   Ampersand = T(iota) // &
+  And // &&
   Assert
   Break
-  Continue
+  Clone
   Data
+  Dup
   Div // /
   Elif
   Else
@@ -28,6 +30,7 @@ const (
   Equals // =
   Expect
   Eval
+  Fail
   For
   Function // =>
   Greater // >
@@ -38,21 +41,33 @@ const (
   LessEq // <=
   Loop
   Minus // -
+  MinusMinus // --
+  Mod //%
   Mrun
   Mult // *
+  Neq // !=
   Nop
+  Not // !
+  Or // ||
   Plus // +
+  PlusPlus // ++
+  Pop
   Puts
-  Recursive
+  RefGet // >>
+  RefSet // >>
+  RefUp // ^^
   Run
   Stack // @
   StackCheck // @?
   StackClose // @-
   StackOpen // @+
   StackStop // @!
+  Swap
   Sync
   This
+  Throw
   ToStr
+  Try
   While
 
   B64
@@ -66,7 +81,7 @@ const (
   Iserver
   It
   Js
-  Lst
+  List
   Map
   Math
   Path
@@ -81,10 +96,6 @@ const (
   Get
   ToJs
 
-  Ref_
-  Option_
-  Either_
-  Map_
   Blob_
   Thread_
   Iterator_
@@ -102,17 +113,20 @@ var syms []string
 func Initialize () {
   var tmp [SystemCount]string
   tmp[Ampersand] = "&"
+  tmp[And] = "&&"
   tmp[Assert] = "assert"
   tmp[Break] = "break"
-  tmp[Continue] = "continue"
+  tmp[Clone] = "clone"
   tmp[Data] = "data"
   tmp[Div] = "/"
+  tmp[Dup] = "dup"
   tmp[Elif] = "elif"
   tmp[Else] = "else"
   tmp[Eq] = "=="
   tmp[Equals] = "="
   tmp[Eval] = "eval"
   tmp[Expect] = "expect"
+  tmp[Fail] = "fail"
   tmp[For] = "for"
   tmp[Function] = "=>"
   tmp[Greater] = ">"
@@ -123,21 +137,33 @@ func Initialize () {
   tmp[LessEq] = "<="
   tmp[Loop] = "loop"
   tmp[Minus] = "-"
+  tmp[MinusMinus] = "--"
+  tmp[Mod] = "%"
   tmp[Mrun] = "mrun"
   tmp[Mult] = "*"
+  tmp[Neq] = "!="
   tmp[Nop] = "nop"
+  tmp[Not] = "!"
+  tmp[Or] = "||"
   tmp[Plus] = "+"
+  tmp[PlusPlus] = "++"
   tmp[Puts] = "puts"
-  tmp[Recursive] = "recursive"
+  tmp[Pop] = "pop"
+  tmp[RefGet] = ">>"
+  tmp[RefSet] = "<<"
+  tmp[RefUp] = "^^"
   tmp[Run] = "run"
   tmp[Stack] = "= @"
   tmp[StackCheck] = "= @?"
   tmp[StackOpen] = "= @+"
   tmp[StackClose] = "= @-"
   tmp[StackStop] = "= @!"
+  tmp[Swap] = "swap"
   tmp[Sync] = "sync"
   tmp[This] = "this"
+  tmp[Throw] = "throw"
   tmp[ToStr] = "toStr"
+  tmp[Try] = "try"
   tmp[While] = "while"
 
   tmp[B64] = "b64"
@@ -151,7 +177,7 @@ func Initialize () {
   tmp[Iserver] = "iserver"
   tmp[It] = "it"
   tmp[Js] = "js"
-  tmp[Lst] = "lst"
+  tmp[List] = "list"
   tmp[Map] = "map"
   tmp[Math] = "math"
   tmp[Path] = "path"
@@ -166,10 +192,6 @@ func Initialize () {
   tmp[Get] = "get"
   tmp[ToJs] = "toJs"
 
-  tmp[Ref_] = "= Ref"
-  tmp[Option_] = "= Option"
-  tmp[Either_] = "= Either"
-  tmp[Map_] = "= Map"
   tmp[Blob_] = "= Blob"
   tmp[Thread_] = "= Thread"
   tmp[Iterator_] = "= Iterator"

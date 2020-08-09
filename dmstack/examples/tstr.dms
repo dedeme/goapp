@@ -1,0 +1,140 @@
+// Copyright 04-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  "Pérez" "Pitas" str.cmp 0 < assert
+  "cañón" "canon" str.cmp 0 > assert
+  "caÑón" "canon" str.cmp 0 < assert
+  "canón" "canon" str.cmp 0 == assert
+
+  "Pérez" "Pitas" str.< assert
+  "Pérez" "Pitas" str.<= assert
+  "Pérez" "Pitas" str.!= assert
+  "cañón" "canon" str.> assert
+  "cañón" "canon" str.>= assert
+  "cañón" "canon" str.!= assert
+  "caÑón" "canon" str.< assert
+  "canón" "canon" str.== assert
+
+  "" "" str.ends? assert
+  "abc" "" str.ends? assert
+  "abc" "a" str.ends? ! assert
+  "abc" "c" str.ends? assert
+  "abc" "abc" str.ends? assert
+
+  "" "" str.starts? assert
+  "abc" "" str.starts? assert
+  "abc" "a" str.starts? assert
+  "abc" "c" str.starts? ! assert
+  "abc" "abc" str.starts? assert
+
+  "año" str.len 4 expect
+  "año" str.runesLen 3 expect
+  "hello" 1 str.get "e" expect
+  "año" 1 str.getRune "ñ" expect
+  "año" 3 str.get "o" expect
+  "año" 2 str.getRune "o" expect
+
+  "abc" str.rune 97 expect
+  97 str.fromRune "a" expect
+  "" list.ref : s =
+  "z3f" (ch =; s (ch +) ^^) str.each
+  s >> "z3f" expect
+
+  "" "" str.index 0 expect
+  "" "a" str.index -1 expect
+  "a" "" str.index 0 expect
+  "abcdc" "a" str.index 0 expect
+  "abcdc" "c" str.index 2 expect
+  "abcdc" "abcdc" str.index 0 expect
+
+  "" "" str.lastIndex 0 expect
+  "" "a" str.lastIndex -1 expect
+  "a" "" str.lastIndex 1 expect
+  "abcdc" "a" str.lastIndex 0 expect
+  "abcdc" "c" str.lastIndex 4 expect
+  "abcdc" "abcdc" str.lastIndex 0 expect
+
+  "abcdc" "a" 1 str.indexFrom -1 expect
+  "abcdc" "c" 1 str.indexFrom 2 expect
+  "abcdc" "c" 3 str.indexFrom 4 expect
+
+  "" "a" "b" str.replace "" expect
+  "caña" "a" "b" str.replace "cbñb" expect
+  "abc" "" "-" str.replace "-a-b-c-" expect
+  "caña" "ñ" "n" str.replace "cana" expect
+  "eabeacea" "ea" "" str.replace "bc" expect
+
+  [] "" str.join "" expect
+  [] "-" str.join "" expect
+  ["a"] "" str.join "a" expect
+  ["a"] "-" str.join "a" expect
+  ["ca", "ñ", "a"] "" str.join "caña" expect
+  ["ca", "ñ", "a"] "-" str.join "ca-ñ-a" expect
+
+  "" "" str.split [] expect
+  "a" "" str.split ["a"] expect
+  "a" ";" str.split ["a"] expect
+  ";a" ";" str.split ["", "a"] expect
+  "a;" ";" str.split ["a", ""] expect
+  "caña" "" str.split ["c", "a", "ñ", "a"] expect
+  "ca;ñ;a" ";" str.split ["ca", "ñ", "a"] expect
+
+  "  " "" str.splitTrim ["", ""] expect
+  " a " "" str.splitTrim ["", "a", ""] expect
+  "  a  " ";" str.splitTrim ["a"] expect
+  "   ;  a  " ";" str.splitTrim ["", "a"] expect
+  "  a ; " ";" str.splitTrim ["a", ""] expect
+  " caña " "" str.splitTrim ["", "c", "a", "ñ", "a", ""] expect
+  " ca; ñ ;a " ";" str.splitTrim ["ca", "ñ", "a"] expect
+
+  "" str.trim "" expect
+  "20€" str.trim "20€" expect
+  "  20€" str.trim "20€" expect
+  "20€  " str.trim "20€" expect
+  " 20€ " str.trim "20€" expect
+
+  "" str.ltrim "" expect
+  "20€" str.ltrim "20€" expect
+  "  20€" str.ltrim "20€" expect
+  "20€  " str.ltrim "20€  " expect
+  " 20€ " str.ltrim "20€ " expect
+
+  "" str.rtrim "" expect
+  "20€" str.rtrim "20€" expect
+  "  20€" str.rtrim "  20€" expect
+  "20€  " str.rtrim "20€" expect
+  " 20€ " str.rtrim " 20€" expect
+
+  "" str.toUpper "" expect
+  "CAÑÓNcañón" str.toUpper "CAÑÓNCAÑÓN" expect
+  "" str.toLower "" expect
+  "CAÑÓNcañón" str.toLower "cañóncañón" expect
+
+  "" str.digits? assert
+  "123" str.digits? assert
+  "12b3" str.digits? ! assert
+
+  "" str.number? ! assert
+  "-12.14" str.number? assert
+  "+12.14" str.number? assert
+  "12.14" str.number? assert
+  "0xFF" str.number? ! assert
+  "NaN" str.number? assert
+  "+Inf" str.number? assert
+  "-Inf" str.number? assert
+
+  "" 0 0 str.sub "" expect
+  "abc" 0 3 str.sub "abc" expect
+  "abc" 1 2 str.sub "b" expect
+  "abc" 2 1 str.sub "" expect
+  "abc" -2 -1 str.sub "b" expect
+  "abc" -1 -2 str.sub "" expect
+
+  "abc" 1 str.left "a" expect
+  "abc" 1 str.right "bc" expect
+  "abc" -2 str.left "a" expect
+  "abc" -2 str.right "bc" expect
+
+  @
+) run

@@ -14,7 +14,7 @@ There are the following types of tokens and its literals:
 
   - **Bool**: Only two values. (`true`, `false`).
   - **Int**: [-]digits. This literals have not decimal point. The character '_'
-             is allowed to grouping. (`0, 34`, `-115`, `2_345 -> 2345`)
+             is allowed to grouping. (`0`, `34`, `-115`, `2_345 -> 2345`)
   - **Float**: [-]digits and decimal point. The character '_' is allowed to
                grouping. (`0.0`, `34.41`, `-115.16`, `2_345.2` -> `2345.2`)
   - **String**: It has two formats:

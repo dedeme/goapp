@@ -1,0 +1,69 @@
+// Copyright 02-Aug-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Float procedures.
+
+() fromStr =>
+/// s -> f
+///
+/// Returns the float value of 's'
+///   s: String which represent a floating number.
+
+() == =>
+/// fff -> b
+///
+/// Returns 'true' if n2 <= n1 + gap and n2 >= n1 - gap.
+///   n1 : A number to compare.
+///   n1 : Another number to compare.
+///   gap: Admissible difference to equality.
+
+() != =>
+/// fff -> b
+///
+/// Returns 'false' if n2 <= n1 + gap and n2 >= n1 - gap.
+///   n1 : A number to compare.
+///   n1 : Another number to compare.
+///   gap: Admissible difference to equality.
+
+() abs =>
+/// f -> f
+///
+/// Returns the absolute value of 'f'.
+///   f: A floating number.
+
+() rnd =>
+/// - -> f
+///
+/// Returns a randon Float between 0 (inclusive) and 1 (exclusive)
+
+() max =>
+/// - -> f
+///
+/// Returns the maximum Float.
+
+() min =>
+/// - -> f
+///
+/// Returns the minimum Float.
+
+() toInt =>
+/// f -> i
+///
+/// Returns 'n' converted to Int.
+///   n: A number.
+
+() toIso =>
+/// f -> s
+///
+/// Returns 'n' converted to string with ',' as decimal separator and '.' as
+/// thousands separator.
+///   n: A number.
+///   scale: Decimals positions [0-9)
+
+() toEn =>
+/// f -> s
+///
+/// Returns 'n' converted to string with '.' as decimal separator and ',' as
+/// thousands separator.
+///   n: A number.
+///   scale: Decimals positions [0-9)

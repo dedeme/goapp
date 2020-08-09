@@ -8,6 +8,12 @@ Each virtual machine have:
   - A heap (implemented as a map from symbol to token).
   - A list of modules imported (implemented as a slice of symbols).
 
+Virtual machines can run other ones. In such case:
+
+  - The stack can be inherited (normal case) or not (isolate machine).
+  - The heap is never inherited.
+  - The list of modules imported is ever inherited.
+
 ## Working
 
 The virtual machine process a procedure token by token with the following

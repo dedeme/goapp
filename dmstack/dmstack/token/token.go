@@ -8,12 +8,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/dedeme/dmstack/symbol"
-  "strings"
+	"strings"
 )
 
 // Token type.
 type T struct {
-	tk t
+	tk  t
 	Pos *PosT
 }
 
@@ -24,8 +24,8 @@ type PosT struct {
 }
 
 // Creates a new PosT
-func NewPos (source symbol.T, nLine int) *PosT {
-  return &PosT{source, nLine}
+func NewPos(source symbol.T, nLine int) *PosT {
+	return &PosT{source, nLine}
 }
 
 // Token type.
@@ -37,7 +37,7 @@ const (
 	Int
 	Float
 	String
-  Procedure
+	Procedure
 	List
 	Map
 	Symbol
@@ -106,15 +106,15 @@ func (tk na) tp() TypeT {
 }
 
 // Returns one of next values:
-//	 "Bool"
-//	 "Int"
-//	 "Float"
-//	 "String"
+//   "Bool"
+//   "Int"
+//   "Float"
+//   "String"
 //   "Procedure
-//	 "List"
-//	 "Map"
-//	 "Symbol"
-//	 "Native"
+//   "List"
+//   "Map"
+//   "Symbol"
+//   "Native"
 func (t TypeT) String() string {
 	switch t {
 	case Bool:
@@ -138,6 +138,79 @@ func (t TypeT) String() string {
 	default:
 		panic(fmt.Errorf("Token type not valid (%v)", float32(t)))
 	}
+}
+
+// Returns one of next values:
+//   "Bool" -> b
+//   "Int" -> i
+//   "Float" -> f
+//   "String" -> s
+//   "Procedure -> p
+//   "List" -> l
+//   "Map" -> m
+//   "Symbol" -> y
+//   "Native" -> <Identifier>
+func (tk T) TypeCode() string {
+	t := tk.Type()
+	switch t {
+	case Bool:
+		return "b"
+	case Int:
+		return "i"
+	case Float:
+		return "f"
+	case String:
+		return "s"
+	case Procedure:
+		return "p"
+	case List:
+		return "l"
+	case Map:
+		return "m"
+	case Symbol:
+		return "y"
+	case Native:
+		v := tk.tk.(na)
+		sym := v.sym
+		return "<" + sym.String() + ">"
+	default:
+		panic(fmt.Errorf("Token type not valid (%v)", float32(t)))
+	}
+}
+
+// Returns the number of types codified in typeCodes (the string returned by
+// 'TypeCode()'. If typeCodes is not a valid typeCode string, an error is
+// returned.
+func CountTypes(typeCodes string) (n int, err error) {
+	rd := strings.NewReader(typeCodes)
+	isLess := false
+	for {
+		if rd.Len() == 0 {
+			return
+		}
+		rn, _, errr := rd.ReadRune()
+		if errr != nil {
+			err = fmt.Errorf("'%v' is a not valid string.", typeCodes)
+			return
+		}
+		if isLess {
+			if string(rn) == ">" {
+				isLess = false
+				n++
+			}
+			continue
+		}
+		if string(rn) == "<" {
+			isLess = true
+			continue
+		}
+		n++
+	}
+	if isLess {
+		err = fmt.Errorf("'%v': '<' not closed.", typeCodes)
+		return
+	}
+	return
 }
 
 // Creates a token of type Bool.
@@ -246,6 +319,16 @@ func (tk *T) L() (value []*T, ok bool) {
 	return
 }
 
+// Changes the value of 'tk'
+//    If 'tk' is not of the spected type, it returns ok = false.
+func (tk *T) SetL(value []*T) (ok bool) {
+	if tk.tk.tp() == List {
+		tk.tk = li(value)
+		ok = true
+	}
+	return
+}
+
 // Returns the value of a token of type Map.
 //    If 'tk' is not of the spected type, it returns ok = false.
 func (tk *T) M() (value map[*T]*T, ok bool) {
@@ -319,7 +402,7 @@ func (tk *T) Clone() *T {
 	case Symbol:
 		return NewSy(symbol.T(tk.tk.(sy)), tk.Pos)
 	case Native:
- 		v := tk.tk.(na)
+		v := tk.tk.(na)
 		sym := v.sym
 		value := v.value
 		return NewN(sym, value, tk.Pos)
@@ -384,10 +467,10 @@ func (tk *T) Eq(tk2 *T) bool {
 	case Symbol:
 		return symbol.T(tk.tk.(sy)) == symbol.T(tk2.tk.(sy))
 	case Native:
- 		v := tk.tk.(na)
+		v := tk.tk.(na)
 		sym := v.sym
 		value := v.value
- 		v2 := tk2.tk.(na)
+		v2 := tk2.tk.(na)
 		sym2 := v2.sym
 		value2 := v2.value
 		return sym == sym2 && value == value2
@@ -423,10 +506,10 @@ func (tk *T) str() string {
 		}
 		return "[" + strings.Join(v, ",") + "]"
 	case Map:
-    var v []string
-    for k, val := range map[*T]*T(tk.tk.(ma)) {
-      v = append(v, k.str() + ":" + val.str())
-    }
+		var v []string
+		for k, val := range map[*T]*T(tk.tk.(ma)) {
+			v = append(v, k.str()+":"+val.str())
+		}
 		return "{" + strings.Join(v, ",") + "}"
 	case Symbol:
 		return "<." + symbol.T(tk.tk.(sy)).String() + ".>"
@@ -449,23 +532,28 @@ func (tk *T) str() string {
 //                    PointerValue JSON representation + ">"
 // If its result has more than 50 characters, it is truncated.
 func (tk *T) StringDraft() string {
-  r := tk.str()
-  if len(r) > 50 {
-    r = ""
-    for i, rn := range r {
-      if i >= 47 {
-        break
-      }
-      r += string(rn)
-    }
-    r += "..."
-  }
-  return r
+	s := tk.String()
+	l := len(s)
+	r := strings.NewReader(s)
+	var b strings.Builder
+	ix := 0
+	irn := 0
+	for {
+		if ix >= l {
+			return b.String()
+		}
+		if irn >= 50 {
+			return b.String() + "..."
+		}
+		rn, n, _ := r.ReadRune()
+		b.WriteRune(rn)
+		ix += n
+		irn++
+	}
 }
 
 // Returns the following format:
-//    Bool, Int and Float -> Its JSON respresentation.
-//    String -> Its token value.
+//    Bool, Int, Float and String -> Its JSON respresentation.
 //    Procedure -> (element,element,...)
 //    List -> [element,element,...]
 //    Object -> {key:element,key:element,...}
@@ -475,9 +563,5 @@ func (tk *T) StringDraft() string {
 //                    PointerValue JSON representation + ">"
 // Proceudure, List, Object and Map show strings in JSON format.
 func (tk *T) String() string {
-  if tk.tk.tp() == String  {
-    return string(tk.tk.(st))
-  } else {
-    return tk.str()
-  }
+  return tk.str()
 }
