@@ -1,0 +1,153 @@
+// Copyright 28-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// JSON procedures.
+
+() from =>
+/// s -> <=Js>
+///
+/// Creates a 'Js' from a string. No check is done.
+///   s: String with a JSON value.
+
+() to =>
+/// <=Js> -> s
+///
+/// Generates a string with a 'Js' value.
+///   j: 'Js' value.
+
+() null? =>
+/// <=Js> -> b
+///
+/// Returns true if 'j' is a 'null' value.
+///   j: 'Js' value.
+
+() rb =>
+/// <=Js> -> b
+///
+/// Reads a Bool.
+/// Throws "Js error".
+///   j: 'Js' value.
+
+() ri =>
+/// <=Js> -> i
+///
+/// Reads an Int.
+/// Throws "Js error".
+///   j: 'Js' value.
+
+() rf =>
+/// <=Js> -> f
+///
+/// Reads a Float.
+/// Throws "Js error".
+///   j: 'Js' value.
+
+() rs =>
+/// <=Js> -> s
+///
+/// Reads a String.
+/// Throws "Js error".
+///   j: 'Js' value.
+
+() ra =>
+/// <=Js> -> l
+///
+/// Reads an Array and returns a List of <=Js>.
+/// Throws "Js error".
+///   j: 'Js' value.
+
+() ro =>
+/// <=Js> -> m
+///
+/// Reads an Object and returns a Map of <=Js>.
+/// Throws "Js error".
+///   j: 'Js' value.
+
+() wn =>
+/// - -> <=Js>
+///
+/// Writes a 'null' value.
+
+() wb =>
+/// b -> <=Js>
+///
+/// Writes a Bool.
+///   v -> Value.
+
+() wi =>
+/// i -> <=Js>
+///
+/// Writes an Int.
+///   v -> Value.
+
+() wf =>
+/// f -> <=Js>
+///
+/// Writes a Float.
+///   v -> Value.
+
+() ws =>
+/// s -> <=Js>
+///
+/// Writes a String.
+///   v -> Value.
+
+() wa =>
+/// l -> <=Js>
+///
+/// Writes a List of <=Js> and generates a JSON Array.
+///   v -> Value.
+
+() wo =>
+/// m -> <=Js>
+///
+/// Writes a Map of <=Js> and generates a JSON Object.
+///   v -> Value.
+
+() rList =>
+/// <=Js>p -> l
+///
+/// Reads a 'Js' containing an Array, using 'pr' to convert the JSON values
+/// of such Array.
+///   j : 'Js' value containing an Array of 'Js'.
+///   pr: Procedure (<=Js> -> *) to convert elements of the Array contained in
+///       'j'.
+
+() rMap =>
+/// <=Js>p -> m
+///
+/// Reads a 'Js' containing a Map, using 'pr' to convert the JSON values
+/// of such Map.
+///   j : 'Js' value containing a Map of 'Js'.
+///   pr: Procedure (<=Js> -> *) to convert elements of the Map contained in
+///       'j'.
+
+() rIt =>
+/// <=Js>p -> <=Iterator>
+///
+/// Reads a 'Js' containing an Iterator, using 'pr' to convert the JSON values
+/// of such Array.
+///   j : 'Js' value containing an Iterator of 'Js'.
+///   pr: Procedure (<=Js> -> *) to convert elements of the Iterator contained
+///       in 'j'.
+
+() wList =>
+/// lp -> <=Js>
+///
+/// Writes a 'Js' from a List, using 'pr' to convert its values to JSON.
+///   l : List to convert.
+///   pr: Procedure (* -> <=Js>) to convert values of 'l' in JSON values.
+
+() wMap =>
+/// mp -> <=Js>
+///
+/// Writes a 'Js' from a Map, using 'pr' to convert its values to JSON.
+///   m : Map to convert.
+///   pr: Procedure (* -> <=Js>) to convert values of 'm' in JSON values.
+
+() wIt =>
+/// <=Iterator>p -> <=Js>
+///
+/// Writes a 'Js' from an Iterator, using 'pr' to convert its values to JSON.
+///   i : Iterator to convert.
+///   pr: Procedure (* -> <=Js>) to convert values of 'i' in JSON values.

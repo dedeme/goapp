@@ -9,9 +9,14 @@ import (
 	"github.com/dedeme/dmstack/cts"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
-	"os"
-	"strings"
 )
+
+// Dmstack error
+type Error struct {
+	Machine *T
+	Type    string
+	Message string
+}
 
 // Machine structure
 type T struct {
@@ -140,37 +145,38 @@ func (m *T) Push(tk *token.T) {
 	*m.Stack = append(*m.Stack, tk)
 }
 
-// Pops a token from machine stack.  If there are no more tokens, the
-// machine fails.
+// Pops a token from machine stack.  If there are no more tokens, it raises
+// a "Stack error"
 func (m *T) Pop() (tk *token.T) {
 	ix := len(*m.Stack) - 1
 	if ix >= 0 {
 		tk = (*m.Stack)[ix]
 		*m.Stack = (*m.Stack)[0:ix]
 	} else {
-		m.Fail("Stack is empty")
+		m.Fail("Stack error", "Stack is empty")
 	}
 	return
 }
 
 // Pops a token of type 'tp'. If there are no more tokens or the last token
-// is not of type 'tp', the machine fails.
+// is not of type 'tp', it raises a "Stack error".
 func (m *T) PopT(tp token.TypeT) (tk *token.T) {
 	tk = m.Pop()
 	if tk.Type() != tp {
-		m.Failf(
-			"Stack:\n  Expected token of type '%v'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: '%v'.\n  Actual  : '%v'.",
 			tp, tk.StringDraft(),
 		)
 	}
 	return
 }
 
-// Adds an import. If 'sym' has already been defined, the machine fails.
+// Adds an import. If 'sym' has already been defined, it raises an
+// "Import error".
 //    sym: Import symbol.
 func (m *T) ImportsAdd(sym symbol.T) {
 	if m.InImports(sym) {
-		m.Failf("Redefinition of import '%v'", sym)
+		m.Fail("Import error", "Redefinition of import '%v'", sym)
 	}
 	m.imports = append(m.imports, sym)
 }
@@ -205,14 +211,14 @@ func (m *T) MkPos() *token.PosT {
 	return token.NewPos(m.prg[0].Pos.Source, 0)
 }
 
-// Shows an error message and exit with value 0.
-func (m *T) Fail(msg string) {
-	fmt.Println(msg)
-	fmt.Println(strings.Join(m.StackTrace(), "\n"))
-	os.Exit(0)
+// Panic with a formatted error message.
+func (m *T) Fail(t, template string, values ...interface{}) {
+	panic(&Error{Machine: m, Type: t, Message: fmt.Sprintf(template, values...)})
 }
 
-// Shows a formatted error message and exit with value 0.
-func (m *T) Failf(format string, a ...interface{}) {
-	m.Fail(fmt.Sprintf(format, a...))
+// "Type error" panic with a formatted error message.
+func (m *T) Failt(template string, values ...interface{}) {
+	panic(&Error{
+		Machine: m, Type: "Type error", Message: fmt.Sprintf(template, values...),
+	})
 }

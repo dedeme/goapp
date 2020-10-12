@@ -84,7 +84,7 @@ func (tk li) tp() TypeT {
 	return List
 }
 
-type ma map[*T]*T
+type ma map[string]*T
 
 func (tk ma) tp() TypeT {
 	return Map
@@ -244,7 +244,7 @@ func NewL(value []*T, p *PosT) *T {
 }
 
 // Creates a token of type Map.
-func NewM(value map[*T]*T, p *PosT) *T {
+func NewM(value map[string]*T, p *PosT) *T {
 	return &T{ma(value), p}
 }
 
@@ -331,9 +331,9 @@ func (tk *T) SetL(value []*T) (ok bool) {
 
 // Returns the value of a token of type Map.
 //    If 'tk' is not of the spected type, it returns ok = false.
-func (tk *T) M() (value map[*T]*T, ok bool) {
+func (tk *T) M() (value map[string]*T, ok bool) {
 	if tk.tk.tp() == Map {
-		value = map[*T]*T(tk.tk.(ma))
+		value = map[string]*T(tk.tk.(ma))
 		ok = true
 	}
 	return
@@ -393,8 +393,8 @@ func (tk *T) Clone() *T {
 		}
 		return NewL(v2, tk.Pos)
 	case Map:
-		v := map[*T]*T(tk.tk.(ma))
-		v2 := make(map[*T]*T)
+		v := map[string]*T(tk.tk.(ma))
+		v2 := make(map[string]*T)
 		for k, val := range v {
 			v2[k] = val.Clone()
 		}
@@ -453,8 +453,8 @@ func (tk *T) Eq(tk2 *T) bool {
 		}
 		return true
 	case Map:
-		v := map[*T]*T(tk.tk.(ma))
-		v2 := map[*T]*T(tk2.tk.(ma))
+		v := map[string]*T(tk.tk.(ma))
+		v2 := map[string]*T(tk2.tk.(ma))
 		if len(v) != len(v2) {
 			return false
 		}
@@ -507,8 +507,8 @@ func (tk *T) str() string {
 		return "[" + strings.Join(v, ",") + "]"
 	case Map:
 		var v []string
-		for k, val := range map[*T]*T(tk.tk.(ma)) {
-			v = append(v, k.str()+":"+val.str())
+		for k, val := range map[string]*T(tk.tk.(ma)) {
+			v = append(v, k+":"+val.str())
 		}
 		return "{" + strings.Join(v, ",") + "}"
 	case Symbol:
@@ -563,5 +563,5 @@ func (tk *T) StringDraft() string {
 //                    PointerValue JSON representation + ">"
 // Proceudure, List, Object and Map show strings in JSON format.
 func (tk *T) String() string {
-  return tk.str()
+	return tk.str()
 }

@@ -13,7 +13,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-  "sync"
+	"sync"
 )
 
 // Execute a procedure saved in stack.
@@ -44,18 +44,18 @@ func prImport(m *machine.T, run func(m *machine.T)) {
 	tk := m.Pop()
 	sourceKv, err := imports.ReadSymbol(tk)
 	if err != nil {
-		m.Fail(err.Error())
+		m.Fail("Import error", err.Error())
 	}
 	source := sourceKv.Value
 	sourcef := path.Clean(path.Join(m.SourceDir, source.String()))
-  sourcefSym := symbol.New(sourcef)
+	sourcefSym := symbol.New(sourcef)
 
 	onWay := imports.IsOnWay(sourcefSym)
 	_, imported := imports.Get(sourcefSym)
 	if !onWay && !imported {
 		f := sourcef + ".dms"
 		if _, err := os.Stat(f); err != nil {
-			m.Failf("File '%v' not found.", f)
+			m.Fail("Import error", "File '%v' not found.", f)
 			return
 		}
 
@@ -68,7 +68,7 @@ func prImport(m *machine.T, run func(m *machine.T)) {
 
 		prg, ok := rd.Process().P()
 		if !ok {
-			m.Fail("Reader process does not return a Program")
+			m.Fail("Import error", "Reader process does not return a Program.")
 		}
 
 		m2 := machine.NewIsolate(path.Dir(f), m.Pmachines, prg)
@@ -77,7 +77,7 @@ func prImport(m *machine.T, run func(m *machine.T)) {
 		imports.Add(sourcefSym, m2.Heap)
 		imports.QuitOnWay(sourcefSym)
 	} else if onWay {
-		m.Failf("Cyclic import of '%v'", sourcefSym)
+		m.Fail("Import error", "Cyclic import of '%v'.", sourcefSym)
 	}
 	m.ImportsAdd(sourcefSym)
 }
@@ -99,16 +99,16 @@ func prIf(m *machine.T, run func(m *machine.T)) {
 		}
 		sy, ok := tk2.Sy()
 		if !ok || sy != symbol.Else {
-			m.Failf(
-				"Stack wrong types.\n  Expected: Bool or 'else'\n  Actual  : %s",
+			m.Failt(
+				"\n  Expected: Bool or 'else'.\n  Actual  : %s.",
 				tk2,
 			)
 		}
 	} else {
 		sy, ok := tk.Sy()
 		if !ok || sy != symbol.Else {
-			m.Failf(
-				"Stack wrong types.\n  Expected: Procedure or 'else'\n  Actual  : %s",
+			m.Failt(
+				"\n  Expected: Procedure or 'else'.\n  Actual  : %s.",
 				tk,
 			)
 		}
@@ -142,22 +142,20 @@ func prIf(m *machine.T, run func(m *machine.T)) {
 		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p1)
 		run(m2)
 		if len(*m2.Stack) != 1 {
-			m.Failf(
-				"if ... else.\n"+
-					"  Expected: Only one value returned of type Bool.\n"+
-					"  Actual  : %v values returned\n"+
-					"In '%v'",
+			m.Failt(
+				"\n  Expected: Only one value returned of type Bool."+
+					"\n  Actual  : %v values returned."+
+					"\nIn '%v'.",
 				len(*m2.Stack), tk1,
 			)
 		}
 		tk11 := m2.Pop()
 		b, ok := tk11.B()
 		if !ok {
-			m.Failf(
-				"if ... else.\n"+
-					"  Expected: Value of type Bool.\n"+
-					"  Actual  : %v\n"+
-					"In '%v'",
+			m.Failt(
+				"\n  Expected: Value of type Bool."+
+					"\n  Actual  : %v."+
+					"\nIn '%v'.",
 				tk11, tk1,
 			)
 		}
@@ -221,22 +219,20 @@ func prWhile(m *machine.T, run func(m *machine.T)) {
 		run(m2)
 
 		if len(*m2.Stack) != 1 {
-			m.Failf(
-				"'while' condition.\n"+
-					"  Expected: Only one value returned of type Bool.\n"+
-					"  Actual  : %v values returned\n"+
-					"In '%v'",
+			m.Failt(
+				"\n  Expected: Only one value returned of type Bool."+
+					"\n  Actual  : %v values returned."+
+					"\nIn '%v'.",
 				len(*m2.Stack), tk2,
 			)
 		}
 		tk21 := m2.Pop()
 		b, ok := tk21.B()
 		if !ok {
-			m.Failf(
-				"'while' condition.\n"+
-					"  Expected: Value of type Bool.\n"+
-					"  Actual  : %v\n"+
-					"In '%v'",
+			m.Failt(
+				"\n  Expected: Value of type Bool."+
+					"\n  Actual  : %v."+
+					"\nIn '%v'.",
 				tk21, tk2,
 			)
 		}
@@ -269,15 +265,14 @@ func prFor(m *machine.T, run func(m *machine.T)) {
 	if !ok {
 		l, ok := tk2.L()
 		if !ok {
-			m.Failf(
-				"'for' parameters.\n"+
-					"  Expected: Value of type Int or List.\n"+
-					"  Actual  : %v\n",
+			m.Failt(
+				"\n  Expected: Value of type Int or List."+
+					"\n  Actual  : %v.",
 				tk2.StringDraft(),
 			)
 		}
 		ok = len(l) == 2 || len(l) == 3
-   	var ok1, ok2, ok3 bool
+		var ok1, ok2, ok3 bool
 		if ok {
 			begin, ok1 = l[0].I()
 			end, ok2 = l[1].I()
@@ -285,18 +280,17 @@ func prFor(m *machine.T, run func(m *machine.T)) {
 			if len(l) == 3 {
 				step, ok3 = l[2].I()
 			}
-    }
-    if !(ok && ok1 && ok2 && ok3) {
-      m.Failf(
-        "'for' parameters.\n"+
-          "  Expected: [Int, Int] or [Int, Int, Int].\n"+
-          "  Actual  : %v\n",
-        tk2.StringDraft(),
-      )
-    }
-    if step == 0 {
-      m.Fail("'for' step can not be 0")
-    }
+		}
+		if !(ok && ok1 && ok2 && ok3) {
+			m.Fail(
+				"\n  Expected: [Int, Int] or [Int, Int, Int]."+
+					"\n  Actual  : %v.",
+				tk2.StringDraft(),
+			)
+		}
+		if step == 0 {
+			m.Fail("For error", "Step can not be 0")
+		}
 	}
 
 	pos := m.MkPos()
@@ -317,6 +311,7 @@ func prFor(m *machine.T, run func(m *machine.T)) {
 }
 
 var mutex sync.Mutex
+
 // Synchronization of procedures.
 //    m: Virtual machine.
 //    run: Function which running a machine.
@@ -324,8 +319,7 @@ func prSync(m *machine.T, run func(m *machine.T)) {
 	tk1 := m.PopT(token.Procedure)
 	p, _ := tk1.P()
 
-  mutex.Lock()
-  run(machine.New(m.SourceDir, m.Pmachines, p))
-  mutex.Unlock()
+	mutex.Lock()
+	run(machine.New(m.SourceDir, m.Pmachines, p))
+	mutex.Unlock()
 }
-

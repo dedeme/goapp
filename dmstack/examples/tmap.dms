@@ -1,0 +1,50 @@
+// Copyright 28-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  map.new : m0 =
+  m0 map.size 0 expect
+  m0 map.keys [] expect
+  m0 map.values [] expect
+  m0 map.pairs [] expect
+  m0 map.to [] expect
+
+  ["one": 1, "two": 2, "three": 3] map.from : m3 =
+  m3 map.size 3 expect
+  m3 map.keys ("one" ==) list.any? assert
+  m3 map.keys ("two" ==) list.any? assert
+  m3 map.keys ("three" ==) list.any? assert
+  m3 map.values (1 ==) list.any? assert
+  m3 map.values (2 ==) list.any? assert
+  m3 map.values (3 ==) list.any? assert
+  m3 map.pairs (["one": 1] ==) list.any? assert
+  m3 map.pairs (["two": 2] ==) list.any? assert
+  m3 map.pairs (["three": 3] ==) list.any? assert
+  m3 map.to dup ("one" ==) list.index 1 + list.get 1 expect
+  m3 map.to dup ("two" ==) list.index 1 + list.get 2 expect
+  m3 map.to dup ("three" ==) list.index 1 + list.get 3 expect
+
+  map.new : m =
+  m "one" 1 map.put
+  m "two" 2 map.put
+  m "three" 3 map.put
+  m "one" map.get 1 expect
+  m "one" map.oget [1] expect
+  m "onex" map.oget [] expect
+  m m3 == assert
+  m "one" (4 +) map.up; m "one" map.get 5 expect
+  m m3 != assert
+  m m3 (2 % swap 2 % ==) map.eq? assert
+  m "one" (1 +) map.up
+  m m3 != assert
+  m m3 (2 % swap 2 % ==) map.neq? assert
+  m "one" 1 map.put; m "one" map.get 1 expect
+  m m3 == assert
+
+  m "one" map.remove
+  m "three" map.remove
+  m map.size 1 expect
+  m "two" map.get 2 expect
+
+  @
+) run

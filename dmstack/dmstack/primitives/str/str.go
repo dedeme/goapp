@@ -10,8 +10,8 @@ import (
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 	"io"
+	"strconv"
 	"strings"
-  "strconv"
 )
 
 // Auxiliar function
@@ -39,7 +39,7 @@ func runesLength(m *machine.T, tk *token.T, s string) int64 {
 		if e == io.EOF {
 			break
 		}
-		m.Failf("Wrong UTF-8 string '%s'", tk.StringDraft())
+		m.Fail("Str error", "Wrong UTF-8 string '%s'", tk.StringDraft())
 	}
 	return c
 }
@@ -144,20 +144,21 @@ func prIndex(m *machine.T) {
 
 // Returns index of the first occurrence of 'sub' in 's' from 'i' inclusive,
 // or -1 if 'sub' is not found (e.g. "abcdc" "c" 3 str.indexFrom -> 4).
+// It throws a "Index out of range error".
 //    m : Virtual machine.
 func prIndexFrom(m *machine.T) {
-  tk := m.PopT(token.Int)
-  i, _ := tk.I()
+	tk := m.PopT(token.Int)
+	i, _ := tk.I()
 	sub := popStr(m)
 	tk2 := m.PopT(token.String)
 	s, _ := tk2.S()
-  if i > int64(len(s)) {
-    m.Failf("Index out of range (%v in %v)", i, tk2.StringDraft())
-  }
-  r := int64(strings.Index(s[i:], sub))
-  if r != -1 {
-    r += i
-  }
+	if i < 0 || i > int64(len(s)) {
+		m.Fail("Index out of range error", "%v", i)
+	}
+	r := int64(strings.Index(s[i:], sub))
+	if r != -1 {
+		r += i
+	}
 	m.Push(token.NewI(r, m.MkPos()))
 }
 
@@ -173,127 +174,127 @@ func prLastIndex(m *machine.T) {
 // Replaces 'old' by 'new' in 's'
 //    m : Virtual machine.
 func prReplace(m *machine.T) {
-  new := popStr(m)
-  old := popStr(m)
-  s := popStr(m)
-  pushStr(m, strings.ReplaceAll(s, old, new))
+	new := popStr(m)
+	old := popStr(m)
+	s := popStr(m)
+	pushStr(m, strings.ReplaceAll(s, old, new))
 }
 
 // Joins a string list with separator 'sep'.
 //    m : Virtual machine.
 func prJoin(m *machine.T) {
-  sep := popStr(m)
-  tk := m.PopT(token.List)
-  ss, _ := tk.L()
-  var as []string
-  for _, sTk := range ss {
-    s, ok := sTk.S()
-    if !ok {
-      m.Failf("Expected: String.\nActual  : %v.", sTk.StringDraft())
-    }
-    as = append(as, s)
-  }
-  pushStr(m, strings.Join(as, sep))
+	sep := popStr(m)
+	tk := m.PopT(token.List)
+	ss, _ := tk.L()
+	var as []string
+	for _, sTk := range ss {
+		s, ok := sTk.S()
+		if !ok {
+			m.Failt("\n  Expected: String.\n  Actual  : '%v'.", sTk.StringDraft())
+		}
+		as = append(as, s)
+	}
+	pushStr(m, strings.Join(as, sep))
 }
 
 // Splits 's' by separator 'sep' in a List.
 //    m : Virtual machine.
 func prSplit(m *machine.T) {
-  sep := popStr(m)
-  s := popStr(m)
-  var tks []*token.T
-  for _, elem := range strings.Split(s, sep) {
-    tks = append(tks, token.NewS(elem, m.MkPos()))
-  }
-  m.Push(token.NewL(tks, m.MkPos()))
+	sep := popStr(m)
+	s := popStr(m)
+	var tks []*token.T
+	for _, elem := range strings.Split(s, sep) {
+		tks = append(tks, token.NewS(elem, m.MkPos()))
+	}
+	m.Push(token.NewL(tks, m.MkPos()))
 }
 
 // Splits 's' by separator 'sep' in a List, 'trimming' each element of it.
 //    m : Virtual machine.
 func prSplitTrim(m *machine.T) {
-  sep := popStr(m)
-  s := popStr(m)
-  var tks []*token.T
-  for _, elem := range strings.Split(s, sep) {
-    tks = append(tks, token.NewS(strings.TrimSpace(elem), m.MkPos()))
-  }
-  m.Push(token.NewL(tks, m.MkPos()))
+	sep := popStr(m)
+	s := popStr(m)
+	var tks []*token.T
+	for _, elem := range strings.Split(s, sep) {
+		tks = append(tks, token.NewS(strings.TrimSpace(elem), m.MkPos()))
+	}
+	m.Push(token.NewL(tks, m.MkPos()))
 }
 
 // Removes spaces at the beginning and at the end of 's'
 //    m : Virtual machine.
 func prTrim(m *machine.T) {
-  s := popStr(m)
-  pushStr(m, strings.TrimSpace(s))
+	s := popStr(m)
+	pushStr(m, strings.TrimSpace(s))
 }
 
 // Removes spaces at the beginning of 's'
 //    m : Virtual machine.
 func prLtrim(m *machine.T) {
-  s := popStr(m)
-  s = strings.TrimSpace(s + "*")
-  pushStr(m, s[:len(s) - 1])
+	s := popStr(m)
+	s = strings.TrimSpace(s + "*")
+	pushStr(m, s[:len(s)-1])
 }
 
 // Removes spaces at the end of 's'
 //    m : Virtual machine.
 func prRtrim(m *machine.T) {
-  s := popStr(m)
-  s = strings.TrimSpace("*" + s)
-  pushStr(m, s[1:])
+	s := popStr(m)
+	s = strings.TrimSpace("*" + s)
+	pushStr(m, s[1:])
 }
 
 // Sets 's' to uppercase
 //    m : Virtual machine.
 func prToUpper(m *machine.T) {
-  pushStr(m, strings.ToUpper(popStr(m)))
+	pushStr(m, strings.ToUpper(popStr(m)))
 }
 
 // Sets 's' to lowercase
 //    m : Virtual machine.
 func prToLower(m *machine.T) {
-  pushStr(m, strings.ToLower(popStr(m)))
+	pushStr(m, strings.ToLower(popStr(m)))
 }
 
 // Returns true if every rune of 's' is a digit (0-9).
 //    m : Virtual machine.
 func prDigits(m *machine.T) {
-  s := popStr(m)
-  ok := true
-  for i := 0; i < len(s); i++ {
-    ch := s[i]
-    if ch < 48 || ch > 57 {
-      ok = false
-      break
-    }
-  }
-  m.Push(token.NewB(ok, m.MkPos()))
+	s := popStr(m)
+	ok := true
+	for i := 0; i < len(s); i++ {
+		ch := s[i]
+		if ch < 48 || ch > 57 {
+			ok = false
+			break
+		}
+	}
+	m.Push(token.NewB(ok, m.MkPos()))
 }
 
 // Returns true if 's' is a number (float).
 //    m : Virtual machine.
 func prNumber(m *machine.T) {
-  s := popStr(m)
-  _, err := strconv.ParseFloat(s, 64)
-  ok := false
-  if err == nil {
-    ok = true
-  }
-  m.Push(token.NewB(ok, m.MkPos()))
+	s := popStr(m)
+	_, err := strconv.ParseFloat(s, 64)
+	ok := false
+	if err == nil {
+		ok = true
+	}
+	m.Push(token.NewB(ok, m.MkPos()))
 }
 
 // Returns 's' replacing '.' by '' and ',' by '.'.
 //    m : Virtual machine.
 func prRegularizeIso(m *machine.T) {
-  s := popStr(m)
-  pushStr(m, strings.ReplaceAll(strings.ReplaceAll(s, ".", ""), ",", "."))
+	s := popStr(m)
+	pushStr(m, strings.ReplaceAll(strings.ReplaceAll(s, ".", ""), ",", "."))
 }
 
 // Returns 's' replacing ',' by ''.
 //    m : Virtual machine.
 func prRegularizeEn(m *machine.T) {
-  s := popStr(m)
-  pushStr(m, strings.ReplaceAll(s, ",", ""))
+	s := popStr(m)
+	pushStr(m, strings.ReplaceAll(s, ",", ""))
 }
 
 // Returns string bytes length.
@@ -302,7 +303,8 @@ func prLen(m *machine.T) {
 	m.Push(token.NewI(int64(len(popStr(m))), m.MkPos()))
 }
 
-// Returns string runes length.
+// Returns string runes length. Throws a "Str error" if 's' is a bad 'UTF8'
+// string.
 //    m : Virtual machine.
 func prRunesLen(m *machine.T) {
 	tk := m.PopT(token.String)
@@ -310,7 +312,7 @@ func prRunesLen(m *machine.T) {
 	m.Push(token.NewI(runesLength(m, tk, s), m.MkPos()))
 }
 
-// Returns the byte in position i.
+// Returns the byte in position i. Throws "Index out of range error".
 //    m : Virtual machine.
 func prGet(m *machine.T) {
 	tk1 := m.PopT(token.Int)
@@ -318,7 +320,7 @@ func prGet(m *machine.T) {
 	tk2 := m.PopT(token.String)
 	s, _ := tk2.S()
 	if i < 0 || i >= int64(len(s)) {
-		m.Failf("Index out of range (%v in %v)", i, tk2.StringDraft())
+		m.Fail("Index out of range error", "%v", i)
 	}
 	pushStr(m, string(s[i]))
 }
@@ -331,7 +333,7 @@ func prGetRune(m *machine.T) {
 	tk2 := m.PopT(token.String)
 	s, _ := tk2.S()
 	if i < 0 || i >= runesLength(m, tk2, s) {
-		m.Failf("Index out of range (%v in %v)", i, tk2.StringDraft())
+		m.Fail("Index out of range error", "%v", i)
 	}
 	rd := strings.NewReader(s)
 	ix := int64(0)
@@ -346,17 +348,18 @@ func prGetRune(m *machine.T) {
 	}
 }
 
-// Returns byte code of the first byte,
+// Returns byte code of the first byte. Throws "Str error" if 's' is empty
+// or not a valid 'UTF8' string.
 func prRune(m *machine.T) {
 	rd := strings.NewReader(popStr(m))
 	rn, _, err := rd.ReadRune()
 	if err != nil {
-		m.Fail("String is empty or invalid")
+		m.Fail("Str error", "String is empty or invalid")
 	}
 	m.Push(token.NewI(int64(rn), m.MkPos()))
 }
 
-// Returns the character-byte with value n.
+// Returns the rune with value n.
 func prFromRune(m *machine.T) {
 	tk := m.PopT(token.Int)
 	i, _ := tk.I()
@@ -391,13 +394,13 @@ func subaux(
 		end = l + end
 	}
 	if begin < 0 {
-		m.Failf("Index out of range (%v in %v)", begin, tk.StringDraft())
+		m.Fail("Index out of range error", "%v", begin)
 	}
 	if begin > l {
-		m.Failf("Index out of range (%v in %v)", begin, tk.StringDraft())
+		m.Fail("Index out of range error", "%v", begin)
 	}
 	if end > l {
-		m.Failf("Index out of range (%v in %v)", end, tk.StringDraft())
+		m.Fail("Index out of range error", "%v", end)
 	}
 	if end < begin {
 		end = begin
@@ -450,11 +453,13 @@ func prRight(m *machine.T) {
 func Proc(m *machine.T, run func(m *machine.T)) {
 	tk, ok := m.PrgNext()
 	if !ok {
-		m.Fail("'str' procedure is missing")
+		m.Failt("'str' procedure is missing")
 	}
 	sy, ok := tk.Sy()
 	if !ok {
-		m.Failf("Expected: 'str' procedure.\nActual  : %v.", tk.StringDraft())
+		m.Failt(
+			"\n  Expected: 'str' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
+		)
 	}
 	switch sy {
 	case symbol.New("fromIso"):
@@ -535,6 +540,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("right"):
 		prRight(m)
 	default:
-		m.Failf("'str' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'str' does not contains the procedure '%v'.", sy.String())
 	}
 }

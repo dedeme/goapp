@@ -40,12 +40,12 @@ func IsOnWay(imp symbol.T) bool {
 }
 
 func Add(id symbol.T, heap map[symbol.T]*token.T) {
-  imported[id] = heap
+	imported[id] = heap
 }
 
 func Get(id symbol.T) (heap map[symbol.T]*token.T, ok bool) {
-  heap, ok = imported[id]
-  return
+	heap, ok = imported[id]
+	return
 }
 
 // Reads an import symbol.
@@ -69,27 +69,28 @@ func ReadSymbol(tk *token.T) (symMap *symbol.Kv, err error) {
 					return
 				}
 				err = fmt.Errorf(
-					"First element of import: Expected Symbol. Actual %v",
+					"\n  Expected: First element is Symbol."+
+						"\n  Actual  : First element is '%v'",
 					l[0],
 				)
 				return
 			}
 			err = fmt.Errorf(
-				"Second element of import: Expected String. Actual %v",
+				"\n  Expected: Second element is String."+
+					"\n  Actual  : Second element is '%v'",
 				l[1],
 			)
 			return
 		}
 		err = fmt.Errorf(
-			"Import: Expected a Procedure with 2 elements, but it has %v",
-			len(l),
+			"\n  Expected: Procedure with 2 elements.\n  Actual  : '%v'", len(l),
 		)
 		return
 	}
 
 	err = fmt.Errorf(
-    "Import: Expected Procedure or String. Actual: %v",
-    tk.Type(),
-  )
+		"\n  Expected Procedure or String.\n  Actual  : '%v'",
+		tk.Type(),
+	)
 	return
 }

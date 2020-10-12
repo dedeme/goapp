@@ -1,3 +1,3 @@
 module github.com/dedeme/dmstack
 
-go 1.14
+go 1.15

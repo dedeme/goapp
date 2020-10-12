@@ -11,21 +11,6 @@ import (
 	"github.com/dedeme/dmstack/token"
 )
 
-// Dmstack error
-type Error struct {
-	Machine *machine.T
-	Type    string
-	Message string
-}
-
-// Constructor
-//    m  : Machine of error.
-//    t  : Error type.
-//    msg: Error message
-func ErrorNew(m *machine.T, t string, msg string) *Error {
-	return &Error{Machine: m, Type: t, Message: msg}
-}
-
 // Shows and consume a draft of the last element of stack.
 //    m: Virtual machine.
 func prPuts(m *machine.T) {
@@ -45,17 +30,18 @@ func prClone(m *machine.T) {
 	m.Push(m.Pop().Clone())
 }
 
-// Raise a fail if the last element of stack is not a Bool or it is 'false'.
+// Raise an "Assert error" if the last element of stack is not a Bool or it
+// is 'false'.
 //    m: Virtual machine.
 func prAssert(m *machine.T) {
 	ok, _ := m.PopT(token.Bool).B()
 	if ok {
 		return
 	}
-	m.Fail("Assert error")
+	m.Fail("Assert error", "-")
 }
 
-// Raise a fail if the two last elements of stack are not equals.
+// Raise a "Expect error" if the two last elements of stack are not equals.
 //    m: Virtual machine.
 func prExpect(m *machine.T) {
 	expected := m.Pop()
@@ -63,8 +49,8 @@ func prExpect(m *machine.T) {
 	if expected.Eq(actual) {
 		return
 	}
-	m.Failf(
-		"Expect error:\n  Expected: %s\n  Actual  : %s",
+	m.Fail(
+		"Expect error", "\n  Expected: '%s'.\n  Actual  : '%s'.",
 		expected.StringDraft(), actual.StringDraft(),
 	)
 }
@@ -74,17 +60,17 @@ func prExpect(m *machine.T) {
 func prFail(m *machine.T) {
 	tk := m.PopT(token.String)
 	s, _ := tk.S()
-	panic(ErrorNew(m, "Generic", s))
+	panic(&machine.Error{Machine: m, Type: "", Message: s})
 }
 
 // Generate a panic response.
 //    m: Virtual machine.
 func prThrow(m *machine.T) {
-	tk1 := m.PopT(token.String)
-	s1, _ := tk1.S()
 	tk2 := m.PopT(token.String)
 	s2, _ := tk2.S()
-	panic(ErrorNew(m, s2, s1))
+	tk1 := m.PopT(token.String)
+	s1, _ := tk1.S()
+	panic(&machine.Error{Machine: m, Type: s1, Message: s2})
 }
 
 // Run a procedure which can fail, and recover it in such case.
@@ -98,7 +84,7 @@ func prTry(m *machine.T, run func(m *machine.T)) {
 
 	defer func() {
 		if err := recover(); err != nil {
-			e := err.(*Error)
+			e := err.(*machine.Error)
 			m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, catch)
 			m2.Push(token.NewS(e.Type+": "+e.Message, m2.MkPos()))
 			run(m2)
@@ -148,7 +134,7 @@ func prStackOpen(m *machine.T) {
 	s, _ := tk.S()
 	n, err := stack.TypesOk(*m.Stack, s)
 	if err != nil {
-		m.Fail(err.Error())
+		m.Fail("Stack error", err.Error())
 	}
 	var st2 []*token.T
 	for i := 0; i < n; i++ {
@@ -165,7 +151,7 @@ func prStackClose(m *machine.T) {
 	s, _ := tk.S()
 	n, err := stack.StopTypesOk(*m.Stack, s)
 	if err != nil {
-		m.Fail(err.Error())
+		m.Fail("Stack error", err.Error())
 	}
 	var st2 []*token.T
 	for i := 0; i < n; i++ {
@@ -182,6 +168,6 @@ func prStack(m *machine.T) {
 	s, _ := tk.S()
 	_, err := stack.TypesOk(*m.Stack, s)
 	if err != nil {
-		m.Fail(err.Error())
+		m.Fail("Stack error", err.Error())
 	}
 }

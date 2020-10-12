@@ -1,0 +1,33 @@
+// Copyright 28-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Cryptographic procedures.
+
+() genk =>
+/// i -> s
+///
+/// Returns a random B64 string of length 'l'.
+///   l: Key length.
+
+() key =>
+/// si -> s
+///
+/// Returns 'key' codified in irreversible way. Key is a B64 string of 'l'
+/// characters.
+///   key: String to codify.
+///   l  : Result length.
+
+() encode =>
+/// ss -> s
+///
+/// Encodes 'msg' with key 'key'.
+///   key: Key.
+///   msg: Message.
+
+() decode =>
+/// ss -> s
+///
+/// Decodes 'c' using key 'key'. 'c' was codified with 'cryp'.
+///   key: Key.
+///   c  : Code returned by 'cryp'
+

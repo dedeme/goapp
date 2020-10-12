@@ -29,6 +29,7 @@
 ///
 /// Imports a module (a module is the relative path of a .dms file without
 /// extension).
+/// Throws "Import error".
 ///   Arguments:
 ///
 ///   - Option1:
@@ -118,7 +119,7 @@
 ///     ls  : List with the following values:
 ///           - If len(ls) == 2: begin = ls[0], end = ls[1], step = 1.
 ///           - If len(ls) == 3: begin = ls[0], end = ls[1], step = ls[2]
-///             (step can be negative but not 0).
+///             (step can be negative but not 0 - Throws "For error".).
 ///     proc: Procedure to run several times. Every time an Int with values
 ///           from 'begin' (inclusive) to 'end' (exclusive) and jumping 'step'
 ///           values will be passed to 'proc'.
@@ -170,13 +171,13 @@
 () fail =>
 /// s -> -
 ///
-/// Stops dmstack with the message error "Generic: " + err.
+/// Stops dmstack with an empty error type (":" + err).
 ///   err: Error message
 
 () throw =>
 /// ss -> -
 ///
-/// Stops dmstack with the message error type + ": " + err.
+/// Stops dmstack with the message error 'type + ": " + err'.
 ///   type: Error type
 ///   err : Error message
 
@@ -241,8 +242,8 @@
 () @ =>
 /// s -> b
 ///
-/// Throws a exception if 'types' is not a valid description of the last values
-/// of stack.
+/// Throws a "Stack error" if 'types' is not a valid description of the last
+/// values of stack.
 /// If "xxx" is a value of 'types'
 ///   "xxx" @?
 /// must be written as
@@ -259,7 +260,7 @@
 /// *...s -> *...<= @!>*...
 ///
 /// If 'types' is a valid description of the last values of stack, insert the
-/// symbol <= @!> before them. Otherwise throw a exception.
+/// symbol <= @!> before them. Otherwise throw a "Stack error".
 /// If "xxx" is a value of 'types'
 ///   "xxx" @+
 /// must be written as
@@ -277,7 +278,7 @@
 /// *...<= @!>*...s -> *...*...
 ///
 /// If 'types' is a valid description of the last values of stack after 'stop',
-/// remove the symbol <= @!>. Otherwise throw a exception.
+/// remove the symbol <= @!>. Otherwise throw a "Stack error".
 /// If "xxx" is a value of 'types'
 ///   "xxx" @-
 /// must be written as

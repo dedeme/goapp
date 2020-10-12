@@ -50,19 +50,19 @@ func TypesOk(st []*token.T, types string) (n int, err error) {
 			b.WriteString(tk.TypeCode())
 		}
 		return fmt.Sprintf(
-			"Stack wrong types.\n  Expected: %s\n  Actual  : %s",
+			"\n  Expected: '%s'.\n  Actual  : '%s'.",
 			types, b.String(),
 		)
 	}
 
 	stIx := len(st) - 1
 	tIx := len(types) - 1
-  if tIx == -1 {
-    if stIx != -1 {
-      err = errors.New(errMsg())
-    }
-    return
-  }
+	if tIx == -1 {
+		if stIx != -1 {
+			err = errors.New(errMsg())
+		}
+		return
+	}
 	for {
 		if tIx < 0 {
 			n = len(st) - stIx - 1
@@ -98,7 +98,7 @@ func TypesOk(st []*token.T, types string) (n int, err error) {
 		stCode := st[stIx].TypeCode()
 		if tpCode != "*" && tpCode != stCode {
 			err = fmt.Errorf(
-				"Stack wrong types.\n  Expected: ...%s\n  Actual  : ...%s%s",
+				"\n  Expected: '...%s'.\n  Actual  : '...%s%s'.",
 				types[tIx:], stCode, types[tIx+1:],
 			)
 			return
@@ -130,7 +130,7 @@ func StopTypesOk(st []*token.T, types string) (n int, err error) {
 	n, err = TypesOk(st2, types)
 	if err == nil && n < len(st2) {
 		err = fmt.Errorf(
-			"Stack wrong types.\n  Expected: <.= @!.>%s\n  Actual  : <.= @!.>...%s%s",
+			"\n  Expected: '<.= @!.>%s'.\n  Actual  : '<.= @!.>...%s%s'.",
 			types, st2[len(st2)-n-1].TypeCode(), types,
 		)
 	}

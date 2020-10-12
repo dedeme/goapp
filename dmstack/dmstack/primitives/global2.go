@@ -5,8 +5,8 @@ package primitives
 
 import (
 	"github.com/dedeme/dmstack/machine"
-	"github.com/dedeme/dmstack/token"
 	"github.com/dedeme/dmstack/stack"
+	"github.com/dedeme/dmstack/token"
 )
 
 // Function applyable to
@@ -32,8 +32,8 @@ func prPlus(m *machine.T) {
 			m.Push(token.NewF(f2+float64(i1), m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
@@ -49,8 +49,8 @@ func prPlus(m *machine.T) {
 			m.Push(token.NewF(f2+f1, m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
@@ -61,8 +61,8 @@ func prPlus(m *machine.T) {
 			m.Push(token.NewS(s2+s1, m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'String'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'String'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
@@ -71,21 +71,21 @@ func prPlus(m *machine.T) {
 	if ok {
 		l2, ok := tk2.L()
 		if ok {
-      for _, e := range l1 {
-        l2 = append(l2, e)
-      }
+			for _, e := range l1 {
+				l2 = append(l2, e)
+			}
 			m.Push(token.NewL(l2, m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'List'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'List'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
 
-	m.Failf(
-		"Stack:\n  Expected token of type 'Int', 'Float', 'String' or 'List'\n" +
-    "  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Int', 'Float', 'String' or 'List'.\n"+
+			"  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -113,8 +113,8 @@ func prMinus(m *machine.T) {
 			m.Push(token.NewF(f2-float64(i1), m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
@@ -130,13 +130,13 @@ func prMinus(m *machine.T) {
 			m.Push(token.NewF(f2-f1, m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+	m.Fail(
+		"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -163,8 +163,8 @@ func prMul(m *machine.T) {
 			m.Push(token.NewF(f2*float64(i1), m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
@@ -180,13 +180,13 @@ func prMul(m *machine.T) {
 			m.Push(token.NewF(f2*f1, m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -213,8 +213,8 @@ func prDiv(m *machine.T) {
 			m.Push(token.NewF(f2/float64(i1), m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
@@ -230,13 +230,13 @@ func prDiv(m *machine.T) {
 			m.Push(token.NewF(f2/f1, m.MkPos()))
 			return
 		}
-		m.Failf(
-			"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+		m.Failt(
+			"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 			tk2.StringDraft(),
 		)
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Int' or 'Float'\n  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -251,9 +251,9 @@ func prDiv(m *machine.T) {
 //    m : Virtual machine.
 func prMod(m *machine.T) {
 	tk1 := m.PopT(token.Int)
-  i1, _ := tk1.I()
+	i1, _ := tk1.I()
 	tk2 := m.PopT(token.Int)
-  i2, _ := tk2.I()
+	i2, _ := tk2.I()
 	m.Push(token.NewI(i2%i1, m.MkPos()))
 }
 
@@ -262,53 +262,53 @@ func prMod(m *machine.T) {
 //    String .... -> String
 //    List .... -> List
 func prPlusPlus(m *machine.T) {
-  tk := m.Pop()
-  i, ok := tk.I()
-  if ok {
-    m.Push(token.NewI(i + 1, m.MkPos()))
-    return
-  }
-  s, ok := tk.S()
-  if ok {
-    st := m.Stack
-    for {
-      tk2, ok := stack.Peek(*st)
-      if ok {
-        s2, ok := tk2.S()
-        if ok {
-          s = s2 + s
-          m.Pop()
-          continue
-        }
-      }
-      break
-    }
-    m.Push(token.NewS(s, m.MkPos()))
-    return
-  }
-  l, ok := tk.L()
-  if ok {
-    st := m.Stack
-    for {
-      tk2, ok := stack.Peek(*st)
-      if ok {
-        l2, ok := tk2.L()
-        if ok {
-          for _, e := range l {
-            l2 = append(l2, e)
-          }
-          l = l2
-          m.Pop()
-          continue
-        }
-      }
-      break
-    }
-    m.Push(token.NewL(l, m.MkPos()))
-    return
-  }
-	m.Failf(
-		"Stack:\n  Expected token of type 'Int', 'String' or 'List'\n  Found %v.",
+	tk := m.Pop()
+	i, ok := tk.I()
+	if ok {
+		m.Push(token.NewI(i+1, m.MkPos()))
+		return
+	}
+	s, ok := tk.S()
+	if ok {
+		st := m.Stack
+		for {
+			tk2, ok := stack.Peek(*st)
+			if ok {
+				s2, ok := tk2.S()
+				if ok {
+					s = s2 + s
+					m.Pop()
+					continue
+				}
+			}
+			break
+		}
+		m.Push(token.NewS(s, m.MkPos()))
+		return
+	}
+	l, ok := tk.L()
+	if ok {
+		st := m.Stack
+		for {
+			tk2, ok := stack.Peek(*st)
+			if ok {
+				l2, ok := tk2.L()
+				if ok {
+					for _, e := range l {
+						l2 = append(l2, e)
+					}
+					l = l2
+					m.Pop()
+					continue
+				}
+			}
+			break
+		}
+		m.Push(token.NewL(l, m.MkPos()))
+		return
+	}
+	m.Failt(
+		"\n  Expected: token of type 'Int', 'String' or 'List'.\n  Actual  : '%v'.",
 		tk.StringDraft(),
 	)
 }
@@ -316,7 +316,7 @@ func prPlusPlus(m *machine.T) {
 // Function applyable to
 //    Int -> Int
 func prMinusMinus(m *machine.T) {
-  tk := m.PopT(token.Int)
-  i, _ := tk.I()
-  m.Push(token.NewI(i - 1, m.MkPos()))
+	tk := m.PopT(token.Int)
+	i, _ := tk.I()
+	m.Push(token.NewI(i-1, m.MkPos()))
 }

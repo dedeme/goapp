@@ -1,0 +1,31 @@
+// Copyright 30-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  "Cañónç䍆" b64.encode "Q2HDscOzbsOn5I2G" expect
+  "" b64.encode "" == assert
+  "Cañónç䍆" b64.encode b64.decode "Cañónç䍆" == assert
+  "" b64.encode b64.decode "" == assert
+
+  // "Q2HDscOzbsOn5I2G=" b64.decode puts
+
+  [120, 130]
+  ( len =;
+    len blob.new : b =
+    len (i =; b i : i 10 + : blob.set) for
+    b
+  )
+  for
+
+  10
+  ( pop; b =; b b64.encodeBytes; b64.decodeBytes
+    b dup
+    blob.size
+    (i =; b1 =; b2 =; b1 i blob.get b2 i blob.get == assert; b2; b1)
+    for
+    pop; pop
+  )
+  for
+
+  @
+) run

@@ -7,10 +7,19 @@ package primitives
 import (
 	"fmt"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/primitives/b64"
+	"github.com/dedeme/dmstack/primitives/blob"
+	"github.com/dedeme/dmstack/primitives/cryp"
+	"github.com/dedeme/dmstack/primitives/date"
+	"github.com/dedeme/dmstack/primitives/file"
 	"github.com/dedeme/dmstack/primitives/float"
 	"github.com/dedeme/dmstack/primitives/intpk"
+	"github.com/dedeme/dmstack/primitives/it"
+	"github.com/dedeme/dmstack/primitives/js"
 	"github.com/dedeme/dmstack/primitives/list"
+	"github.com/dedeme/dmstack/primitives/mappk"
 	"github.com/dedeme/dmstack/primitives/mathpk"
+	"github.com/dedeme/dmstack/primitives/path"
 	"github.com/dedeme/dmstack/primitives/str"
 	"github.com/dedeme/dmstack/primitives/sys"
 	"github.com/dedeme/dmstack/symbol"
@@ -26,11 +35,14 @@ import (
 func Global(m *machine.T, sym symbol.T, run func(m *machine.T)) bool {
 	defer func() {
 		if err := recover(); err != nil {
-			_, ok := err.(*Error)
+			_, ok := err.(*machine.Error)
 			if ok {
 				panic(err)
 			} else {
-				panic(ErrorNew(m, "Interpreter error", fmt.Sprintf("%v", err)))
+				panic(&machine.Error{
+					Machine: m, Type: "Interpreter error",
+					Message: fmt.Sprintf("%v", err),
+				})
 			}
 		}
 	}()
@@ -141,11 +153,13 @@ func Global(m *machine.T, sym symbol.T, run func(m *machine.T)) bool {
 func Modules(m *machine.T, sym symbol.T, run func(m *machine.T)) bool {
 	defer func() {
 		if err := recover(); err != nil {
-			_, ok := err.(*Error)
+			_, ok := err.(*machine.Error)
 			if ok {
 				panic(err)
 			} else {
-				panic(ErrorNew(m, "Runtime error", fmt.Sprintf("%v", err)))
+				panic(&machine.Error{
+					Machine: m, Type: "Machine error", Message: fmt.Sprintf("%v", err),
+				})
 			}
 		}
 	}()
@@ -168,6 +182,33 @@ func Modules(m *machine.T, sym symbol.T, run func(m *machine.T)) bool {
 		return true
 	case symbol.Math:
 		mathpk.Proc(m)
+		return true
+	case symbol.It:
+		it.Proc(m, run)
+		return true
+	case symbol.Map:
+		mappk.Proc(m, run)
+		return true
+	case symbol.Js:
+		js.Proc(m, run)
+		return true
+	case symbol.Date:
+		date.Proc(m, run)
+		return true
+	case symbol.Blob:
+		blob.Proc(m, run)
+		return true
+	case symbol.B64:
+		b64.Proc(m, run)
+		return true
+	case symbol.Cryp:
+		cryp.Proc(m, run)
+		return true
+	case symbol.Path:
+		path.Proc(m, run)
+		return true
+	case symbol.File:
+		file.Proc(m, run)
 		return true
 	default:
 		return false

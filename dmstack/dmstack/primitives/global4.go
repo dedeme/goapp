@@ -14,8 +14,8 @@ func prRefGet(m *machine.T) {
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
 	if len(l) != 1 {
-		m.Failf(
-			"Stack;\nExpected: Reference with one element.\nActual  : %v",
+		m.Failt(
+			"\n  Expected: Reference with one element.\n  Actual  : '%v'.",
 			tk.StringDraft(),
 		)
 	}
@@ -29,8 +29,8 @@ func prRefSet(m *machine.T) {
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
 	if len(l) != 1 {
-		m.Failf(
-			"Stack;\nExpected: Reference with one element.\nActual  : %v",
+		m.Failt(
+			"\n  Expected: Reference with one element.\n  Actual  : '%v'.",
 			tk.StringDraft(),
 		)
 	}
@@ -46,21 +46,13 @@ func prRefUp(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
 	if len(l) != 1 {
-		m.Failf(
-			"Stack;\nExpected: Reference with one element.\nActual  : %v",
+		m.Failt(
+			"\n  Expected: Reference with one element.\n  Actual  : '%v'.",
 			tk.StringDraft(),
 		)
 	}
 	m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
 	m2.Push(l[0])
 	run(m2)
-	st := *m2.Stack
-	if len(st) != 1 {
-		m.Failf(
-			"Function update:"+
-				"Expected: Return of one element.\nActual  : Return of %v elements.",
-			len(st),
-		)
-	}
-	l[0] = st[0]
+	l[0] = m2.Pop()
 }

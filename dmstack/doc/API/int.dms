@@ -6,7 +6,7 @@
 () fromStr =>
 /// s -> i
 ///
-/// Returns the integer value of 's'
+/// Returns the integer value of 's'. If it fails, throws an "Int error".
 ///   s: String which represent an integer.
 
 () abs =>
@@ -26,6 +26,7 @@
 /// ii -> ii
 ///
 /// Returns the division and module of num / den.
+/// If den == 0 reaises a "Math error".
 ///
 /// - Examples:
 ///

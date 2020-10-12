@@ -6,8 +6,8 @@ package args
 
 import (
 	"fmt"
+	"github.com/dedeme/dmstack/cts"
 	"os"
-  "github.com/dedeme/dmstack/cts"
 )
 
 // If program must be ran in production mode.
@@ -41,61 +41,61 @@ func help() {
 
 // Extracts arguments.
 func Initialize() (ok bool) {
-  argc := len(os.Args)
+	argc := len(os.Args)
 	if argc < 2 {
-    help()
-    return
-  }
+		help()
+		return
+	}
 
-  c := 1
-  for ; c < argc; c++ {
-    a := os.Args[c]
+	c := 1
+	for ; c < argc; c++ {
+		a := os.Args[c]
 
-    if a[0] == '-' {
-      if a == "--" {
-        break
-      } else if a == "-d" {
-        Production = false
-        Stkargs["-d"] = ""
-        continue
-      }
+		if a[0] == '-' {
+			if a == "--" {
+				break
+			} else if a == "-d" {
+				Production = false
+				Stkargs["-d"] = ""
+				continue
+			}
 
-      fmt.Printf ("Unkown option '%v'\n\n=======================\n", a)
-      help()
-      return
-    } else {
-      Stkargs["dms"] = a
-      c++
-      break
-    }
-  }
+			fmt.Printf("Unkown option '%v'\n\n=======================\n", a)
+			help()
+			return
+		} else {
+			Stkargs["dms"] = a
+			c++
+			break
+		}
+	}
 
-  if _, ok := Stkargs["dms"]; !ok {
-    fmt.Println(
-      "Name of .dms file is missing.\n\n"+
-      "=======================",
-    )
-    help()
-    return false
-  }
+	if _, ok := Stkargs["dms"]; !ok {
+		fmt.Println(
+			"Name of .dms file is missing.\n\n" +
+				"=======================",
+		)
+		help()
+		return false
+	}
 
-  if c == argc {
-    return true
-  }
+	if c == argc {
+		return true
+	}
 
-  if os.Args[c] != "--" {
-    fmt.Println(
-      "Expected '--'.\n\n"+
-      "=======================",
-    )
-    help()
-    return
-  }
+	if os.Args[c] != "--" {
+		fmt.Println(
+			"Expected '--'.\n\n" +
+				"=======================",
+		)
+		help()
+		return
+	}
 
-  c++
-  for ; c < argc; c++ {
-    Args = append(Args, os.Args[c])
-  }
+	c++
+	for ; c < argc; c++ {
+		Args = append(Args, os.Args[c])
+	}
 
 	return true
 }

@@ -3,7 +3,7 @@
 
 /// List procedures.
 ///
-/// It includes procedures for:
+/// This module includes procedures for:
 ///
 ///   - References
 ///     ref
@@ -19,6 +19,12 @@
 ///
 ///   - Results
 ///     error, ok
+///
+/// --------------------------
+/// Sub-procedures -----------
+/// Several procedures have other procedures as arguments. Theese sub-procedures
+/// run in isolate virtual machines and, therefore, do not have access to the
+/// stack of the main machine.
 
 () new =>
 /// - -> l
@@ -30,6 +36,7 @@
 ///
 /// Creates a list with 'n' elements 'e'. The element is cloned. (See
 /// global.clone).
+/// Throws a "List error" if n < 0.
 ///   e: Element to clone.
 ///   n: Length of list. Its value must be >= 0.
 
@@ -58,6 +65,7 @@
 ///
 /// Removes and returns the last element of ls.
 /// Adds an element at the beginning of ls.
+/// Returns "List error" if ls is empty.
 ///   ls: A list.
 
 () pop0 =>
@@ -65,6 +73,7 @@
 ///
 /// Removes and returns the first element of ls.
 /// Adds an element at the beginning of ls.
+/// Returns "List error" if ls is empty.
 ///   ls: A list.
 
 () peek =>
@@ -72,6 +81,7 @@
 ///
 /// Returns, but not remove, the last element of ls.
 /// Adds an element at the beginning of ls.
+/// Returns "List error" if ls is empty.
 ///   ls: A list.
 
 () peek0 =>
@@ -79,12 +89,14 @@
 ///
 /// Returns, but not remove, the first element of ls.
 /// Adds an element at the beginning of ls.
+/// Returns "List error" if ls is empty.
 ///   ls: A list.
 
 () insert =>
 /// li* -> -
 ///
 /// Inserts an element in 'l' at 'i'.
+/// Throws an "Index out of range error".
 ///   l: List to modify.
 ///   i: Index of insertion [0-size(l))
 
@@ -92,6 +104,7 @@
 /// li* -> -
 ///
 /// Inserts every element of lSub in 'l' at 'i'.
+/// Throws an "Index out of range error".
 ///   l   : List to modify.
 ///   i   : Index of insertion [0-size(l))
 ///   lSub: List to insert.
@@ -100,6 +113,7 @@
 /// li -> -
 ///
 /// Removes the element at position 'i' in 'l'.
+/// Throws an "Index out of range error".
 ///   l: List to modify.
 ///   i: Index to remove [0-(size(l)-1))
 
@@ -108,6 +122,7 @@
 ///
 /// Removes elements from begin (inclusive) to end (exclusive) in 'l'.
 /// If 'end' <= 'begin', 'l' remains untouched.
+/// Throws an "Index out of range error".
 ///   l    : List to modify.
 ///   begin: Index to begin removing [0-(size(l)-1))
 ///   end  : Index to end removing [0-size(l))
@@ -148,6 +163,7 @@
 /// li -> *
 ///
 /// Returns the element ix of ls.
+/// Throws "Index out of range error".
 ///   ls: A list.
 ///   ix: Index. If it is not valid an exception is thrown.
 ///       For values between 0 and 9 can be used !0, !1 ... !9. For example,
@@ -157,6 +173,7 @@
 /// li* -> -
 ///
 /// Sets the value of the element ix of ls.
+/// Throws "Index out of range error".
 ///   ls: A list.
 ///   ix: Index. If it is not valid an exception is thrown.
 ///   v : Value.
@@ -165,10 +182,10 @@
 /// lip -> -
 ///
 /// Updates the value of the element ix of ls.
+/// Throws "Index out of range error".
 ///   ls: A list.
 ///   ix: Index. If it is not valid an exception is thrown.
-///   p : Procedure which the element 'ix' is passed to. It is executed
-///       in an isolate machine and must return only one value.
+///   p : Procedure (* -> *) to update 'ls'
 
 () fill =>
 /// l* -> -
@@ -194,7 +211,7 @@
 () some =>
 /// * -> l
 ///
-/// Creates a full option. A some option is a list of one element.
+/// Creates a full option. A 'some' option is a list of one element.
 ///   v: Value.
 
 () tp =>
@@ -218,6 +235,7 @@
 /// l* -> -
 ///
 /// Sets the first value of a tuple. Equals to '!0' or '0 list.get'
+/// Throws "Index out of range error".
 ///   ls: Tuple.
 ///   v : Value
 
@@ -225,6 +243,7 @@
 /// l* -> -
 ///
 /// Sets the second value of a tuple. Equals to '!1' or '1 list.get'
+/// Throws "Index out of range error".
 ///   ls: Tuple.
 ///   v : Value
 
@@ -232,6 +251,7 @@
 /// l* -> -
 ///
 /// Sets the third value of a tuple. Equals to '!2' or '2 list.get'
+/// Throws "Index out of range error".
 ///   ls: Tuple.
 ///   v : Value
 
@@ -263,4 +283,191 @@
 ///   ls: Result list.
 ///   v : Value.
 
+() removeDup =>
+/// lp -> l
+///
+/// Returns a new list with duplicate elements removed. Two elements are
+/// equals if 'proc' returns true.
+///   ls  : A list.
+///   proc: Equals check procedure (** -> b).
+
+() all? =>
+/// lp -> b
+///
+/// Returns 'true' if every element of 'ls' returns 'true' with 'proc'.
+///   ls  : A list
+///   proc: Test procedure (* -> b).
+
+() any? =>
+/// lp -> b
+///
+/// Returns 'true' if some element of 'ls' returns 'true' with 'proc'.
+///   ls  : A list
+///   proc: Test procedure (* -> b).
+
+() each =>
+/// lp -> -
+///
+/// Runs 'proc' with every element of 'ls'.
+///   ls  : A List
+///   proc: Prodedure to run (* -> -)
+
+() eachIx =>
+/// lp -> -
+///
+/// Runs 'proc' with every element of 'ls' and its index (base 0).
+///   ls  : A List
+///   proc: Prodedure to run (*i -> -)
+
+() eq? =>
+/// llp -> b
+///
+/// Returns 'true' if elements of l1 are equals to elements of l2 and are in
+/// the same position, using the comparation procedure 'proc'.
+///   l1: A List.
+///   l2: Another List.
+///   proc: Equals check procedure (** -> b).
+
+() neq? =>
+/// llp -> b
+///
+/// Returns 'false' if elements of l1 are equals to elements of l2 and are in
+/// the same position, using the comparation procedure 'proc'.
+///   l1: A List.
+///   l2: Another List.
+///   proc: Equals check procedure (** -> b).
+
+() index =>
+/// lp -> i
+///
+/// Returns index of the first element of 'ls' which produces 'true' with
+/// 'proc'. If there is no element which match the condiction, returns -1.
+///   ls  : A List.
+///   proc: Procedure to check an element (* -> b).
+
+() find =>
+/// lp -> l
+///
+/// Returns a option some (list.some) with the the first element of 'ls' which
+/// produces 'true' with 'proc'. If there is no element which match the
+/// condiction, returns 'list.none'.
+///   ls  : A List.
+///   proc: Procedure to check an element (* -> b).
+
+() lastIndex =>
+/// lp -> i
+///
+/// Returns index of the last element of 'ls' which produces 'true' with
+/// 'proc'. If there is no element which match the condiction, returns -1.
+///   ls  : A List.
+///   proc: Procedure to check an element (* -> b).
+
+() reduce =>
+/// l*p -> *
+///
+/// Returns the result of applying 'proc' to "seed = p(seed, element of 'ls')"
+/// for each element of 'ls'.
+///   ls: A List.
+///   seed: Value initial to apply 'proc'.
+///   proc: Procedure to apply (** -> *) [this is (seed, element -> newSeed)].
+
+() copy =>
+/// l -> l
+///
+/// Returns a new list with elements of 'ls' (shallow copy).
+///   ls: A list.
+
+() drop =>
+/// li -> l
+///
+/// Returns a new list with elements of 'ls', removing those with index <= 'n'.
+///   ls: A List
+///   n : Top to element indices to remove. If it is less than 0, is changed to
+///       'len(ls) + n'.
+
+() dropf =>
+/// lp -> l
+///
+/// Returns a new list with elements of 'ls', removing those firsts which match
+/// with 'proc'
+///   ls: A List
+///   proc: Procedure to match elements (* -> b).
+
+() filter =>
+/// lp -> l
+///
+/// Returns a new list with elements of 'ls' with match 'proc'
+///   ls: A List
+///   proc: Procedure to match elements (* -> b).
+
+() flat =>
+/// l -> l
+///
+/// Returns a new list changing elements of 'ls' which are list by its elements.
+/// The change is applied only once.
+///
+/// - Example:
+///   [1, [2, ["a"], 3], 4] list.flat [1, 2, ["a"], 3, 4] expect
+///
+///   ls : A List.
+
+() map =>
+/// lp -> l
+///
+/// Returns a new list with elements returned from 'proc'.
+///   ls: A List
+///   proc: Procedure to transform elements (* -> *).
+
+() sub =>
+/// lii -> l
+///
+/// Equals to 'ls end list.take begin list.drop'.
+///   ls   : A List.
+///   begin: First elemento to add (inclusive). If it is less than 0, is changed
+///          to 'len(ls) + begin'.
+///   end  : Last elemento to add (exclusive). If it is less than 0, is changed
+///          to 'len(ls) + end'.
+
+() take =>
+/// li -> l
+///
+/// Returns a new list with elements of 'ls' with index < 'n'.
+///   ls: A List
+///   n : Top to element indices to remove. If it is less than 0, is changed to
+///       'len(ls) + n'.
+
+() takef =>
+/// lp -> l
+///
+/// Returns a new list adding the firsts elements of 'ls' which match
+/// with 'proc'
+///   ls: A List
+///   proc: Procedure to match elements (* -> b).
+
+() zip =>
+/// ll -> l
+///
+/// Returns a new list with tuples of elements from 'l1', 'l2'. Spare elements
+/// of l1 or l2 are ignored.
+///   l1: A List.
+///   l2: Another List.
+
+() zip3 =>
+/// lll -> l
+///
+/// Returns a new list with triples of elements from 'l1', 'l2', 'l3'. Spare
+/// elements of l1, l2 or l3 are ignored.
+///   l1: A List.
+///   l2: Another List.
+///   l3: Another more List.
+
+() unzip =>
+/// l -> ll
+///
+/// Inverse of zip.
+
+() unzip3 =>
+/// l -> ll
+///
+/// Inverse of zip3.
 

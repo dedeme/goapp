@@ -1,0 +1,192 @@
+// Copyright 01-Oct-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// File path management.
+///
+/// NOTE: Many of procedures of this package throw "File error".
+
+() cwd =>
+/// s -> -
+///
+/// Changes the working directory.
+///   d: Directory to change.
+
+() cd =>
+/// s -> -
+///
+/// Changes the working directory to 'd'.
+///   d: Directory path.
+
+() mkdir =>
+/// s -> -
+///
+/// Creates the directory 'd'. If 'd' already exists, it does nothing.
+///   d: Directory path.
+
+() dir =>
+/// s -> l
+///
+/// Returns a List of String with the name of files in 'd'.
+///   d: Directory to search.
+
+() directory? =>
+/// s -> b
+///
+/// Returns 'true' if 'd' exists and is a directory.
+///   d: Directory to search.
+
+() exists? =>
+/// s -> b
+///
+/// Returns 'true' if 'p' exists.
+///   p: Path to search.
+
+() del =>
+/// s -> -
+///
+/// Remove 'p' from file system. If 'p' does not exists, it does nothing.
+///   p: Path to remove.
+
+() rename =>
+/// ss -> -
+///
+/// Rename 'old' as 'new'.
+///   old: Path of old file.
+///   new: Pathf o new file.
+
+() link =>
+/// ss -> -
+///
+/// Link 'old' as 'new'.
+///   old: Path of old file.
+///   new: Pathf o new file.
+
+() copy =>
+/// ss -> -
+///
+/// Copy 'old' in 'new'.
+///   old: Path of old file.
+///   new: Pathf o new file.
+
+() tmp =>
+/// ss -> s
+///
+/// Creates a temporary file in d.
+///   d: Directory of temporary file. If it is "", the default temporary
+///      directory is used.
+///   t: Template to create file.
+///      The last '*' is replaced por a random sequence of digits.
+///      If there is no '*' the digits will be placed at the end of 't'.
+///      Examples:
+///        "data" -> "data96360525"
+///        "data*.db" -> "data009045243.db"
+
+() regular? =>
+/// s -> b
+///
+/// Returns 'true' if 'p' is a regular file (nither directory, link, nor pipe).
+///   p: Path to search.
+
+() link? =>
+/// s -> b
+///
+/// Returns 'true' if 'p' is a regular file (nither directory, link, nor pipe).
+///   p: Path to search.
+
+() modified =>
+/// s -> <=Date>
+///
+/// Returns the date of the last modification of 'p' (see package'date').
+///   p: Path to search.
+
+() size =>
+/// s -> i
+///
+/// Returns the size of 'p'.
+///   p: Path to search.
+
+() write =>
+/// ss -> -
+///
+/// Writes 's' in 'p'. If 'p' exists, it is overwritten.
+///   p: Text file path.
+///   s: Text to write.
+
+() append =>
+/// ss -> -
+///
+/// Appends 's' to 'p'.
+///   p: Text file path.
+///   s: Text to append.
+
+() read =>
+/// s -> s
+///
+/// Read 'p'.
+///   p: Text file path.
+
+() aopen =>
+/// s -> <=File>
+///
+/// Open 'p' to append and returns an File object to use with 'file.writeBin'
+/// or 'file.writeText'.
+/// The File object must be closed with 'file.close'.
+///   p: File path.
+
+() ropen =>
+/// s -> <=File>
+///
+/// Open 'p' to read and returns an File object to use with 'file.readBin'.
+/// The File object must be closed with 'file.close'.
+///   p: File path.
+
+() wopen =>
+/// s -> <=File>
+///
+/// Open 'p' to write and returns an File object to use with 'file.writeBin'
+/// or 'file.writeText'.
+/// The File object must be closed with 'file.close'.
+///   p: File path.
+
+() close =>
+/// <=File> -> -
+///
+/// Close 'f'.
+///   f: File object to close.
+
+() readBin =>
+/// <=File> -> <=Blob>
+///
+/// Read the next blob of 'f'. When 'f' has been completely read, 'blob.size'
+/// is 0 (see package 'blob').
+///   f: File object to read.
+
+() lines =>
+/// s -> <=File><=Iterator>
+///
+/// Open 'p' to read and returns an File object and an Iterator over the
+/// lines of 'p' (see package 'it').
+///   - The File object must be closed with 'file.close'.
+///   - The iterator lines do not have end of lines.
+///
+/// Example:
+///   "data.txt" file.lines (puts) it.each file.close
+///
+///   p: File path.
+
+() writeBin =>
+/// <=File><=Blob> -> -
+///
+/// Write 'b' at the end of 'f'.
+///   f: File object to write.
+///   b: Blob to write (see package 'blob').
+
+() writeText =>
+/// <=File>s -> -
+///
+/// Write 'tx' at the end of 'f'.
+///   f : File object to write.
+///   tx: Text to write.
+
+
+

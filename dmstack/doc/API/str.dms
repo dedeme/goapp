@@ -81,7 +81,7 @@
 /// s -> i
 ///
 /// Returns the number of runes of 's' (e.g. "año" str.len -> 3). See
-/// 'str.leng'.
+/// 'str.len'. Throws a "Str error" if 's' is a bad 'UTF8' string.
 ///   s: A string.
 
 () get =>
@@ -89,27 +89,31 @@
 ///
 /// Returns the byte in position 'ix' (e.g. "año" 3 str.get -> "o" [ñ occupies
 /// 2 bytes]). See 'str.getRune'.
+/// Throws "Index out of range error".
 ///   s : A string.
 ///   ix: Position 0-based index.
 
 () getRune =>
 /// si -> s
 ///
-/// Returns the rune in position 'ix' (e.g. "año" 2 str.get -> "o". See
-/// 'str.getRune'.
+/// Returns the rune in position 'ix' (e.g. "año" 2 str.get -> "o"). See
+/// 'str.get'.
+/// Throws "Index out of range error".
+/// Throws a "Str error" if 's' is a bad 'UTF8' string.
 ///   s : A string.
 ///   ix: Position 0-based index.
 
 () rune =>
 /// s -> i
 ///
-/// Returns the rune code of the first rune of 's'.
+/// Returns the rune code of the first rune of 's'. Throws "Str error" if 's'
+/// is empty or not a valid 'UTF8' string.
 ///   s: A non empty string.
 
 () fromRune =>
 /// i -> s
 ///
-/// Returns the character which correponds to 'rn'.
+/// Returns the rune which corresponds to 'rn'.
 ///   rn: Rune code.
 
 () each =>
@@ -139,6 +143,7 @@
 ///
 /// Returns 0-based index of the first occurrence of 'sub' in 's' from 'ix', or
 /// -1 if 'sub' is not found (e.g. "abcdc" "c" 3 str.indexFrom -> 4).
+/// It throws a "Index out of range error".
 ///   s  : A string.
 ///   sub: A substring to find.
 ///   ix : 0-based index (inclusive) to start searching.
@@ -264,9 +269,9 @@
 /// Returns a substring of 's' from 'begin' (inclusive) to 'end' (exclusive). If
 /// 'begin' or 'end' are less than 0, its value is recalculate as
 /// 'len(s) + value'.
-/// Values out of range produce fails.
 /// If 'end' <= 'begin' an empty string is returned.
 /// Calculus is made with bytes.
+/// It throws a "Index out of range error".
 ///   s    : A string.
 ///   begin: Index to start.
 ///   end  : Index to end.

@@ -9,7 +9,6 @@ import (
 	"github.com/dedeme/dmstack/args"
 	"github.com/dedeme/dmstack/imports"
 	"github.com/dedeme/dmstack/machine"
-	"github.com/dedeme/dmstack/primitives"
 	"github.com/dedeme/dmstack/reader"
 	"github.com/dedeme/dmstack/runner"
 	"github.com/dedeme/dmstack/symbol"
@@ -24,9 +23,11 @@ import (
 func run(m *machine.T) {
 	defer func() {
 		if err := recover(); err != nil {
-			e, ok := err.(*primitives.Error)
+			e, ok := err.(*machine.Error)
 			if ok {
-				e.Machine.Fail(e.Type + ": " + e.Message)
+				fmt.Printf("%v: %v\n", e.Type, e.Message)
+				fmt.Println(strings.Join(e.Machine.StackTrace(), "\n"))
+				os.Exit(0)
 			} else {
 				panic(err)
 			}

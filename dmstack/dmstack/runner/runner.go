@@ -13,26 +13,29 @@ import (
 )
 
 func primitiveModule(m *machine.T, sym symbol.T) bool {
-	return primitives.Modules(m, sym, Run);
+	return primitives.Modules(m, sym, Run)
 }
 
 func module(m *machine.T, sym symbol.T) bool {
 	if m.InImports(sym) {
 		tk, ok := m.PrgNext()
 		if !ok {
-			m.Fail("Unexpected end of procedure")
+			m.Fail("Machine error", "Unexpected end of procedure")
 		}
 		sym2, ok := tk.Sy()
 		if !ok {
-			m.Failf(
-				"Expected token of type '%v'. Found %v",
+			m.Failt(
+				"\n Expected: '%v'.\n  Actual  : %v.",
 				token.Symbol, tk.StringDraft(),
 			)
 		}
 		heap, _ := imports.Get(sym)
 		tk2, ok := heap[sym2]
 		if !ok {
-			m.Failf("Module '%v' does not defines the symbol '%v'", sym, sym2)
+			m.Fail(
+				"Machine error", "Module '%v' does not defines the symbol '%v'",
+				sym, sym2,
+			)
 		}
 		m.Push(tk2)
 		if tk2.Type() == token.Procedure {
@@ -91,7 +94,9 @@ func Run(m *machine.T) {
 				sym, _ := tk.Sy()
 
 				if sym == symbol.Equals {
-					m.Failf("Unexpected '%v' (Possible redefinition)", sym)
+					m.Fail(
+						"Machine error", "Unexpected '%v' (Possible redefinition)", sym,
+					)
 				}
 
 				if ok := primitives.Global(m, sym, Run); ok {
@@ -114,7 +119,7 @@ func Run(m *machine.T) {
 					continue
 				}
 
-				m.Failf("Unknown symbol '%v'", sym)
+				m.Fail("Machine error", "Unknown symbol '%v'", sym)
 			}
 
 			m.Push(tk)

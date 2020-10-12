@@ -31,7 +31,7 @@
   ("IndexOutOfRange: error" expect)
   try
 
-  ("error" fail) ("Generic: error" expect) try
+  ("error" fail) (": error" expect) try
 
   3 4 swap - 1 expect
   2 dup + 4 expect

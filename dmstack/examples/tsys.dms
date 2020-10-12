@@ -7,6 +7,10 @@
   sys.locale "" != assert
   sys.home "" != assert
 
+  // sys.args puts
+
+  // ["ls", "-a"] sys.cmd pop "\n" str.split puts
+
   /*
   (@+s puts; 100 sys.sleep @-) : fn =
 
@@ -24,6 +28,10 @@
   "Main2" fn2
   th2 sys.join
   */
+
+  //"Enter line: " sys.print sys.getLine puts
+  //"Enter text (until 'end'): " sys.print "end" sys.getText puts
+  //"Enter password: " sys.print sys.getPass puts
 
   @
 ) run

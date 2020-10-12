@@ -125,9 +125,9 @@ func (rd *T) nextToken() (rtk *token.T, ok bool) {
 		}
 		closeTk := token.NewSy(symbol.New(cch), nil)
 
-    rd.prgIx = prgIx + 1
+		rd.prgIx = prgIx + 1
 		start = nLine
-    rd.nLine = nLine
+		rd.nLine = nLine
 		var ls []*token.T
 		for {
 			tk, ok2 := rd.nextToken()
@@ -137,33 +137,33 @@ func (rd *T) nextToken() (rtk *token.T, ok bool) {
 			}
 			if tk.Eq(closeTk) {
 				ok = true
-        pos := token.NewPos(rd.source, start)
+				pos := token.NewPos(rd.source, start)
 				if ch == '[' {
-          rd.nextsTk = []*token.T {
-            token.NewSy(symbol.Data, pos),
-          }
+					rd.nextsTk = []*token.T{
+						token.NewSy(symbol.Data, pos),
+					}
 				} else if ch == '{' {
-          rd.nextsTk = []*token.T {
-            token.NewSy(symbol.Data, pos),
-            token.NewSy(symbol.Map, pos),
-            token.NewSy(symbol.FromList, pos),
-          }
+					rd.nextsTk = []*token.T{
+						token.NewSy(symbol.Data, pos),
+						token.NewSy(symbol.Map, pos),
+						token.NewSy(symbol.From, pos),
+					}
 				}
-        rtk = token.NewP(ls, pos)
+				rtk = token.NewP(ls, pos)
 				return
 			}
 
-      if tk.Type() == token.Symbol {
-        for _, t := range rd.processSymbol(ls, tk) { // in tksymbol.go
-          ls = append(ls, t)
-        }
-      } else if tk.Type() == token.String {
-        for _, t := range rd.processInterpolation(tk) { // in reader.go
-          ls = append(ls, t)
-        }
-      } else {
-        ls = append(ls, tk)
-      }
+			if tk.Type() == token.Symbol {
+				for _, t := range rd.processSymbol(ls, tk) { // in tksymbol.go
+					ls = append(ls, t)
+				}
+			} else if tk.Type() == token.String {
+				for _, t := range rd.processInterpolation(tk) { // in reader.go
+					ls = append(ls, t)
+				}
+			} else {
+				ls = append(ls, tk)
+			}
 		}
 	}
 

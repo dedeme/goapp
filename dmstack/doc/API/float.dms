@@ -6,13 +6,14 @@
 () fromStr =>
 /// s -> f
 ///
-/// Returns the float value of 's'
+/// Returns the float value of 's'. If it fails, throws a "Float error".
 ///   s: String which represent a floating number.
 
 () == =>
 /// fff -> b
 ///
-/// Returns 'true' if n2 <= n1 + gap and n2 >= n1 - gap.
+/// Returns 'true' if n2 <= n1 + gap and n2 >= n1 - gap. If gap < 0 returns
+/// a "Float error".
 ///   n1 : A number to compare.
 ///   n1 : Another number to compare.
 ///   gap: Admissible difference to equality.
@@ -20,7 +21,8 @@
 () != =>
 /// fff -> b
 ///
-/// Returns 'false' if n2 <= n1 + gap and n2 >= n1 - gap.
+/// Returns 'false' if n2 <= n1 + gap and n2 >= n1 - gap. If gap < 0 returns
+/// a "Float error".
 ///   n1 : A number to compare.
 ///   n1 : Another number to compare.
 ///   gap: Admissible difference to equality.
@@ -56,7 +58,7 @@
 /// f -> s
 ///
 /// Returns 'n' converted to string with ',' as decimal separator and '.' as
-/// thousands separator.
+/// thousands separator. If 'scale' is out of [0-9) throws a "Float error".
 ///   n: A number.
 ///   scale: Decimals positions [0-9)
 
@@ -64,6 +66,6 @@
 /// f -> s
 ///
 /// Returns 'n' converted to string with '.' as decimal separator and ',' as
-/// thousands separator.
+/// thousands separator. If 'scale' is out of [0-9) throws a "Float error".
 ///   n: A number.
 ///   scale: Decimals positions [0-9)

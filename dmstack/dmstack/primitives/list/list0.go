@@ -29,13 +29,14 @@ func prNew(m *machine.T) {
 }
 
 // Creates a list with n elements with the value value.
+// Throws a "List error" if n < 0.
 // (Value is cloned. See token.Clone).
 //    m: Virtual machine.
 func prMake(m *machine.T) {
 	tk := m.PopT(token.Int)
 	n, _ := tk.I()
 	if n < 0 {
-		m.Failf("Number of elements < 0 (%v)", n)
+		m.Fail("List error", "Number of elements < 0 (%v)", n)
 	}
 	value := m.Pop()
 	var l []*token.T
@@ -72,13 +73,14 @@ func prPush0(m *machine.T) {
 
 // Auxiliar function
 //    m: Virtual machine.
-func prPopPeek(m *machine.T, isPop bool) {
+func popPeek(m *machine.T, isPop bool) {
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
 	len1 := len(l) - 1
 	if len1 < 0 {
-		m.Failf(
-			"Stack:\nExpected: List with at least 1 element.\nActual  : %v",
+		m.Fail(
+			"List error",
+			"\n  Expected: List with at least 1 element.\n  Actual  : %v",
 			tk.StringDraft(),
 		)
 	}
@@ -91,22 +93,23 @@ func prPopPeek(m *machine.T, isPop bool) {
 // Removes and returns the last element of list.
 //    m: Virtual machine.
 func prPop(m *machine.T) {
-	prPopPeek(m, true)
+	popPeek(m, true)
 }
 
 // Returns but not remove the last element of list.
 //    m: Virtual machine.
 func prPeek(m *machine.T) {
-	prPopPeek(m, false)
+	popPeek(m, false)
 }
 
-func prPopPeek0(m *machine.T, isPop bool) {
+func popPeek0(m *machine.T, isPop bool) {
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
 	length := len(l)
 	if length == 0 {
-		m.Failf(
-			"Stack:\nExpected: List with at least 1 element.\nActual  : %v",
+		m.Fail(
+			"List error",
+			"\n  Expected: List with at least 1 element.\n  Actual  : %v",
 			tk.StringDraft(),
 		)
 	}
@@ -119,13 +122,13 @@ func prPopPeek0(m *machine.T, isPop bool) {
 // Removes and returns the first element of list.
 //    m: Virtual machine.
 func prPop0(m *machine.T) {
-	prPopPeek0(m, true)
+	popPeek0(m, true)
 }
 
 // Returns but not remove the first element of list.
 //    m: Virtual machine.
 func prPeek0(m *machine.T) {
-	prPopPeek0(m, false)
+	popPeek0(m, false)
 }
 
 // Inserts an element in a list.
@@ -138,7 +141,7 @@ func prInsert(m *machine.T) {
 	l, _ := tk3.L()
 	ln := int64(len(l))
 	if i < 0 || i > ln {
-		m.Failf("Index out of range (%v out of [0-%v])", i, ln)
+		m.Fail("Index out of range error", "%v", i)
 	}
 	var rl []*token.T
 	rl = append(rl, l[:i]...)
@@ -156,7 +159,7 @@ func prInsertList(m *machine.T) {
 	l, _ := tk3.L()
 	ln := int64(len(l))
 	if i < 0 || i > ln {
-		m.Failf("Index out of range (%v out of [0-%v])", i, ln)
+		m.Fail("Index out of range error", "%v", i)
 	}
 	var rl []*token.T
 	rl = append(rl, l[:i]...)
@@ -173,7 +176,7 @@ func prRemove(m *machine.T) {
 	l, _ := tk2.L()
 	ln := int64(len(l))
 	if i < 0 || i >= ln {
-		m.Failf("Index out of range (%v out of [0-%v))", i, ln)
+		m.Fail("Index out of range error", "%v", i)
 	}
 	var rl []*token.T
 	rl = append(rl, l[:i]...)
@@ -191,10 +194,10 @@ func prRemoveRange(m *machine.T) {
 	l, _ := tk3.L()
 	ln := int64(len(l))
 	if begin < 0 || begin >= ln {
-		m.Failf("Index out of range (%v out of [0-%v))", begin, ln)
+		m.Fail("Index out of range error", "%v", begin)
 	}
 	if end < 0 || end > ln {
-		m.Failf("Index out of range (%v out of [0-%v])", end, ln)
+		m.Fail("Index out of range error", "%v", end)
 	}
 	if end > begin {
 		var rl []*token.T
@@ -212,7 +215,7 @@ func prClear(m *machine.T) {
 
 // Reverse list elements.
 //    m: Virtual machine.
-func prReverse(m *machine.T) {
+func PrReverse(m *machine.T) {
 	l := popList(m)
 	for i, j := 0, len(l)-1; i < j; i, j = i+1, j-1 {
 		l[i], l[j] = l[j], l[i]
@@ -221,7 +224,7 @@ func prReverse(m *machine.T) {
 
 // Ramdon reordering of a list.
 //    m: Virtual machine.
-func prShuffle(m *machine.T) {
+func PrShuffle(m *machine.T) {
 	l := popList(m)
 	i := int64(len(l))
 	for {
@@ -234,9 +237,9 @@ func prShuffle(m *machine.T) {
 	}
 }
 
-// Sorts ascendantly a list using 'global.<'.
+// Sorts a list using 'p'.
 //    m: Virtual machine.
-func prSort(m *machine.T, run func(m *machine.T)) {
+func PrSort(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
 	p, _ := tk.P()
 
@@ -259,11 +262,8 @@ func prGet(m *machine.T) {
 	ix, _ := tkIx.I()
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
-	if int64(len(l)) < ix+1 {
-		m.Failf(
-			"Stack:\nExpected: List with at least %v elements.\nActual  : %v",
-			ix+1, tk.StringDraft(),
-		)
+	if ix < 0 || ix >= int64(len(l)) {
+		m.Fail("Index out of range error", "%v", ix)
 	}
 	m.Push(l[ix])
 }
@@ -276,11 +276,8 @@ func prSet(m *machine.T) {
 	ix, _ := tkIx.I()
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
-	if int64(len(l)) < ix+1 {
-		m.Failf(
-			"Stack:\nExpected: List with at least %v elements.\nActual  : %v",
-			ix+1, tk.StringDraft(),
-		)
+	if ix < 0 || ix >= int64(len(l)) {
+		m.Fail("Index out of range error", "%v", ix)
 	}
 	l[ix] = tkV
 }
@@ -295,24 +292,13 @@ func prUp(m *machine.T, run func(m *machine.T)) {
 	ix, _ := tkIx.I()
 	tk := m.PopT(token.List)
 	l, _ := tk.L()
-	if int64(len(l)) < ix+1 {
-		m.Failf(
-			"Stack:\nExpected: List with at least %v elements.\nActual  : %v",
-			ix+1, tk.StringDraft(),
-		)
+	if ix < 0 || ix >= int64(len(l)) {
+		m.Fail("Index out of range error", "%v", ix)
 	}
 	m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
 	m2.Push(l[ix])
 	run(m2)
-	st := *m2.Stack
-	if len(st) != 1 {
-		m.Failf(
-			"Function update:"+
-				"Expected: Return of one element.\nActual  : Return of %v elements.",
-			len(st),
-		)
-	}
-	l[ix] = st[0]
+	l[ix] = m2.Pop()
 }
 
 // Fill a list with an element. Element is cloned. (See token.Clone).

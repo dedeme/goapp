@@ -211,7 +211,7 @@ func TestTkToString(t *testing.T) {
 	tk = token.NewS("ab\"€\"cd", pos)
 	if r := eqs(
 		tk.String(),
-		"ab\"€\"cd",
+		"\"ab\\\"€\\\"cd\"",
 	); r != "" {
 		t.Fatal(r)
 	}

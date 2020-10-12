@@ -1,0 +1,201 @@
+// Copyright 28-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Blob procedures.
+
+() new =>
+/// i -> <=Blob>
+///
+/// Creates a Blob of length 'l', filled with 0. If 'l' < 0, it throws a
+/// "Blob error".
+///   l: Bytes number.
+
+() fill =>
+/// <=Blob>i -> -
+///
+/// Sets all bytes of 'b' to 'v'.
+///   b: Blob.
+///   v: Value to fill.
+
+() from =>
+/// l -> <=Blob>
+///
+/// Creates a Blob from a List of Int.
+///   ls: A List of Int.
+
+() fromStr =>
+/// s -> <=Blob>
+///
+/// Creates a Blob from a String.
+///   s: String to convert.
+
+() get =>
+/// <=Blob>i -> i
+///
+/// Returns the byte at 'i'. If i is out of range throws an
+/// "Index out of range error".
+///   b: Blob.
+///   i: Index of byte to retrieve.
+
+() set =>
+/// <=Blob>ii -> -
+///
+/// Sets the byte placed at 'i'. If i is out of range throws an
+/// "Index out of range error".
+///   b: Blob.
+///   i: Index of byte to retrieve.
+///   v: Value to put in b[i].
+
+() up =>
+/// <=Blob>ip -> -
+///
+/// Updates the byte placed at 'i' with the result of applying 'pr' to b[i].
+/// If i is out of range return an "Index out of range error".
+///   b : Blob.
+///   i : Index of byte to retrieve.
+///   pr: Procedure (i -> i) to update b[i]
+
+() size =>
+/// <=Blob> -> i
+///
+/// Returns the size of 'b'.
+///   b : Blob.
+
+() == =>
+/// <=Blob><=Blob> -> i
+///
+/// Returns 'true' if b1 == b2 (Same elements in the same order).
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() != =>
+/// <=Blob><=Blob> -> i
+///
+/// Returns 'false' if b1 == b2 (Same elements in the same order).
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() sub =>
+/// <=Blob>ii -> <=Blob>
+///
+/// Returns a new blob with the bytes of 'b' from 'begin' (inclusive) to
+/// 'end' (exclusive).
+///
+/// If 'begin' of 'end' are negatives, they are replaced by 'len(b) - value'.
+///
+/// If 'end' <= 'begin', the procedure returns an empty Blob.
+///
+/// The procedure throws an "Index out of range error" if the final value of
+/// 'begin' or 'end' are out of range.
+///
+///   b    : Blob
+///   begin: Start to subblob (inclusive).
+///   end  : End to subblob (exclusive).
+
+() left =>
+/// <=Blob>i -> <=Blob>
+///
+/// Equals to 'b 0 end blob.sub'
+///   b    : Blob
+///   end  : End to subblob (exclusive).
+
+() left =>
+/// <=Blob>i -> <=Blob>
+///
+/// Equals to 'b : begin : b blob.size : blob.sub'
+///   b    : Blob
+///   begin: Start to subblob (inclusive).
+
+() ++ =>
+/// <=Blob><=Blob> -> <=Blob>
+///
+/// Returns a new Blob joining b1 with b2.
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() + =>
+/// <=Blob><=Blob> -> <=Blob>
+///
+/// Returns a new Blob adding each element of b1 and b2.
+///
+/// The result has the same bytes that the less of b1 or b2.
+///
+/// Example:
+///   [1, 1, 0, 0, 23] blob.from : b1 =
+///   [1, 0, 1, 0] blob.from : b2 =
+///   b1 b2 blob.+ blob.to [2, 1, 1, 0] expect
+///
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() - =>
+/// <=Blob><=Blob> -> <=Blob>
+///
+/// Returns a new Blob substracting each element of b1 and b2.
+///
+/// The result has the same bytes that the less of b1 or b2.
+///
+/// Example:
+///   [1, 1, 0, 0, 23] blob.from : b1 =
+///   [1, 0, 1, 0] blob.from : b2 =
+///   b1 b2 blob.- blob.to [0, 1, 255, 0] expect
+///
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() & =>
+/// <=Blob><=Blob> -> <=Blob>
+///
+/// Returns a new Blob applying bitwise 'and' to each element of b1 and b2.
+///
+/// The result has the same bytes that the less of b1 or b2.
+///
+/// Example:
+///   [1, 1, 0, 0, 23] blob.from : b1 =
+///   [1, 0, 1, 0] blob.from : b2 =
+///   b1 b2 blob.- blob.to [1, 0, 0, 0] expect
+///
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() | =>
+/// <=Blob><=Blob> -> <=Blob>
+///
+/// Returns a new Blob applying bitwise 'or' to each element of b1 and b2.
+///
+/// The result has the same bytes that the less of b1 or b2.
+///
+/// Example:
+///   [1, 1, 0, 0, 23] blob.from : b1 =
+///   [1, 0, 1, 0] blob.from : b2 =
+///   b1 b2 blob.- blob.to [1, 1, 1, 0] expect
+///
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() ^ =>
+/// <=Blob><=Blob> -> <=Blob>
+///
+/// Returns a new Blob applying bitwise 'xor' to each element of b1 and b2.
+///
+/// The result has the same bytes that the less of b1 or b2.
+///
+/// Example:
+///   [1, 1, 0, 0, 23] blob.from : b1 =
+///   [1, 0, 1, 0] blob.from : b2 =
+///   b1 b2 blob.- blob.to [0, 1, 1, 0] expect
+///
+///   b1: A Blob.
+///   b2: Another Blob.
+
+() to =>
+/// <=Blob> -> l
+///
+/// Returns a list of Int with the values of 'b'.
+///   b: Blob.
+
+() toStr =>
+/// <=Blob> -> s
+///
+/// Returns a String with the values of 'b'.
+///   b: Blob.

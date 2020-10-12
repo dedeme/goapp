@@ -15,11 +15,13 @@ import (
 func Proc(m *machine.T, run func(m *machine.T)) {
 	tk, ok := m.PrgNext()
 	if !ok {
-		m.Fail("'list' procedure is missing")
+		m.Failt("'list' procedure is missing")
 	}
 	sy, ok := tk.Sy()
 	if !ok {
-		m.Failf("Expected: 'list' procedure.\nActual  : %v.", tk.StringDraft())
+		m.Failt(
+			"\n  Expected: 'list' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
+		)
 	}
 	switch sy {
 	// list0.go ------------------------------------
@@ -52,11 +54,11 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("clear"):
 		prClear(m)
 	case symbol.New("reverse"):
-		prReverse(m)
+		PrReverse(m)
 	case symbol.New("shuffle"):
-		prShuffle(m)
+		PrShuffle(m)
 	case symbol.New("sort"):
-		prSort(m, run)
+		PrSort(m, run)
 	case symbol.New("get"):
 		prGet(m)
 	case symbol.New("set"):
@@ -90,8 +92,57 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prError(m)
 	case symbol.New("ok"):
 		prOk(m)
+		// list2.go ------------------------------------
+	case symbol.New("removeDup"):
+		prRemoveDup(m, run)
+	case symbol.New("all?"):
+		prAll(m, run)
+	case symbol.New("any?"):
+		prAny(m, run)
+	case symbol.New("each"):
+		prEach(m, run)
+	case symbol.New("eachIx"):
+		prEachIx(m, run)
+	case symbol.New("eq?"):
+		prEq(m, run)
+	case symbol.New("neq?"):
+		prNeq(m, run)
+	case symbol.New("index"):
+		prIndex(m, run)
+	case symbol.New("find"):
+		prFind(m, run)
+	case symbol.New("lastIndex"):
+		prLastIndex(m, run)
+	case symbol.New("reduce"):
+		prReduce(m, run)
+	case symbol.New("copy"):
+		prCopy(m, run)
+	case symbol.New("drop"):
+		prDrop(m, run)
+	case symbol.New("dropf"):
+		prDropf(m, run)
+	case symbol.New("filter"):
+		prFilter(m, run)
+	case symbol.New("flat"):
+		prFlat(m, run)
+	case symbol.New("map"):
+		prMap(m, run)
+	case symbol.New("sub"):
+		prSub(m, run)
+	case symbol.New("take"):
+		prTake(m, run)
+	case symbol.New("takef"):
+		prTakef(m, run)
+	case symbol.New("zip"):
+		prZip(m, run)
+	case symbol.New("zip3"):
+		prZip3(m, run)
+	case symbol.New("unzip"):
+		prUnzip(m, run)
+	case symbol.New("unzip3"):
+		prUnzip3(m, run)
 
 	default:
-		m.Failf("'list' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'list' does not contains the procedure '%v'.", sy.String())
 	}
 }

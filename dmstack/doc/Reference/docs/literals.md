@@ -222,7 +222,7 @@ A map is a sequence of tokens between curly brackets. Tokens are alternatively
 "string - token" so that its number is even.
 
 It is a list that will be converted to `map`. `{...}` is replaced by
-`(...) data map.fromList`.
+`(...) data map.from`.
 
 **Examples**
 

@@ -1,0 +1,65 @@
+// Copyright 29-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  2021 02 18 date.new date.to "20210218" expect
+  2021 02 18 date.new date.toIso "18/02/2021" expect
+  2021 02 18 date.new date.toEn "02/18/2021" expect
+  2021 02 18 date.new "%Y%M%D" date.format "20210218" expect
+  2021 02 18 date.new "%D-%M-%Y(%T)" date.format
+    "18-02-2021(12:00:00.000)" expect
+
+  "20210218" date.from date.to "20210218" expect
+  "18/02/2021" date.fromIso date.to "20210218" expect
+  "02/18/2021" date.fromEn date.to "20210218" expect
+  "18-02-2021" "%D-%M-%Y" date.fromFormat date.to "20210218" expect
+  ("abc" date.from false assert) (pop true assert) try
+
+  //date.now "%D-%M-%Y(%T)" date.format puts
+
+  2021 02 18 13 15 58 215 date.newTime : d =
+  d date.year 2021 expect
+  d date.month 2 expect
+  d date.day 18 expect
+  d date.hour 13 expect
+  d date.min 15 expect
+  d date.sec 58 expect
+  d date.millis 215 expect
+  d date.weekday 4 expect
+  d date.week 2021 expect 7 expect
+
+  d 24 date.add : d2 =
+  d2 "%D-%M-%Y(%T)" date.format "14-03-2021(13:15:58.215)" expect
+  d2 d date.df 24 expect
+  d 245 date.addSec : d3 =
+  d3 d date.dfTime 245000 expect
+  d 245 date.addMillis : d4 =
+  d4 d date.dfTime 245 expect
+
+
+  d2 d3 date.cmp 0 > assert
+  d d3 date.cmp 0 == assert
+  d3 d2 date.cmp 0 < assert
+
+  d2 d3 date.cmpTime 0 > assert
+  d d3 date.cmpTime 0 < assert
+  d d date.cmpTime 0 == assert
+
+  d2 d3 date.eq? ! assert
+  d d3 date.eq? assert
+  d2 d2 date.eq? assert
+
+  d2 d3 date.eqTime? ! assert
+  d d3 date.eqTime? ! assert
+  d2 d2 date.eqTime? assert
+
+  d -24 date.add : d2b =
+  d2b "%D-%M-%Y(%T)" date.format "25-01-2021(13:15:58.215)" expect
+  d2b d date.df -24 expect
+  d -245 date.addSec : d3b =
+  d3b d date.dfTime -245000 expect
+  d -245 date.addMillis : d4b =
+  d4b d date.dfTime -245 expect
+
+  @
+) run

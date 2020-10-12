@@ -2,19 +2,29 @@
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 "baseTests" sys.init
+sys.init? assert
 
-/*
 "global0" import
 "global1" import
 "global2" import
 "global3" import
-*/
 "tlist0" import
 "tlist1" import
-/*
+"tlist2" import
+"tit0" import
+"tit1" import
+"tit2" import
+"tmap" import
+"tjs0" import
+"tjs1" import
+"tdate" import
+"tblob" import
+"tb64" import
+"tcryp" import
+"tpath" import
+"tfile" import
 "tsys" import
 "tstr" import
 "tint" import
 "tfloat" import
 "tmath" import
-*/

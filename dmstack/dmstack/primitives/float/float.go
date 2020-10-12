@@ -26,40 +26,42 @@ func pushFloat(m *machine.T, f float64) {
 	m.Push(token.NewF(f, m.MkPos()))
 }
 
-// Returns a float from a string.
+// Returns a float from a string. If it fails, throws a "Float error".
 //    m  : Virtual machine.
 func prFromStr(m *machine.T) {
 	tk := m.PopT(token.String)
 	s, _ := tk.S()
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
-		m.Failf("'%v' bad Float.", tk.StringDraft())
+		m.Fail("Float error", "'%v' bad Float.", tk.StringDraft())
 	}
 	pushFloat(m, f)
 }
 
-// Returns 'true' if n2 <= n1 + gap and n2 >= n1 - gap.
+// Returns 'true' if n2 <= n1 + gap and n2 >= n1 - gap. If gap < 0 returns
+// a "Float error".
 //    m  : Virtual machine.
 func prEq(m *machine.T) {
-  gap := popFloat(m)
-  if gap < 0 {
-    m.Failf("Gap is < 0 (%v)", gap)
-  }
-  n2 := popFloat(m)
-  n1 := popFloat(m)
-  m.Push(token.NewB(n2 <= n1 + gap && n2 >= n1 - gap, m.MkPos()))
+	gap := popFloat(m)
+	if gap < 0 {
+		m.Fail("Float error", "Gap is < 0 (%v)", gap)
+	}
+	n2 := popFloat(m)
+	n1 := popFloat(m)
+	m.Push(token.NewB(n2 <= n1+gap && n2 >= n1-gap, m.MkPos()))
 }
 
-// Returns 'false' if n2 <= n1 + gap and n2 >= n1 - gap.
+// Returns 'false' if n2 <= n1 + gap and n2 >= n1 - gap. If gap < 0 returns
+// a "Float error".
 //    m  : Virtual machine.
 func prNeq(m *machine.T) {
-  gap := popFloat(m)
-  if gap < 0 {
-    m.Failf("Gap is < 0 (%v)", gap)
-  }
-  n2 := popFloat(m)
-  n1 := popFloat(m)
-  m.Push(token.NewB(n2 > n1 + gap || n2 < n1 - gap, m.MkPos()))
+	gap := popFloat(m)
+	if gap < 0 {
+		m.Fail("Float error", "Gap is < 0 (%v)", gap)
+	}
+	n2 := popFloat(m)
+	n1 := popFloat(m)
+	m.Push(token.NewB(n2 > n1+gap || n2 < n1-gap, m.MkPos()))
 }
 
 // Returns the absolute value of f.
@@ -127,7 +129,7 @@ func toIsoEn(m *machine.T, isIso bool) {
 	tk := m.PopT(token.Int)
 	scale, _ := tk.I()
 	if scale < 0 || scale > 9 {
-		m.Failf("Expected: scale [0-9).\nActual  : %v.", scale)
+		m.Fail("Float error", "\n  Expected: scale [0-9).\n  Actual  : '%v'.", scale)
 	}
 	n := popFloat(m)
 	fm := "%." + string(48+scale) + "f"
@@ -145,13 +147,15 @@ func toIsoEn(m *machine.T, isIso bool) {
 	m.Push(token.NewS(ns, m.MkPos()))
 }
 
-// Returns a Float converted to string in Iso format.
+// Returns a Float converted to string in Iso format. If 'scale' is out of
+// [0-9) throws a "Float error".
 //    m  : Virtual machine.
 func prToIso(m *machine.T) {
 	toIsoEn(m, true)
 }
 
-// Returns a Float converted to string in En format.
+// Returns a Float converted to string in En format. If 'scale' is out of
+// [0-9) throws a "Float error".
 //    m  : Virtual machine.
 func prToEn(m *machine.T) {
 	toIsoEn(m, false)
@@ -162,11 +166,13 @@ func prToEn(m *machine.T) {
 func Proc(m *machine.T) {
 	tk, ok := m.PrgNext()
 	if !ok {
-		m.Fail("'float' procedure is missing")
+		m.Failt("'float' procedure is missing")
 	}
 	sy, ok := tk.Sy()
 	if !ok {
-		m.Failf("Expected: 'float' procedure.\nActual  : %v.", tk.StringDraft())
+		m.Failt(
+			"\n  Expected: 'float' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
+		)
 	}
 	switch sy {
 	case symbol.New("fromStr"):
@@ -191,6 +197,6 @@ func Proc(m *machine.T) {
 		prToEn(m)
 
 	default:
-		m.Failf("'float' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'float' does not contains the procedure '%v'.", sy.String())
 	}
 }

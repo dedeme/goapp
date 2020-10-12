@@ -6,8 +6,8 @@ package reader
 import (
 	"fmt"
 	"github.com/dedeme/dmstack/token"
-  "strconv"
-  "strings"
+	"strconv"
+	"strings"
 )
 
 func isHex(b byte) bool {
@@ -62,7 +62,7 @@ func (rd *T) processString() *token.T {
 			ch := s[0]
 			if l == 1 && isHex(ch) {
 				if hex == 4 {
-          s, _ := strconv.Unquote("'\\u" + prg[prgIx-4 : prgIx] + "'")
+					s, _ := strconv.Unquote("'\\u" + prg[prgIx-4:prgIx] + "'")
 					rs += s
 					hex = 0
 				} else {
@@ -82,9 +82,9 @@ func (rd *T) processString() *token.T {
 					closed = true
 					break
 				} else if ch == '\\' {
-          isEsc = true
-          continue
-        }
+					isEsc = true
+					continue
+				}
 			}
 			rs += s
 		}
@@ -104,16 +104,16 @@ func (rd *T) processString() *token.T {
 // Expected rd postion after '\n' and with characters
 //    key : "here doc" text value. (e.g. ` -> "", `abc -> abc)
 func (rd *T) processString2(key string) *token.T {
-  lineStart := rd.nLine - 1
+	lineStart := rd.nLine - 1
 	prg := rd.prg
-  prgIx := rd.prgIx
-  ix := strings.Index(prg[prgIx:], key + "`")
-  if ix == -1 {
-    rd.nLine = lineStart
+	prgIx := rd.prgIx
+	ix := strings.Index(prg[prgIx:], key+"`")
+	if ix == -1 {
+		rd.nLine = lineStart
 		rd.fail("Unclosed multiline string")
-  }
-  start := prgIx
-  end := prgIx + ix
+	}
+	start := prgIx
+	end := prgIx + ix
 
 	for _, rn := range prg[start:end] {
 		if string(rn) == "\n" {

@@ -12,7 +12,8 @@
 () roundn =>
 /// fi -> f
 ///
-/// Returns 'n' rounded with 'scale' decimals.
+/// Returns 'n' rounded with 'scale' decimals. If 'scale' is out of [0-9) throws
+/// a "Math error".
 ///   n : A number.
 ///   scale: Decimals number between [0-9).
 

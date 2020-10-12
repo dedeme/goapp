@@ -23,15 +23,12 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=1
-FILE_NAME_0=1481;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fdmstack%2Fsrc%2Fprimitives%2Fmodfloat.c;0;2
-FILE_NAME_1=482;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Ffloat.dms;0;2
-FILE_NAME_2=829;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Ffloat%2Ffloat.go;0;2
-FILE_NAME_3=0;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fdmstack%2Fsrc%2Fprimitives%2Fmodmath.c;0;2
-FILE_NAME_4=4249;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fmathpk%2Fmathpk.go;0;2
-FILE_NAME_5=1793;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Fmath.dms;0;2
-FILE_NAME_6=1234;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Ftmath.dms;0;2
-FILE_NAME_7=304;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Ftfloat.dms;0;2
+current_page=3
+FILE_NAME_0=7561;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fsys%2Fsys.go;0;2
+FILE_NAME_1=3645;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fdmstack%2Fsrc%2Fprimitives%2Fmodsys.c;0;2
+FILE_NAME_2=3047;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Fsys.dms;0;2
+FILE_NAME_3=137;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Fall.dms;0;2
+FILE_NAME_4=1589;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fcryp%2Fcryp.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -47,8 +44,8 @@ GoFT_01_LB=Template
 GoFT_01_CM=gotpl %f
 GoFT_01_WD=
 GoFT_02_LB=Format
-GoFT_02_CM=go fmt %f
-GoFT_02_WD=
+GoFT_02_CM=gofmt -l -s -w .
+GoFT_02_WD=%p/dmstack
 GoFT_00_LB=_Build
 GoFT_00_CM=go install
 GoFT_00_WD=%p/dmstack

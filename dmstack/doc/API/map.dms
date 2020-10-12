@@ -1,0 +1,136 @@
+// Copyright 28-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Map procedures.
+/// NOTE: Operations over a map do not preserve its order.
+
+() new =>
+/// - -> m
+///
+/// Creates an empty map.
+
+() from =>
+/// l -> m
+///
+/// Creates a map from a list of 's, *' alternately.
+///
+/// Example:
+///   ["one": 1, "two": 2, "three": 3] map.from : m3 =
+///
+///   ls: A list
+
+() copy =>
+/// m -> m
+///
+/// Makes a shallow copy of 'mp'
+///   mp: A map.
+
+() size =>
+/// m -> i
+///
+/// Returns the number of pairs of 'mp'.
+///   mp: A map.
+
+() get =>
+/// ms -> *
+///
+/// Returns the value of 'k'. If key is not found produces a "Map error".
+///   mp: A map.
+///   k : A key.
+
+() oget =>
+/// ms -> l
+///
+/// Returns an option (list with one element) with the value of 'k' or
+/// an empty option (empty list) if 'k' is missing.
+///   mp: A map.
+///   k : A key.
+
+() has? =>
+/// ms -> b
+///
+/// Returns 'true' if 'mp' has the key 'k'.
+///   mp: A map.
+///   k : A key.
+
+() put =>
+/// ms* -> -
+///
+/// Set the value of 'k' with 'v'. If 'k' already exists, its value is replaced
+/// by 'v'.
+///   mp: A map.
+///   k : A key.
+///   v : A value.
+
+() up =>
+/// msp -> -
+///
+/// Set the value of 'k' with the result of apply 'pr' to the value of 'k'.
+/// If key is not found produces a "Map error".
+///   mp: A map.
+///   k : A key.
+///   pr: Procedure (* -> *) to update a value.
+
+() remove =>
+/// ms -> -
+///
+/// Removes the pair 'k - value' from 'mp'. If 'k' is missing the procedure
+/// do nothing.
+///   mp: A map.
+///   k : A key.
+
+() eq? =>
+/// mmp -> b
+///
+/// Returns 'true' if mp1 == mp2 using 'pr' as comparator.
+///
+/// NOTES:
+///   - To use as comparator '==' the global value '==' can be used directly.
+///   - Equality do not take care about pairs order.
+///
+///   mp1: A map.
+///   mp2: Another map.
+///   pr : Procedure (** -> b) to compare elements of maps.
+
+() neq? =>
+/// mmp -> b
+///
+/// Returns 'eq? !'. See 'map.eq?'.
+///   mp1: A map.
+///   mp2: Another map.
+///   pr : Procedure (** -> b) to compare elements of maps.
+
+
+() keys =>
+/// m - l
+///
+/// Returns a list with the keys of 'mp'.
+///   mp: A map.
+
+() values =>
+/// m - l
+///
+/// Returns a list with the values of 'mp'.
+///   mp: A map.
+
+() pairs =>
+/// m - l
+///
+/// Returns a list with the pairs [key: value] of 'mp'.
+///
+/// Example:
+///   [ "one": 1, "two": 2, "three": 3 ] map.from : m3 =
+///   m3 map.pairs puts // Produces '[["one",1],["two",2],["three",3]]'
+///
+///   mp: A map.
+
+() to =>
+/// m - l
+///
+/// Returns a list with a sequency 'key, value' of 'mp'.
+/// Example:
+///   [ "one": 1, "two": 2, "three": 3 ] map.from : m3 =
+///   m3 map.to puts // Produces '["one",1,"two",2,"three",3]'
+///
+///   mp: A map.
+

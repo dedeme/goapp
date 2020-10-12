@@ -1,0 +1,27 @@
+// Copyright 29-Sep-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+(
+  [] (js.wi) js.wList : ljs0 =
+  ljs0 js.to "[]" expect
+  ljs0 (js.ri) js.rList [] expect
+  [1, 2, 3] (js.wi) js.wList : ljs =
+  ljs js.to "[1,2,3]" expect
+  ljs (js.ri) js.rList [1, 2, 3] expect
+
+  {} (js.wi) js.wMap : mjs0 =
+  mjs0 js.to "{}" expect
+  {"a": 1, "b": 2, "c": 3} (js.wi) js.wMap : mjs =
+  mjs js.ro "a" map.get js.ri 1 expect
+  mjs js.ro "b" map.get js.ri 2 expect
+  mjs js.ro "c" map.get js.ri 3 expect
+
+  [] it.from (js.wi) js.wIt : lijs0 =
+  lijs0 js.to "[]" expect
+  lijs0 (js.ri) js.rIt it.to [] expect
+  [1, 2, 3] it.from (js.wi) js.wIt : lijs =
+  lijs js.to "[1,2,3]" expect
+  lijs (js.ri) js.rIt it.to [1, 2, 3] expect
+
+  @
+) run

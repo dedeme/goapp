@@ -81,9 +81,9 @@ func prLess(m *machine.T) {
 		m.Push(token.NewB(r, m.MkPos()))
 		return
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Bool', 'Int', 'Float' or 'String'\n"+
-			"  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'."+
+			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -110,9 +110,9 @@ func prLessEq(m *machine.T) {
 		prLess(m)
 		return
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Bool', 'Int', 'Float' or 'String'\n"+
-			"  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'."+
+			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -170,9 +170,9 @@ func prGreater(m *machine.T) {
 		m.Push(token.NewB(r, m.MkPos()))
 		return
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Bool', 'Int', 'Float' or 'String'\n"+
-			"  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'."+
+			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -199,9 +199,9 @@ func prGreaterEq(m *machine.T) {
 		prGreater(m)
 		return
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Bool', 'Int', 'Float' or 'String'\n"+
-			"  Found %v.",
+	m.Failt(
+		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'"+
+			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
@@ -241,7 +241,11 @@ func prAndOr(m *machine.T, run func(m *machine.T), isAnd bool) {
 			}
 		}
 		if !okReturn {
-			m.Failf("Expected a Bool return:\b%v", tk1.StringDraft())
+			m.Failt(
+				"\n  Expected: A procedure with a Bool return."+
+					"\n  Actual  : '%v'.",
+				tk1.StringDraft(),
+			)
 		}
 		if (isAnd && !b1) || (!isAnd && b1) {
 			m.Push(token.NewB(b1, m.MkPos()))
@@ -262,11 +266,15 @@ func prAndOr(m *machine.T, run func(m *machine.T), isAnd bool) {
 			}
 		}
 
-		m.Failf("Expected a Bool return:\b%v", tk2.StringDraft())
+		m.Failt(
+			"\n  Expected: A procedure with a Bool return."+
+				"\n  Actual  : '%v'.",
+			tk2.StringDraft(),
+		)
 	}
-	m.Failf(
-		"Stack:\n  Expected token of type 'Bool' or 'Procedure'\n"+
-			"  Found %v.",
+	m.Failt(
+		"  Expected: token of type 'Bool' or 'Procedure'."+
+			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
 }
