@@ -1,4 +1,4 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Float procedures.
@@ -33,7 +33,7 @@ func prFromStr(m *machine.T) {
 	s, _ := tk.S()
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
-		m.Fail("Float error", "'%v' bad Float.", tk.StringDraft())
+		m.Failt("'%v' bad Float.", tk.StringDraft())
 	}
 	pushFloat(m, f)
 }
@@ -44,7 +44,7 @@ func prFromStr(m *machine.T) {
 func prEq(m *machine.T) {
 	gap := popFloat(m)
 	if gap < 0 {
-		m.Fail("Float error", "Gap is < 0 (%v)", gap)
+		m.Fail(machine.ERange(), "Gap is < 0 (%v)", gap)
 	}
 	n2 := popFloat(m)
 	n1 := popFloat(m)
@@ -57,7 +57,7 @@ func prEq(m *machine.T) {
 func prNeq(m *machine.T) {
 	gap := popFloat(m)
 	if gap < 0 {
-		m.Fail("Float error", "Gap is < 0 (%v)", gap)
+		m.Fail(machine.ERange(), "Gap is < 0 (%v)", gap)
 	}
 	n2 := popFloat(m)
 	n1 := popFloat(m)
@@ -129,7 +129,10 @@ func toIsoEn(m *machine.T, isIso bool) {
 	tk := m.PopT(token.Int)
 	scale, _ := tk.I()
 	if scale < 0 || scale > 9 {
-		m.Fail("Float error", "\n  Expected: scale [0-9).\n  Actual  : '%v'.", scale)
+		m.Fail(
+			machine.ERange(),
+			"\n  Expected: scale [0-9).\n  Actual  : '%v'.", scale,
+		)
 	}
 	n := popFloat(m)
 	fm := "%." + string(48+scale) + "f"
@@ -162,24 +165,15 @@ func prToEn(m *machine.T) {
 }
 
 // Processes string procedures.
-//    m  : Virtual machine.
-func Proc(m *machine.T) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'float' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'float' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+func Proc(m *machine.T, proc symbol.T) {
+	switch proc {
 	case symbol.New("fromStr"):
 		prFromStr(m)
-	case symbol.Eq:
+	case symbol.New("eq"):
 		prEq(m)
-	case symbol.Neq:
+	case symbol.New("neq"):
 		prNeq(m)
 	case symbol.New("abs"):
 		prAbs(m)
@@ -197,6 +191,6 @@ func Proc(m *machine.T) {
 		prToEn(m)
 
 	default:
-		m.Failt("'float' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'float' does not contains the procedure '%v'.", proc.String())
 	}
 }

@@ -1,4 +1,4 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
@@ -32,10 +32,10 @@
   0 0 int.xor 0 expect
 
   1 int.not 1 int.and 0 expect
-  0 int.not 1 int and 1 expect
+  0 int.not 1 int.and 1 expect
 
-  1 2 int.<< 4 expect
-  4 2 int.>> 1 expect
+  1 2 int.lshift 4 expect
+  4 2 int.rshift 1 expect
 
   //int.max puts
   //int.min puts

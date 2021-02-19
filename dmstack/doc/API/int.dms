@@ -1,28 +1,28 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 /// Integer procedures.
 
-() fromStr =>
+() : fromStr =
 /// s -> i
 ///
 /// Returns the integer value of 's'. If it fails, throws an "Int error".
 ///   s: String which represent an integer.
 
-() abs =>
+() : abs =
 /// i -> i
 ///
 /// Returns the absolute value of 'i'.
 ///   i: An integer.
 
-() rnd =>
+() : rnd =
 /// i -> i
 ///
 /// Returns a random integer between 0 (inclusive) and 'top' (exclusive).
 /// If 'top' is <= 0 a fail is raised.
 ///   top: Maximum value (exclusive) for generate a random integer.
 
-() div =>
+() : div =
 /// ii -> ii
 ///
 /// Returns the division and module of num / den.
@@ -38,70 +38,70 @@
 ///   num: Numerator
 ///   den: Denominator.
 
-() and =>
+() : and =
 /// ii -> i
 ///
 /// Returns arithmetic 'and' between n1 and n2.
 ///   n1: A number.
 ///   n2: Another number.
 
-() or =>
+() : or =
 /// ii -> i
 ///
 /// Returns arithmetic 'or' between n1 and n2.
 ///   n1: A number.
 ///   n2: Another number.
 
-() xor =>
+() : xor =
 /// ii -> i
 ///
 /// Returns arithmetic 'exclusive or' between n1 and n2.
 ///   n1: A number.
 ///   n2: Another number.
 
-() not =>
+() : not =
 /// i -> i
 ///
 /// Returns arithmetic 'not' of n.
 ///   n: A number.
 
-() << =>
+() : lshift =
 /// ii -> i
 ///
 /// Returns 'shift left' of 'n', 'times' positions.
 ///   n    : A number.
 ///   times: Number of shifts.
 
-() >> =>
+() : rshift =
 /// ii -> i
 ///
 /// Returns 'shift right' of 'n', 'times' positions.
 ///   n    : A number.
 ///   times: Number of shifts.
 
-() max =>
+() : max =
 /// - -> i
 ///
 /// Returns the maximum integer.
 
-() min =>
+() : min =
 /// - -> i
 ///
 /// Returns the minimum integer.
 
-() toFloat =>
+() : toFloat =
 /// i -> f
 ///
 /// Returns 'n' converted to Float.
 ///   n: A number.
 
-() toIso =>
+() : toIso =
 /// i -> s
 ///
 /// Returns 'n' converted to string with '.' as thousands separator.
 ///   n: A number.
 
-() toEn =>
+() : toEn =
 /// i -> s
 ///
 /// Returns 'n' converted to string with ',' as thousands separator.

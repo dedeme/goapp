@@ -3,13 +3,13 @@
 
 /// Cryptographic procedures.
 
-() genk =>
+() : genk =
 /// i -> s
 ///
 /// Returns a random B64 string of length 'l'.
 ///   l: Key length.
 
-() key =>
+() : key =
 /// si -> s
 ///
 /// Returns 'key' codified in irreversible way. Key is a B64 string of 'l'
@@ -17,14 +17,14 @@
 ///   key: String to codify.
 ///   l  : Result length.
 
-() encode =>
+() : encode =
 /// ss -> s
 ///
 /// Encodes 'msg' with key 'key'.
 ///   key: Key.
 ///   msg: Message.
 
-() decode =>
+() : decode =
 /// ss -> s
 ///
 /// Decodes 'c' using key 'key'. 'c' was codified with 'cryp'.

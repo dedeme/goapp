@@ -1,74 +1,74 @@
 // Copyright 01-Oct-2020 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-/// File path management.
+/// File management.
 ///
 /// NOTE: Many of procedures of this package throw "File error".
 
-() cwd =>
+() : cwd =
 /// s -> -
 ///
 /// Changes the working directory.
 ///   d: Directory to change.
 
-() cd =>
+() : cd =
 /// s -> -
 ///
 /// Changes the working directory to 'd'.
 ///   d: Directory path.
 
-() mkdir =>
+() : mkdir =
 /// s -> -
 ///
 /// Creates the directory 'd'. If 'd' already exists, it does nothing.
 ///   d: Directory path.
 
-() dir =>
+() : dir =
 /// s -> l
 ///
 /// Returns a List of String with the name of files in 'd'.
 ///   d: Directory to search.
 
-() directory? =>
+() : isDirectory =
 /// s -> b
 ///
 /// Returns 'true' if 'd' exists and is a directory.
 ///   d: Directory to search.
 
-() exists? =>
+() : exists =
 /// s -> b
 ///
 /// Returns 'true' if 'p' exists.
 ///   p: Path to search.
 
-() del =>
+() : del =
 /// s -> -
 ///
 /// Remove 'p' from file system. If 'p' does not exists, it does nothing.
 ///   p: Path to remove.
 
-() rename =>
+() : rename =
 /// ss -> -
 ///
 /// Rename 'old' as 'new'.
 ///   old: Path of old file.
 ///   new: Pathf o new file.
 
-() link =>
+() : link =
 /// ss -> -
 ///
 /// Link 'old' as 'new'.
 ///   old: Path of old file.
-///   new: Pathf o new file.
+///   new: Path of new file.
 
-() copy =>
+() : copy =
 /// ss -> -
 ///
-/// Copy 'old' in 'new'.
-///   old: Path of old file.
-///   new: Pathf o new file.
+/// Copy 'source' in 'target'.
+///   source: Path of source file.
+///   target: Path of target file.
 
-() tmp =>
+() : tmp =
 /// ss -> s
 ///
 /// Creates a temporary file in d.
@@ -81,51 +81,51 @@
 ///        "data" -> "data96360525"
 ///        "data*.db" -> "data009045243.db"
 
-() regular? =>
+() : isRegular =
 /// s -> b
 ///
 /// Returns 'true' if 'p' is a regular file (nither directory, link, nor pipe).
 ///   p: Path to search.
 
-() link? =>
+() : isLink =
 /// s -> b
 ///
 /// Returns 'true' if 'p' is a regular file (nither directory, link, nor pipe).
 ///   p: Path to search.
 
-() modified =>
+() : modified =
 /// s -> <=Date>
 ///
 /// Returns the date of the last modification of 'p' (see package'date').
 ///   p: Path to search.
 
-() size =>
+() : size =
 /// s -> i
 ///
 /// Returns the size of 'p'.
 ///   p: Path to search.
 
-() write =>
+() : write =
 /// ss -> -
 ///
 /// Writes 's' in 'p'. If 'p' exists, it is overwritten.
 ///   p: Text file path.
 ///   s: Text to write.
 
-() append =>
+() : append =
 /// ss -> -
 ///
 /// Appends 's' to 'p'.
 ///   p: Text file path.
 ///   s: Text to append.
 
-() read =>
+() : read =
 /// s -> s
 ///
 /// Read 'p'.
 ///   p: Text file path.
 
-() aopen =>
+() : aopen =
 /// s -> <=File>
 ///
 /// Open 'p' to append and returns an File object to use with 'file.writeBin'
@@ -133,14 +133,14 @@
 /// The File object must be closed with 'file.close'.
 ///   p: File path.
 
-() ropen =>
+() : ropen =
 /// s -> <=File>
 ///
 /// Open 'p' to read and returns an File object to use with 'file.readBin'.
 /// The File object must be closed with 'file.close'.
 ///   p: File path.
 
-() wopen =>
+() : wopen =
 /// s -> <=File>
 ///
 /// Open 'p' to write and returns an File object to use with 'file.writeBin'
@@ -148,20 +148,20 @@
 /// The File object must be closed with 'file.close'.
 ///   p: File path.
 
-() close =>
+() : close =
 /// <=File> -> -
 ///
 /// Close 'f'.
 ///   f: File object to close.
 
-() readBin =>
+() : readBin =
 /// <=File> -> <=Blob>
 ///
 /// Read the next blob of 'f'. When 'f' has been completely read, 'blob.size'
 /// is 0 (see package 'blob').
 ///   f: File object to read.
 
-() lines =>
+() : lines =
 /// s -> <=File><=Iterator>
 ///
 /// Open 'p' to read and returns an File object and an Iterator over the
@@ -174,19 +174,17 @@
 ///
 ///   p: File path.
 
-() writeBin =>
+() : writeBin =
 /// <=File><=Blob> -> -
 ///
 /// Write 'b' at the end of 'f'.
 ///   f: File object to write.
 ///   b: Blob to write (see package 'blob').
 
-() writeText =>
+() : writeText =
 /// <=File>s -> -
 ///
 /// Write 'tx' at the end of 'f'.
 ///   f : File object to write.
 ///   tx: Text to write.
-
-
 

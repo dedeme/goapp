@@ -1,4 +1,4 @@
-// Copyright 10-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
@@ -16,10 +16,10 @@
   itl3 it.next 3 expect
   itl3 it.has ! assert
 
-  (@+l:: l =
-  l list.size : len =
-  0 list.ref : c =
-  (c >> ix =; ix len < (l ix list.get; true; c (++) ^^) (false, false) elif)
+  (@+a : a =
+  a arr.size : len =
+  0 arr.ref : c =
+  (c >> : ix =; ix len < (a ix arr.get; true; c (++) ^^) (false false) elif)
   it.new
   @-<=Iterator>) : mkIt =
 

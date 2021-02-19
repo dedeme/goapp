@@ -1,4 +1,4 @@
-// Copyright 16-May-2020 ºDeme
+// Copyright 07-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 package primitives
@@ -82,7 +82,7 @@ func prLess(m *machine.T) {
 		return
 	}
 	m.Failt(
-		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'."+
+		"\n  Expected: Token of type 'Bool', 'Int', 'Float' or 'String'."+
 			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
@@ -111,7 +111,7 @@ func prLessEq(m *machine.T) {
 		return
 	}
 	m.Failt(
-		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'."+
+		"\n  Expected: Token of type 'Bool', 'Int', 'Float' or 'String'."+
 			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
@@ -171,7 +171,7 @@ func prGreater(m *machine.T) {
 		return
 	}
 	m.Failt(
-		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'."+
+		"\n  Expected: Token of type 'Bool', 'Int', 'Float' or 'String'."+
 			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
@@ -200,7 +200,7 @@ func prGreaterEq(m *machine.T) {
 		return
 	}
 	m.Failt(
-		"\n  Expected: token of type 'Bool', 'Int', 'Float' or 'String'"+
+		"\n  Expected: Token of type 'Bool', 'Int', 'Float' or 'String'"+
 			"\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
@@ -208,83 +208,58 @@ func prGreaterEq(m *machine.T) {
 
 // Pushes true if tk1 is true (and/or) tk2 is true
 //    Bool Bool -> Bool
-//    Procedure Procedure -> Bool
-// Parameter:
+//    Bool Procedure -> Bool
+// Parameters:
 //    m : Virtual machine.
 //    run: Function which running a machine.
 //    isAnd: It is true if function to process is 'And'
 func prAndOr(m *machine.T, run func(m *machine.T), isAnd bool) {
-	tk1 := m.Pop()
-	b1, ok := tk1.B()
-	if ok {
-		tk2 := m.PopT(token.Bool)
-		b2, _ := tk2.B()
-		if isAnd {
-			m.Push(token.NewB(b1 && b2, m.MkPos()))
-			return
-		}
-		m.Push(token.NewB(b1 || b2, m.MkPos()))
+	tk2 := m.Pop()
+
+	tk1 := m.PopT(token.Bool)
+	b1, _ := tk1.B()
+	if (isAnd && !b1) || (!isAnd && b1) {
+		m.Push(token.NewB(b1, m.MkPos()))
 		return
 	}
-	p1, ok := tk1.P()
-	if ok {
-		tk2 := m.PopT(token.Procedure)
-		p2, _ := tk2.P()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p2)
-		run(m2)
-		okReturn := false
-		if len(*m2.Stack) == 1 {
-			b1, ok = (*m2.Stack)[0].B()
-			if ok {
-				okReturn = true
-			}
-		}
-		if !okReturn {
+	b2, ok := tk2.B()
+	if !ok {
+		_, ok := tk2.P()
+		if !ok {
 			m.Failt(
-				"\n  Expected: A procedure with a Bool return."+
+				"  Expected: Token of type 'Bool' or 'Procedure'."+
 					"\n  Actual  : '%v'.",
 				tk1.StringDraft(),
 			)
 		}
-		if (isAnd && !b1) || (!isAnd && b1) {
-			m.Push(token.NewB(b1, m.MkPos()))
-			return
+		m2 := machine.New(m.Source, m.Pmachines, tk2)
+		run(m2)
+		l := len(*m.Stack) - 1
+		if l < 0 || (*m.Stack)[l].Type() != token.Bool {
+			m.Failt(
+				"\n  Expected: Procedure with a Bool return."+
+					"\n  Actual  : '%v'.",
+				tk2.StringDraft(),
+			)
 		}
-
-		m1 := machine.NewIsolate(m.SourceDir, m.Pmachines, p1)
-		run(m1)
-		if len(*m1.Stack) == 1 {
-			b2, ok := (*m1.Stack)[0].B()
-			if ok {
-				if isAnd {
-					m.Push(token.NewB(b1 && b2, m.MkPos()))
-					return
-				}
-				m.Push(token.NewB(b1 || b2, m.MkPos()))
-				return
-			}
-		}
-
-		m.Failt(
-			"\n  Expected: A procedure with a Bool return."+
-				"\n  Actual  : '%v'.",
-			tk2.StringDraft(),
-		)
+		b2, _ = m2.Pop().B()
 	}
-	m.Failt(
-		"  Expected: token of type 'Bool' or 'Procedure'."+
-			"\n  Actual  : '%v'.",
-		tk1.StringDraft(),
-	)
+
+	if isAnd {
+		m.Push(token.NewB(b1 && b2, m.MkPos()))
+		return
+	}
+	m.Push(token.NewB(b1 || b2, m.MkPos()))
+	return
 }
 
 // Pushes true if tk1 is true and tk2 is true
 //    Bool Bool -> Bool
 //    Procedure Procedure -> Bool
-// Parameter:
+// Parameters:
 //    m : Virtual machine.
-//    run: Function which running a machine.
+//    run: Function to run a virtual machine.
 func prAnd(m *machine.T, run func(m *machine.T)) {
 	prAndOr(m, run, true)
 }
@@ -292,9 +267,9 @@ func prAnd(m *machine.T, run func(m *machine.T)) {
 // Pushes true if tk1 is true or tk2 is true
 //    Bool Bool -> Bool
 //    Procedure Procedure -> Bool
-// Parameter:
+// Parameters:
 //    m : Virtual machine.
-//    run: Function which running a machine.
+//    run: Function to run a virtual machine.
 func prOr(m *machine.T, run func(m *machine.T)) {
 	prAndOr(m, run, false)
 }
@@ -303,7 +278,6 @@ func prOr(m *machine.T, run func(m *machine.T)) {
 //    Bool -> Bool
 // Parameter:
 //    m : Virtual machine.
-//    run: Function which running a machine.
 func prNot(m *machine.T) {
 	tk := m.PopT(token.Bool)
 	b, _ := tk.B()

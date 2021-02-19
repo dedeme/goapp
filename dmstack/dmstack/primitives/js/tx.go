@@ -1,7 +1,6 @@
-// Copyright 28-Sep-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-// Text management.
 package js
 
 func nextByte(s string, ch byte, ix int) (pos int, ok bool) {

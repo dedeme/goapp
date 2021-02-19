@@ -23,8 +23,9 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
-FILE_NAME_0=4210;Markdown;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fdocs%2Fliterals.md;0;2
+current_page=1
+FILE_NAME_0=0;YAML;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fmkdocs.yml;0;2
+FILE_NAME_1=3138;Markdown;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FReference%2Fdocs%2Fsymbols.md;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

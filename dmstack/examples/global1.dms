@@ -1,19 +1,19 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 09-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
-  // "a string very long €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€" puts
+   //"a string very long €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€" puts
 
-  true toStr "true" expect
-  false toStr "false" expect
-  3 toStr "3" expect
-  -1.2 toStr "-1.2" expect
-  "abc" toStr "\"abc\"" expect
-  [-2, "a", []] toStr "[-2,\"a\",[]]" expect
-  ["a": 1, "b": [1, 2], "c": []] toStr "[\"a\",1,\"b\",[1,2],\"c\",[]]" expect
-  (3 2 +) toStr "(3,2,<.+.>)" expect
+  true toString "true" expect
+  false toString "false" expect
+  3 toString "3" expect
+  -1.2 toString "-1.2" expect
+  "abc" toString "abc" expect
+  [-2, "a", []] toString "[-2,\"a\",[]]" expect
+  //{"a": 1, "b": [1, 2], "c": []} toString puts
+  (3 2 +) toString "(3 2 <.+.>)" expect
 
-  3 n1 =
+  3 : n1 =
   n1 3 expect
 
   true clone true expect
@@ -22,16 +22,16 @@
   "a" clone "a" expect
   "" clone "" expect
   [-2, "a", []] clone [-2, "a", []] expect
-  ["a": 1, "b": [1, 2], "c": []] clone ["a": 1, "b": [1, 2], "c": []] expect
+  {"a": 1, "b": [1, 2], "c": []} clone {"b": [1, 2], "a": 1, "c": []} expect
   (3 2 +) clone (3 2 +) expect
 
   (
     "IndexOutOfRange" "error" throw
   )
-  ("IndexOutOfRange: error" expect)
+  ("IndexOutOfRange:error" expect)
   try
 
-  ("error" fail) (": error" expect) try
+  ("error" fail) ("Runtime error:error" expect) try
 
   3 4 swap - 1 expect
   2 dup + 4 expect
@@ -42,7 +42,7 @@
   false @b pop
   4 @i
   4.5 "a" @ifs
-  [21] @ifsl @****
+  [21] @ifsa @****
   pop pop pop pop
   @
 
@@ -50,8 +50,8 @@
   false @?b assert pop
   4 @?i assert
   4.5 "a" @?ifs assert
-  [21] @?ifsl assert
-  @?i**l assert
+  [21] @?ifsa assert
+  @?i**a assert
   pop pop pop pop
   @? assert
 
@@ -64,7 +64,7 @@
   pop pop pop pop
   @?i ! assert
 
-  (@+iii + * @-i) sumMul =
+  (@+iii + * @-i) : sumMul =
   3 2 10 sumMul 36 expect
 
   @

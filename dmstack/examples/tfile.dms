@@ -1,27 +1,27 @@
-// Copyright 01-Oct-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
   sys.home file.del sys.home file.mkdir
 
-  sys.home file.dir list.size 0 expect
+  sys.home file.dir arr.size 0 expect
 
-  sys.home "f1.txt" path.+ : p =
-  p file.directory? ! assert
-  p file.exists? ! assert
+  sys.home "f1.txt" path.add : p =
+  p file.isDirectory ! assert
+  p file.exists ! assert
   p "" file.write
-  p file.exists? assert
+  p file.exists assert
 
-  sys.home file.dir list.size 1 expect
-  sys.home file.directory? assert
-  sys.home file.dir !0 : p path.name : expect
+  sys.home file.dir arr.size 1 expect
+  sys.home file.isDirectory assert
+  sys.home file.dir .0 ;; p path.name ;; expect
 
-  sys.home "f2.txt" path,+ : pb =
+  sys.home "f2.txt" path.add : pb =
   pb "" file.write
-  pb file.regular? assert
-  sys.home file.dir list.size 2 expect
+  pb file.isRegular assert
+  sys.home file.dir arr.size 2 expect
 
-  sys.home "f0.txt" path,+ : p0 =
+  sys.home "f0.txt" path.add : p0 =
   p0 "" file.write
   p0 file.size 0 expect
   p0 file.read "" expect
@@ -32,18 +32,18 @@
   p0 file.size 8 expect
   p0 file.read "ab123\nxx" expect
 
-  sys.home "f10.txt" path,+ : p10 =
+  sys.home "f10.txt" path.add : p10 =
   p10 "a" file.write
   p10 file.size 1 expect
   p10 file.read "a" expect
 
-  sys.home "f11.txt" path,+ : p11 =
+  sys.home "f11.txt" path.add : p11 =
   p11 "a\nb" file.write
   p11 file.size 3 expect
   p11 file.read "a\nb" expect
 
   "" "f*.db" file.tmp : ftmp =
-  ftmp "/tmp/f" str.starts? : ftmp ".db" str.ends? : && assert
+  ftmp "/tmp/f" str.starts ;; ftmp ".db" str.ends ;; && assert
   p11 ftmp file.copy
   ftmp file.read "a\nb" expect
 
@@ -52,17 +52,17 @@
 
   ftmp file.del
 
-  sys.home "f11-link.txt" path,+ : pLink =
+  sys.home "f11-link.txt" path.add : pLink =
   p11 pLink file.link
   pLink file.read "a\nb" expect
   pLink file.del
 
-  sys.home "f12.txt" path,+ : p12 =
+  sys.home "f12.txt" path.add : p12 =
   p12 "\n01234567890\n" file.write
   p12 file.size 13 expect
   p12 file.read "\n01234567890\n" expect
 
-  sys.home "f2.txt" path,+ : p2 =
+  sys.home "f2.txt" path.add : p2 =
   p2 "aa\nb\n01234567890\n" file.write
   p2 file.size 17 expect
   p2 file.read "aa\nb\n01234567890\n" expect
@@ -71,16 +71,16 @@
   binFile file.readBin : bss =
   binFile file.close
 
-  sys.home "f2.bin" path,+ : p2b =
-  p2b file.wopen binFile2 =
+  sys.home "f2.bin" path.add : p2b =
+  p2b file.wopen : binFile2 =
   binFile2 bss file.writeBin
   binFile2 file.close
   p2b file.read "aa\nb\n01234567890\n" expect
 
-  sys.home "file" path,+ dp =;
+  sys.home "file" path.add : dp =;
   dp file.mkdir
 
-  dp "f.txt" path,+ : pp =
+  dp "f.txt" path.add : pp =
   pp "aa\nb\n01234567890\n" file.write
   pp file.read "aa\nb\n01234567890\n" expect
 
@@ -88,17 +88,17 @@
   pp file.read "" expect
 
   pp file.wopen : file1 =
-  10 (i =; file1 i toStr file.writeText) for
+  10 (: i =; file1 i toString file.writeText) for
   file1 file.close
   pp file.read "0123456789" expect
 
-  pp file.aopen file2 =
+  pp file.aopen : file2 =
   file2 "AB" file.writeText
   file2 file.close
 
-  [] : ls =
-  pp file.lines (ls swap list.push) it.each file.close
-  ls "" str.join "0123456789AB" expect
+  [] : a =
+  pp file.lines (a swap arr.push) it.each file.close
+  a "" str.join "0123456789AB" expect
 
   pp "XX" file.append
   pp file.read "0123456789ABXX" expect

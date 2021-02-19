@@ -3,7 +3,7 @@
 
 /// File path management.
 
-() canonical =>
+() canonical =
 /// s -> s
 ///
 /// Clean returns the shortest path.
@@ -14,20 +14,20 @@
 ///
 ///   p: A path.
 
-() + =>
+() + =
 /// ss -> s
 ///
 /// Returns 'p1' joined to 'p2'.
 ///   p1: A path.
 ///   p2: Another path.
 
-() ++ =>
+() ++ =
 /// l -> s
 ///
 /// Returns paths of 'ls' joined.
 ///   ls: A list of paths.
 
-() extension =>
+() extension =
 /// s -> s
 ///
 /// Returns the extension of 'p'. The extension is returned with point,
@@ -37,7 +37,7 @@
 ///
 ///   p: A path.
 
-() name =>
+() name =
 /// s -> s
 ///
 /// Returns name with extension of 'p'.
@@ -46,7 +46,7 @@
 ///
 ///   p: A path.
 
-() onlyName =>
+() onlyName =
 /// s -> s
 ///
 /// Returns name without extension of 'p'.
@@ -56,7 +56,7 @@
 ///
 ///   p: A path.
 
-() parent =>
+() parent =
 /// s -> s
 ///
 /// Returns the parent path of 'p'.

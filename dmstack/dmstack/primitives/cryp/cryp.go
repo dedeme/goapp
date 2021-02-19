@@ -1,4 +1,4 @@
-// Copyright 29-Sep-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Encrypt and decript procedures.
@@ -126,7 +126,7 @@ func prDecode(m *machine.T) {
 
 	mb, err := b64.DecodeString(c)
 	if err != nil {
-		m.Fail("B64 error", "Wrong B64 string:\n%v", c)
+		m.Failt("Wrong B64 string:\n%v", c)
 	}
 	lg := int64(len(mb))
 	k := keyf(key, lg)
@@ -137,27 +137,17 @@ func prDecode(m *machine.T) {
 	}
 	mb, err = b64.DecodeString(string(r))
 	if err != nil {
-		m.Fail("Cryp error", "Code can not be decrypted:\n%v", c)
+		m.Failt("Code can not be decrypted:\n%v", c)
 	}
 
 	pushStr(m, string(mb))
 }
 
 // Processes date procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'cryp' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'cryp' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+func Proc(m *machine.T, proc symbol.T) {
+	switch proc {
 	case symbol.New("genk"):
 		prGenk(m)
 	case symbol.New("key"):
@@ -167,6 +157,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("decode"):
 		prDecode(m)
 	default:
-		m.Failt("'cryp' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'cryp' does not contains the procedure '%v'.", proc.String())
 	}
 }

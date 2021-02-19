@@ -1,4 +1,4 @@
-// Copyright 25-Apr-2020 ºDeme
+// Copyright 04-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Program arguments management.
@@ -32,7 +32,7 @@ func help() {
 			"or to show this message:\n" +
 			"  dmstack\n" +
 			"-----------------------\n" +
-			"Options: They are\n" +
+			"Options:\n" +
 			"  -d : Execute in debug mode. \n" +
 			"dmsProgram: Path to .dms file, with or without extension .dms.\n" +
 			"dmsProgramOptions: Options to be passed to .dms program.\n",

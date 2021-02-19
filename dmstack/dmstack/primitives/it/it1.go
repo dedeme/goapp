@@ -5,13 +5,13 @@ package it
 
 import (
 	"github.com/dedeme/dmstack/machine"
-	"github.com/dedeme/dmstack/symbol"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/token"
 )
 
-// Join two iterators.
+// Adds two iterators.
 //    m: Virtual machine.
-func prPlus(m *machine.T) {
+func prAdd(m *machine.T) {
 	i2 := popIt(m)
 	i1 := popIt(m)
 	i := New(func() (tk *token.T, ok bool) {
@@ -31,32 +31,32 @@ func prPlus(m *machine.T) {
 	pushIt(m, i)
 }
 
-// Join a list of iterators.
+// Join an array of iterators.
 //    m: Virtual machine.
-func prPlus2(m *machine.T) {
-	tk := m.PopT(token.List)
-	l, _ := tk.L()
-	if len(l) == 0 {
+func prJoin(m *machine.T) {
+	tk := m.PopT(token.Array)
+	a, _ := tk.A()
+	if len(a) == 0 {
 		prEmpty(m)
 		return
 	}
 
-	sym, i, ok := l[0].N()
-	if !ok || sym != symbol.Iterator_ {
-		m.Failt("\n Expected: Iterator object.\n  Actual  : '%v'.", sym)
+	o, i, ok := a[0].N()
+	if !ok || o != operator.Iterator_ {
+		m.Failt("\n Expected: Iterator object.\n  Actual  : '%v'.", o)
 	}
 
 	pushIt(m, i.(*T))
-	for ix := 1; ix < len(l); ix++ {
-		sym, i, ok := l[ix].N()
+	for ix := 1; ix < len(a); ix++ {
+		o, i, ok := a[ix].N()
 		if !ok {
-			m.Failt("\n  Expected: Iterator object.\n  Actual  : '%v'.", l[ix])
+			m.Failt("\n  Expected: Iterator object.\n  Actual  : '%v'.", a[ix])
 		}
-		if sym != symbol.Iterator_ {
-			m.Failt("\n  Expected: Iterator object.\n  Actual  : '%v'.", sym)
+		if o != operator.Iterator_ {
+			m.Failt("\n  Expected: Iterator object.\n  Actual  : '%v'.", o)
 		}
 		pushIt(m, i.(*T))
-		prPlus(m)
+		prAdd(m)
 	}
 }
 
@@ -84,11 +84,10 @@ func prDrop(m *machine.T) {
 //    run: Function which running a machine.
 func prDropf(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	for {
 		if i.ok {
-			m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+			m2 := machine.New(m.Source, m.Pmachines, tk)
 			m2.Push(i.e)
 			run(m2)
 			tk2 := m2.PopT(token.Bool)
@@ -108,7 +107,6 @@ func prDropf(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func prFilter(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	i2 := New(func() (tkr *token.T, okr bool) {
 		for {
@@ -116,7 +114,7 @@ func prFilter(m *machine.T, run func(m *machine.T)) {
 				e := i.e
 				i.e, i.ok = i.next()
 
-				m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+				m2 := machine.New(m.Source, m.Pmachines, tk)
 				m2.Push(e)
 				run(m2)
 				tk2 := m2.PopT(token.Bool)
@@ -139,14 +137,13 @@ func prFilter(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func PrMap(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	i2 := New(func() (tkr *token.T, okr bool) {
 		if i.ok {
 			e := i.e
 			i.e, i.ok = i.next()
 
-			m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+			m2 := machine.New(m.Source, m.Pmachines, tk)
 			m2.Push(e)
 			run(m2)
 			tkr = m2.Pop()
@@ -226,11 +223,10 @@ func prTake(m *machine.T) {
 //    run: Function which running a machine.
 func prTakef(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	i2 := New(func() (tkr *token.T, okr bool) {
 		if i.ok {
-			m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+			m2 := machine.New(m.Source, m.Pmachines, tk)
 			m2.Push(i.e)
 			run(m2)
 			tk2 := m2.PopT(token.Bool)
@@ -253,10 +249,10 @@ func prZip(m *machine.T) {
 	i1 := popIt(m)
 	i := New(func() (tkr *token.T, okr bool) {
 		if i1.ok && i2.ok {
-			l := []*token.T{i1.e, i2.e}
+			a := []*token.T{i1.e, i2.e}
 			i1.e, i1.ok = i1.next()
 			i2.e, i2.ok = i2.next()
-			tkr = token.NewL(l, m.MkPos())
+			tkr = token.NewA(a, m.MkPos())
 			okr = true
 		}
 		return
@@ -272,11 +268,11 @@ func prZip3(m *machine.T) {
 	i1 := popIt(m)
 	i := New(func() (tkr *token.T, okr bool) {
 		if i1.ok && i2.ok && i3.ok {
-			l := []*token.T{i1.e, i2.e, i3.e}
+			a := []*token.T{i1.e, i2.e, i3.e}
 			i1.e, i1.ok = i1.next()
 			i2.e, i2.ok = i2.next()
 			i3.e, i3.ok = i3.next()
-			tkr = token.NewL(l, m.MkPos())
+			tkr = token.NewA(a, m.MkPos())
 			okr = true
 		}
 		return

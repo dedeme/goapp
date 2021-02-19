@@ -23,12 +23,10 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=3
-FILE_NAME_0=7561;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fsys%2Fsys.go;0;2
-FILE_NAME_1=3645;C;0;EUTF-8;0;1;0;%2Fdm%2FdmC%2Fapp%2Fdmstack%2Fsrc%2Fprimitives%2Fmodsys.c;0;2
-FILE_NAME_2=3047;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Fsys.dms;0;2
-FILE_NAME_3=137;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Fall.dms;0;2
-FILE_NAME_4=1589;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fcryp%2Fcryp.go;0;2
+current_page=1
+FILE_NAME_0=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fprimitives.go;0;2
+FILE_NAME_1=504;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fglobal5.go;0;2
+FILE_NAME_2=5336;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Freader%2Ftkreader.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -49,13 +47,19 @@ GoFT_02_WD=%p/dmstack
 GoFT_00_LB=_Build
 GoFT_00_CM=go install
 GoFT_00_WD=%p/dmstack
-filetypes=Go;
+filetypes=Go;DmstackC;
 EX_01_LB=Tests
 EX_01_CM=go test ./tests
 EX_01_WD=%p
 NF_03_LB=
 NF_03_CM=
 NF_03_WD=%p/dmstack
+DmstackCFT_00_LB=Run
+DmstackCFT_00_CM=dmstack %f
+DmstackCFT_00_WD=
+DmstackCFT_01_LB=Run debug
+DmstackCFT_01_CM=dmstack -d %f
+DmstackCFT_01_WD=
 
 [editor]
 line_wrapping=false

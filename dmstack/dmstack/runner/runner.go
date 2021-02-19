@@ -1,86 +1,76 @@
-// Copyright 14-May-2020 ºDeme
+// Copyright 04-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-// Manchine runner
+// Code runner.
 package runner
 
 import (
 	"github.com/dedeme/dmstack/imports"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/primitives"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 )
 
-func primitiveModule(m *machine.T, sym symbol.T) bool {
-	return primitives.Modules(m, sym, Run)
-}
-
+// Module case
 func module(m *machine.T, sym symbol.T) bool {
-	if m.InImports(sym) {
-		tk, ok := m.PrgNext()
-		if !ok {
-			m.Fail("Machine error", "Unexpected end of procedure")
-		}
-		sym2, ok := tk.Sy()
-		if !ok {
-			m.Failt(
-				"\n Expected: '%v'.\n  Actual  : %v.",
-				token.Symbol, tk.StringDraft(),
-			)
-		}
-		heap, _ := imports.Get(sym)
-		tk2, ok := heap[sym2]
-		if !ok {
-			m.Fail(
-				"Machine error", "Module '%v' does not defines the symbol '%v'",
-				sym, sym2,
-			)
-		}
-		m.Push(tk2)
-		if tk2.Type() == token.Procedure {
-			tk, ok = m.PrgPeek()
-			if ok {
-				sym, ok = tk.Sy()
-			}
-			if ok && sym == symbol.Ampersand {
-				m.PrgNext()
-				return true
-			}
-			primitives.Global(m, symbol.Run, Run)
-		}
-		return true
-	}
-	return false
-}
-
-func heap(m *machine.T, sym symbol.T) bool {
-	if tk, ok := m.HeapGet(sym); ok {
-		m.Push(tk)
-		if tk.Type() == token.Procedure {
-			tk, ok = m.PrgPeek()
-			if ok {
-				sym, ok = tk.Sy()
-			}
-			if ok && sym == symbol.Ampersand {
-				m.PrgNext()
-				return true
-			}
-			primitives.Global(m, symbol.Run, Run)
-		}
-		return true
-	}
-	return false
-}
-
-func equals(m *machine.T, sym symbol.T) bool {
 	if tk, ok := m.PrgPeek(); ok {
-		sym2, _ := tk.Sy()
-		if sym2 == symbol.Equals {
-			m.HeapAdd(sym, m.Pop())
-			m.PrgSkip()
+		if sym2, ok := tk.Sy(); ok {
+			if sym2 == symbol.Import {
+				m.Push(token.NewSy(sym, tk.Pos))
+				return true
+			}
+		} else if op, ok := tk.O(); ok {
+			if op == operator.Point {
+				m.PrgNext()
+				if tk2, ok := m.PrgNext(); ok {
+					if sym2, ok := tk2.Sy(); ok {
+						if primitives.Module(m, sym, sym2, Run) {
+							return true
+						}
+						if heap, ok := imports.Get(sym); ok {
+							if heap != nil {
+								if tk3, ok := heap[sym2]; ok {
+									if _, ok := tk3.P(); ok {
+										m2 := machine.New(m.Source, m.Pmachines, tk3)
+										Run(m2)
+										return true
+									}
+									m.Push(tk3)
+									return true
+								}
+							}
+							m.Failt("Module '%v' has not procedure '%v'", sym, sym2)
+						}
+						m.Failt("Module '%v' not found", sym)
+					}
+					m.Failt(
+						"\n  Expected: Procedure name."+
+							"\n  Actual  : '%v'.",
+						tk2.StringDraft(),
+					)
+				}
+				m.Failt(
+					"\n  Expected: Procedure name." +
+						"\n  Actual  : End of code.",
+				)
+			}
+		}
+	}
+	return false
+}
+
+// General symbol case
+func heap(m *machine.T, sym symbol.T) bool {
+	if tk, ok := m.Heap[sym]; ok {
+		if _, ok := tk.P(); ok {
+			m2 := machine.New(m.Source, m.Pmachines, tk)
+			Run(m2)
 			return true
 		}
+		m.Push(tk)
+		return true
 	}
 	return false
 }
@@ -90,42 +80,37 @@ func equals(m *machine.T, sym symbol.T) bool {
 func Run(m *machine.T) {
 	for {
 		if tk, ok := m.PrgNext(); ok {
-			if tk.Type() == token.Symbol {
-				sym, _ := tk.Sy()
-
-				if sym == symbol.Equals {
+			if tk.Type() == token.Operator {
+				op, _ := tk.O()
+				if ok := primitives.GlobalOperator(m, op, Run); ok {
+					continue
+				}
+				if op == operator.Point {
 					m.Fail(
-						"Machine error", "Unexpected '%v' (Possible redefinition)", sym,
+						machine.EMachine(),
+						"Operator '.' only can be used after a module name",
 					)
 				}
+				m.Fail(machine.EMachine(), "Unknown operator '%v'", op)
+			}
 
-				if ok := primitives.Global(m, sym, Run); ok {
-					continue
-				}
-
-				if ok := primitiveModule(m, sym); ok {
-					continue
-				}
-
+			if tk.Type() == token.Symbol {
+				sym, _ := tk.Sy()
 				if ok := module(m, sym); ok {
 					continue
 				}
-
+				if ok := primitives.GlobalSymbol(m, sym, Run); ok {
+					continue
+				}
 				if ok := heap(m, sym); ok {
 					continue
 				}
-
-				if ok := equals(m, sym); ok {
-					continue
-				}
-
-				m.Fail("Machine error", "Unknown symbol '%v'", sym)
+				m.Fail(machine.EMachine(), "Unknown symbol '%v'", sym)
 			}
 
 			m.Push(tk)
 			continue
 		}
-
 		break
 	}
 }

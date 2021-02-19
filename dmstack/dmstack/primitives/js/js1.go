@@ -1,7 +1,6 @@
-// Copyright 27-Sep-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-// Json procedures.
 package js
 
 import (
@@ -13,30 +12,28 @@ import (
 // Read a List
 func prRlist(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	prRa(m)
-	tk2 := m.PopT(token.List)
-	ljs, _ := tk2.L()
-	var l []*token.T
-	for _, e := range ljs {
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+	tk2 := m.PopT(token.Array)
+	ajs, _ := tk2.A()
+	var a []*token.T
+	for _, e := range ajs {
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
-		l = append(l, m2.Pop())
+		a = append(a, m2.Pop())
 	}
-	m.Push(token.NewL(l, m.MkPos()))
+	m.Push(token.NewA(a, m.MkPos()))
 }
 
 // Read a Map
 func prRmap(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	prRo(m)
-	tk2 := m.PopT(token.List)
+	tk2 := m.PopT(token.Array)
 	mjs, _ := tk2.M()
 	mp := map[string]*token.T{}
 	for k, v := range mjs {
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(v)
 		run(m2)
 		mp[k] = m2.Pop()
@@ -56,29 +53,27 @@ func prRit(m *machine.T, run func(m *machine.T)) {
 // Write a List
 func prWlist(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
-	tk2 := m.PopT(token.List)
-	l, _ := tk2.L()
-	var ljs []*token.T
-	for _, e := range l {
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+	tk2 := m.PopT(token.Array)
+	a, _ := tk2.A()
+	var ajs []*token.T
+	for _, e := range a {
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
-		ljs = append(ljs, m2.Pop())
+		ajs = append(ajs, m2.Pop())
 	}
-	m.Push(token.NewL(ljs, m.MkPos()))
+	m.Push(token.NewA(ajs, m.MkPos()))
 	prWa(m)
 }
 
 // Write a Map
 func prWmap(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	tk2 := m.PopT(token.Map)
 	mp, _ := tk2.M()
 	mjs := map[string]*token.T{}
 	for k, v := range mp {
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(v)
 		run(m2)
 		mjs[k] = m2.Pop()

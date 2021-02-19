@@ -1,4 +1,4 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 09-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
@@ -23,7 +23,7 @@
   th sys.join
 
   // Synchronization
-  ((tx =; 10 (pop; tx puts; 100 sys.sleep) for) sync) : fn2 =
+  ((: tx =; 10 (pop; tx puts; 100 sys.sleep) for) sync) : fn2 =
   ("FreeThread2" fn2) sys.thread : th2 =
   "Main2" fn2
   th2 sys.join

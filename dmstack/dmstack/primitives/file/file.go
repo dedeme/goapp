@@ -1,4 +1,4 @@
-// Copyright 01-Oct-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // File procedures.
@@ -8,6 +8,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/primitives/it"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
@@ -22,7 +23,7 @@ const BufferSize = 8192
 // Auxiliar function
 func excf(m *machine.T, template string, values ...interface{}) {
 	panic(&machine.Error{
-		Machine: m, Type: "File error", Message: fmt.Sprintf(template, values...),
+		m, machine.EFile(), fmt.Sprintf(template, values...),
 	})
 }
 
@@ -77,7 +78,7 @@ func prMkdir(m *machine.T) {
 	}
 }
 
-// Returns a list with the name of files in 'd'.
+// Returns an array with the name of files in 'd'.
 //    m: Virtual machine.
 func prDir(m *machine.T) {
 	pos := m.MkPos()
@@ -86,7 +87,7 @@ func prDir(m *machine.T) {
 	for _, e := range dir(m, d) {
 		r = append(r, token.NewS(e.Name(), pos))
 	}
-	m.Push(token.NewL(r, pos))
+	m.Push(token.NewA(r, pos))
 }
 
 // Returns 'true' if 'd' exists and is a directory.
@@ -219,7 +220,7 @@ func prModified(m *machine.T) {
 	if err != nil {
 		excf(m, "Fail reading file '%v' properties.", p)
 	}
-	m.Push(token.NewN(symbol.Date_, f.ModTime(), m.MkPos()))
+	m.Push(token.NewN(operator.Date_, f.ModTime(), m.MkPos()))
 }
 
 // Returns the size of 'p'.
@@ -278,7 +279,7 @@ func prAopen(m *machine.T) {
 	if err != nil {
 		excf(m, "Fail openning file '%v' for appending.", p)
 	}
-	m.Push(token.NewN(symbol.File_, f, m.MkPos()))
+	m.Push(token.NewN(operator.File_, f, m.MkPos()))
 }
 
 // Open 'p' to read.
@@ -289,7 +290,7 @@ func prRopen(m *machine.T) {
 	if err != nil {
 		excf(m, "Fail openning file '%v' for reading.", p)
 	}
-	m.Push(token.NewN(symbol.File_, f, m.MkPos()))
+	m.Push(token.NewN(operator.File_, f, m.MkPos()))
 }
 
 // Open 'p' to append.
@@ -300,16 +301,16 @@ func prWopen(m *machine.T) {
 	if err != nil {
 		excf(m, "Fail openning file '%v' for writing.", p)
 	}
-	m.Push(token.NewN(symbol.File_, f, m.MkPos()))
+	m.Push(token.NewN(operator.File_, f, m.MkPos()))
 }
 
 // Close 'p'.
 //    m: Virtual machine.
 func prClose(m *machine.T) {
 	tk := m.PopT(token.Native)
-	sym, f, _ := tk.N()
-	if sym != symbol.File_ {
-		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", sym)
+	o, f, _ := tk.N()
+	if o != operator.File_ {
+		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", o)
 	}
 
 	err := f.(*os.File).Close()
@@ -324,9 +325,9 @@ func prClose(m *machine.T) {
 //    m: Virtual machine.
 func prReadBin(m *machine.T) {
 	tk1 := m.PopT(token.Native)
-	sym, f, _ := tk1.N()
-	if sym != symbol.File_ {
-		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", sym)
+	o, f, _ := tk1.N()
+	if o != operator.File_ {
+		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", o)
 	}
 
 	bs := make([]byte, BufferSize)
@@ -335,11 +336,11 @@ func prReadBin(m *machine.T) {
 		excf(m, "Fail reading '%v'.", tk1.StringDraft())
 	}
 
-	m.Push(token.NewN(symbol.Blob_, bs[:sz], m.MkPos()))
+	m.Push(token.NewN(operator.Blob_, bs[:sz], m.MkPos()))
 }
 
 // Returns a File and a Iterator over lines of 'p'.
-// File is intendet to close it after use the Iterator.
+// File is intendet to close it after using the Iterator.
 // Lines are read without end of line.
 //    m: Virtual machine.
 func prLines(m *machine.T) {
@@ -362,22 +363,22 @@ func prLines(m *machine.T) {
 		return
 	})
 
-	m.Push(token.NewN(symbol.File_, f, m.MkPos()))
-	m.Push(token.NewN(symbol.Iterator_, i, m.MkPos()))
+	m.Push(token.NewN(operator.File_, f, m.MkPos()))
+	m.Push(token.NewN(operator.Iterator_, i, m.MkPos()))
 }
 
 // Writes a Blob in 'f'
 //    m: Virtual machine.
 func prWriteBin(m *machine.T) {
 	tk2 := m.PopT(token.Native)
-	sym, b, _ := tk2.N()
-	if sym != symbol.Blob_ {
-		m.Failt("\n Expected: Blob object.\n  Actual  : '%v'.", sym)
+	o, b, _ := tk2.N()
+	if o != operator.Blob_ {
+		m.Failt("\n Expected: Blob object.\n  Actual  : '%v'.", o)
 	}
 	tk1 := m.PopT(token.Native)
-	sym, f, _ := tk1.N()
-	if sym != symbol.File_ {
-		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", sym)
+	o, f, _ := tk1.N()
+	if o != operator.File_ {
+		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", o)
 	}
 
 	_, err := f.(*os.File).Write(b.([]byte))
@@ -391,9 +392,9 @@ func prWriteBin(m *machine.T) {
 func prWriteText(m *machine.T) {
 	s := popStr(m)
 	tk1 := m.PopT(token.Native)
-	sym, f, _ := tk1.N()
-	if sym != symbol.File_ {
-		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", sym)
+	o, f, _ := tk1.N()
+	if o != operator.File_ {
+		m.Failt("\n Expected: File object.\n  Actual  : '%v'.", o)
 	}
 
 	_, err := f.(*os.File).Write([]byte(s))
@@ -403,20 +404,10 @@ func prWriteText(m *machine.T) {
 }
 
 // Processes file procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'file' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'file' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+func Proc(m *machine.T, proc symbol.T) {
+	switch proc {
 	case symbol.New("cwd"):
 		prCwd(m)
 	case symbol.New("cd"):
@@ -425,10 +416,10 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prMkdir(m)
 	case symbol.New("dir"):
 		prDir(m)
-	case symbol.New("directory?"):
+	case symbol.New("isDirectory"):
 		prIsDirectory(m)
 	// ----
-	case symbol.New("exists?"):
+	case symbol.New("exists"):
 		prExists(m)
 	case symbol.New("del"):
 		prDel(m)
@@ -441,9 +432,9 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("tmp"):
 		prTmp(m)
 	// ----
-	case symbol.New("regular?"):
+	case symbol.New("isRegular"):
 		prIsRegular(m)
-	case symbol.New("link?"):
+	case symbol.New("isLink"):
 		prIsLink(m)
 	case symbol.New("modified"):
 		prModified(m)
@@ -475,6 +466,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("writeText"):
 		prWriteText(m)
 	default:
-		m.Failt("'file' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'file' does not contains the procedure '%v'.", proc.String())
 	}
 }

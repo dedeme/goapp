@@ -3,82 +3,82 @@
 
 /// Iterator procedures.
 
-() new =>
+() : new =
 /// *p -> <=Iterator>
 ///
 /// Creates a new iterator.
 ///   next: Function (- -> *b) that returns next element of iterator and 'true'
 ///         or an indetermined value and 'false' if there are not more elements.
 
-() empty =>
+() : empty =
 /// - -> <=Iterator>
 ///
 /// Returns an iterator without elements.
 
-() unary =>
+() : unary =
 /// * -> <=Iterator>
 ///
 /// Returns an interator whose unique element is 'e'.
 ///   e: Element to include in the iterator.
 
-() from =>
-/// l -> <=Iterator>
+() : from =
+/// a -> <=Iterator>
 ///
 /// Creates Iterator from List.
-///   l -> A list.
+///   a -> An array.
 
-() range =>
+() : range =
 /// ii -> <=Iterator>
 ///
 /// Returns an iterator of integers from begin (inclusive) to end (exclusive)
 ///   begin: Start of numbers.
 ///   end  : End of numbers.
 
-() range0 =>
+() : range0 =
 /// i -> <=Iterator>
 ///
 /// Returns an iterator of integers from 0 (inclusive) to end (exclusive)
 ///   end: End of numbers.
 
-() runes =>
+() : runes =
 /// s -> <=Iterator>
 ///
 /// Returns an iterator with the runes of 's'.
 /// Throws "Str error" if 's' is not a valid 'UTF8' string.
 ///   s: A string.
 
-() has =>
+() : has =
 /// <=Iterator> -> b
 ///
 /// Returns 'true' if 'i' has more elements.
 ///   i: An iterator.
 
-() peek =>
+() : peek =
 /// <=Iterator> -> *
 ///
 /// Returns the current element of 'i', but does not advance to the next one.
 ///   i: An iterator.
 
-() next =>
+() : next =
 /// <=Iterator> -> *
 ///
 /// Returns the current element of 'i' and advances to the next one.
 ///   i: An iterator.
 
-() + =>
+() : add =
 /// <=Iterator><=Iterator> -> <=Iterator>
 ///
 /// Returns an iterator joining i2 after i1.
 ///   i1: An iterator.
 ///   i2: Another iterator.
 
-() ++ =>
-/// l -> <=Iterator>
+() : join =
+/// a -> <=Iterator>
 ///
 /// Returns an interator joining iteratos in 'ls'.
-///   ls: A list of iterators.
+///   ls: An array of iterators.
 
-() drop =>
+() : drop =
 /// <=Iterator>i -> <=Iterator>
 ///
 /// Returns an iterator with the elements of 'i' after the 'n' one (if n <= 0
@@ -87,7 +87,7 @@
 ///   i: An iterator.
 ///   n: Elments to skip.
 
-() dropf =>
+() : dropf =
 /// <=Iterator>p -> <=Iterator>
 ///
 /// Returns an iterator with the elements of 'i' after the firts ones which
@@ -95,35 +95,35 @@
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of 'i'.
 
-() filter =>
+() : filter =
 /// <=Iterator>p -> <=Iterator>
 ///
 /// Returns an iterator with the elements of 'i' after which accomplish 'pr'.
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test every element of 'i'.
 
-() map =>
+() : map =
 /// <=Iterator>p -> <=Iterator>
 ///
 /// Returns an iterator with results of apply 'pr' to each element of 'i'.
 ///   i : An iterator.
 ///   pr: Procedure (* -> *) to transform elements of 'i'.
 
-() push =>
+() : push =
 /// <=Iterator>* -> <=Iterator>
 ///
 /// Adds an element at the end of 'i' in a new iterator.
 ///   i: An iterator.
 ///   e: An element.
 
-() push0 =>
+() : push0 =
 /// <=Iterator>* -> <=Iterator>
 ///
 /// Adds an element at the end of 'i' in a new iterator.
 ///   i: An iterator.
 ///   e: An element.
 
-() take =>
+() : take =
 /// <=Iterator>i -> <=Iterator>
 ///
 /// Returns an iterator with the first 'n' elements of 'i' (if n <= 0 returns
@@ -132,14 +132,14 @@
 ///   i: An iterator.
 ///   n: Elments to skip.
 
-() takef =>
+() : takef =
 /// <=Iterator>p -> <=Iterator>
 ///
 /// Returns an iterator with the first elements of 'i' which accomplish 'pr'.
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of 'i'.
 
-() zip =>
+() : zip =
 /// <=Iterator><=Iterator> -> <=Iterator>
 ///
 /// Returns an iterator with pairs of elements from i1 and i2. The length of
@@ -147,7 +147,7 @@
 ///   i1: An iterator.
 ///   i2: Another iterator.
 
-() zip3 =>
+() : zip3 =
 /// <=Iterator><=Iterator><=Iterator> -> <=Iterator>
 ///
 /// Returns an iterator with triples of elements from i1, i2 and i2. The length
@@ -156,52 +156,52 @@
 ///   i2: Another iterator.
 ///   i3: Another iterator.
 
-() all? =>
+() : all =
 /// <=Iterator>p -> b
 ///
 /// Returns 'true' if each element of 'i' returns 'true' with 'pr'.
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of 'i'.
 
-() any? =>
+() : any =
 /// <=Iterator>p -> b
 ///
 /// Returns 'true' if any element of 'i' returns 'true' with 'pr'.
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of 'i'.
 
-() contains? =>
+() : contains =
 /// <=Iterator>* -> b
 ///
 /// Returns 'true' if 'i' contains 'e' comparing with '=='.
 ///   i: An iterator.
 ///   e: Element.
 
-() each =>
+() : each =
 /// <=Iterator>p -> -
 ///
 /// Executes 'pr' with each element of 'i'.
 ///
 /// Example:
-///   [] l0 =
-///   [2, 4] it.from (e =; l0 e 2 * list.push) it.each; l0 [4, 8] expect
+///   [] : a0 =
+///   [2, 4] it.from (: e =; a0 e 2 * arr.push) it.each; a0 [4, 8] expect
 ///
 ///   i : An iterator.
 ///   pr: Procedure (* -> -) to run.
 
-() eachIx =>
+() : eachIx =
 /// <=Iterator>p -> -
 ///
 /// Executes 'pr' with each element of 'i' and its index.
 ///
 /// Example:
-///   [] l0 =
-///   [2, 4] it.from (i =; e =; l0 e i * list.push) it.eachIx; l0 [0, 4] expect
+///   [] : a0 =
+///   [2, 4] it.from (: i e =; a0 e i * arr.push) it.eachIx; a0 [0, 4] expect
 ///
 ///   i : An iterator.
 ///   pr: Procedure (*i -> -) to run.
 
-() eq? =>
+() : eqp =
 /// <=Iterator><=Iterator>p -> b
 ///
 /// Retruns 'true' if i1 has the same number of elements that i2 and each
@@ -210,7 +210,7 @@
 ///   i2: Another iterator.
 ///   pr: Procedure (** -> b) to tests elements.
 
-() neq? =>
+() : neqp =
 /// <=Iterator><=Iterator>p -> b
 ///
 /// Retruns 'eq? !'.
@@ -218,7 +218,7 @@
 ///   i2: Another iterator.
 ///   pr: Procedure (** -> b) to tests elements.
 
-() == =>
+() : eq =
 /// <=Iterator><=Iterator> -> b
 ///
 /// Retruns 'true' if i1 has the same number of elements that i2 and each
@@ -226,14 +226,14 @@
 ///   i1: An iterator.
 ///   i2: Another iterator.
 
-() != =>
+() : neq =
 /// <=Iterator><=Iterator> -> b
 ///
 /// Retruns '== !'.
 ///   i1: An iterator.
 ///   i2: Another iterator.
 
-() find =>
+() : find =
 /// <=Iterator>p -> *
 ///
 /// Returns a option 'some' with the first element which returns 'true' with
@@ -241,7 +241,7 @@
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of i.
 
-() index =>
+() : index =
 /// <=Iterator>* -> i
 ///
 /// Returns the index of the first element of 'i' equals to 'e' or -1 if such
@@ -249,7 +249,7 @@
 ///   i: An iterator.
 ///   e: Element to find,
 
-() indexf =>
+() : indexf =
 /// <=Iterator>pr -> i
 ///
 /// Returns the index of the first element of 'i' that returns 'true' with pr
@@ -257,7 +257,7 @@
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of i.
 
-() lastIndex =>
+() : lastIndex =
 /// <=Iterator>* -> i
 ///
 /// Returns the index of the last element of 'i' equals to 'e' or -1 if such
@@ -265,7 +265,7 @@
 ///   i: An iterator.
 ///   e: Element to find,
 
-() lastIndexf =>
+() : lastIndexf =
 /// <=Iterator>pr -> i
 ///
 /// Returns the index of the last element of 'i' that returns 'true' with pr
@@ -273,7 +273,7 @@
 ///   i : An iterator.
 ///   pr: Procedure (* -> b) to test elements of i.
 
-() reduce =>
+() : reduce =
 /// <=Iterator>*pr -> *
 ///
 /// Returns the result of apply 'p' over 'seed' and each element of 'i' in turn.
@@ -285,29 +285,29 @@
 ///   seed: Object to start application of 'pr'
 ///   pr  : Procedure (** -> *)(seed, element -> newSeed) modify seed.
 
-() to =>
-/// <=Iterator> -> l
+() : to =
+/// <=Iterator> -> a
 ///
-/// Returns a list with elements of 'i'.
+/// Returns an array with elements of 'i'.
 ///   i: An iterator.
 
-() reverse =>
+() : reverse =
 /// <=Iterator> -> <=Iterator>
 ///
 /// Returns the elements of i in reverse order.
 ///
-/// NOTE: This procedure creates a list with elements of 'i'.
+/// NOTE: This procedure creates an array with elements of 'i'.
 ///   i: An iterator.
 
-() shuffle =>
+() : shuffle =
 /// <=Iterator> -> <=Iterator>
 ///
 /// Returns the elements of i in random order.
 ///
-/// NOTE: This procedure creates a list with elements of 'i'.
+/// NOTE: This procedure creates an array with elements of 'i'.
 ///   i: An iterator.
 
-() sort =>
+() : sort =
 /// <=Iterator>p -> <=Iterator>
 ///
 /// Returns the elements of i ordered by 'pr'.
@@ -316,33 +316,31 @@
 ///   [1, 4, 2] it.from (<) it.sort it.to [1, 2, 4] expect
 ///   [1, 4, 2] it.from (>) it.sort it.to [4, 2, 1] expect
 ///
-/// NOTE: This procedure creates a list with elements of 'i'.
+/// NOTE: This procedure creates an array with elements of 'i'.
 ///   i : An iterator.
 ///   pr: Procedure (** -> b) for sorting.
 
-() box =>
-/// l -> <=Iterator>
+() : box =
+/// a -> <=Iterator>
 ///
-/// Returns an infinite iterator with elements of a list randomly placed in rows
-/// such that each row consume all its elements.
+/// Returns an infinite iterator with elements of an array randomly placed in
+/// rows such that each row consume all its elements.
 ///
 /// Example:
 ///   [1, 2, 3] it.box 6 it.take it.to puts
 /// That could returns '[3,2,1,3,1,2]'
-/// NOTE: This procedure creates a list with elements of 'i'.
-///   lst: A list.
+///   a: An array.
 
-() box2 =>
-/// l -> <=Iterator>
+() : box2 =
+/// a -> <=Iterator>
 ///
-/// Returns a 'it.box' from a list of 'tp' which first element is the number of
-/// duplicates and the second is the element to put in list for the 'it.box'.
-/// Throws "Box error" if lst is not a valid list.
+/// Returns an 'it.box' from an array of 'tp' (tuples) which first element is
+/// the number of duplicates and the second is the element to put in the array.
+/// Throws an error if a is not a valid array.
 ///
 /// Example:
 ///   [[2, "a"], [3, "b"]] it.box2 8 it.take it.to puts
 /// That could returns '["b","a","b","a","b","b","b","a"]'
-/// NOTE: This procedure creates a list with elements of 'i'.
-///   lst: A list of pairs [i, *].
+///   a: An array of pairs [i, *].
 
 

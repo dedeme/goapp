@@ -1,4 +1,4 @@
-// Copyright 24-Jul-2020 ºDeme
+// Copyright 09-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // System procedures.
@@ -8,6 +8,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 	"io/ioutil"
@@ -16,8 +17,8 @@ import (
 	"os/exec"
 	"path"
 	"strings"
+	"syscall"
 	"time"
-  "syscall"
 )
 
 var home, udir, uname, locale string
@@ -118,7 +119,7 @@ func prInit(m *machine.T) {
 	tk := m.PopT(token.String)
 	s, _ := tk.S()
 	if len(s) == 0 {
-		m.Fail("Sys error", "Empty string is not allowed for 'home' directory")
+		m.Fail(machine.ESys(), "Empty string is not allowed for 'home' directory")
 	}
 
 	for _, e := range os.Environ() {
@@ -137,7 +138,7 @@ func prInit(m *machine.T) {
 	}
 
 	if udir == "" {
-		m.Fail("Sys error", "User directory can not be set")
+		m.Fail(machine.ESys(), "User directory can not be set")
 	}
 
 	home = path.Join(udir, ".dmStackApp", s)
@@ -184,16 +185,16 @@ func prArgs(m *machine.T) {
 	for _, e := range os.Args {
 		args = append(args, token.NewS(e, pos))
 	}
-	m.Push(token.NewL(args, pos))
+	m.Push(token.NewA(args, pos))
 }
 
 // Executes an external program.
 //    m: Virtual machine.
 func prCmd(m *machine.T) {
-	tk := m.PopT(token.List)
-	l, _ := tk.L()
+	tk := m.PopT(token.Array)
+	a, _ := tk.A()
 	var args []string
-	for _, e := range l {
+	for _, e := range a {
 		s, ok := e.S()
 		if !ok {
 			m.Failt(
@@ -203,36 +204,41 @@ func prCmd(m *machine.T) {
 		args = append(args, s)
 	}
 	if len(args) == 0 {
-		m.Fail("Sys error", "'cmd' argument list is empty.")
+		m.Fail(machine.ESys(), "'cmd' argument list is empty.")
 	}
 
 	cmd := exec.Command(args[0], args[1:]...)
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		m.Fail("Sys error", "Pipe of stdout failed in cmd '%v'.", args[0])
+		m.Fail(machine.ESys(), "Pipe of stdout failed in cmd '%v'.", args[0])
 
 	}
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		m.Fail("Sys error", "Pipe of stderror failed in cmd '%v'.", args[0])
+		m.Fail(machine.ESys(), "Pipe of stderror failed in cmd '%v'.", args[0])
 	}
 
 	if err := cmd.Start(); err != nil {
-		m.Fail("Sys error", "Fail starting cmd '%v'.", args[0])
+		m.Fail(machine.ESys(), "Fail starting cmd '%v'.", args[0])
 	}
 
 	rpOut, err := ioutil.ReadAll(stdout)
 	if err != nil {
-		m.Fail("Sys error", "Fail reading stdout of cmd '%v'.", args[0])
+		m.Fail(machine.ESys(), "Fail reading stdout of cmd '%v'.", args[0])
 	}
 
 	rpError, err := ioutil.ReadAll(stderr)
 	if err != nil {
-		m.Fail("Sys error", "Fail reading sterror of cmd '%v'.", args[0])
+		m.Fail(machine.ESys(), "Fail reading sterror of cmd '%v'.", args[0])
 	}
 
 	if err := cmd.Wait(); err != nil {
-		m.Fail("Sys error", "Fail waiting cmd '%v'.", args[0])
+		if rpError == nil || len(rpError) == 0 {
+			m.Push(token.NewS(string(rpOut), m.MkPos()))
+			m.Push(token.NewS(err.Error(), m.MkPos()))
+			return
+		}
 	}
 
 	m.Push(token.NewS(string(rpOut), m.MkPos()))
@@ -251,19 +257,17 @@ func prSleep(m *machine.T) {
 //    m: Virtual machine.
 func prFreeThread(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
-	go run(machine.NewIsolate(m.SourceDir, m.Pmachines, p))
+	go run(machine.NewThread(m.Source, m.Pmachines, tk))
 }
 
 // Run a joinable thread.
 //    m: Virtual machine.
 func prThread(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	ch := make(chan int)
-	m.Push(token.NewN(symbol.Thread_, ch, m.MkPos()))
+	m.Push(token.NewN(operator.Thread_, ch, m.MkPos()))
 	go func() {
-		run(machine.NewIsolate(m.SourceDir, m.Pmachines, p))
+		run(machine.NewThread(m.Source, m.Pmachines, tk))
 		ch <- 1
 	}()
 }
@@ -273,9 +277,9 @@ func prThread(m *machine.T, run func(m *machine.T)) {
 func prJoin(m *machine.T) {
 	tk := m.PopT(token.Native)
 	sy, ch, _ := tk.N()
-	if sy != symbol.Thread_ {
+	if sy != operator.Thread_ {
 		m.Failt(
-			"Expected: Value of type <= Thread>.\nActual  : '%v'.",
+			"Expected: Value of type <=Thread>.\nActual  : '%v'.",
 			tk.StringDraft(),
 		)
 	}
@@ -325,7 +329,7 @@ func prGetText(m *machine.T) {
 	tk := m.PopT(token.String)
 	tx, _ := tk.S()
 	if tx == "" {
-		m.Fail("Sys error", "Unexpected empty string")
+		m.Fail(machine.ESys(), "Unexpected empty string")
 	}
 	tx += "\n"
 	var r strings.Builder
@@ -392,19 +396,14 @@ func prGetPass(m *machine.T) {
 }
 
 // Processes system procedures.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'sys' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt("\n  Expected: 'sys' procedure.\n  Actual  : '%v'.", tk.StringDraft())
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+//    run : Function which running a machine.
+func Proc(m *machine.T, proc symbol.T, run func(m *machine.T)) {
+	switch proc {
 	case symbol.New("init"):
 		prInit(m)
-	case symbol.New("init?"):
+	case symbol.New("initialized"):
 		prIsInit(m)
 	case symbol.New("uname"):
 		prUname(m)
@@ -439,6 +438,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("getPass"):
 		prGetPass(m)
 	default:
-		m.Failt("'sys' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'sys' does not contains the procedure '%v'.", proc.String())
 	}
 }

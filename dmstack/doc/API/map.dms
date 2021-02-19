@@ -4,56 +4,61 @@
 /// Map procedures.
 /// NOTE: Operations over a map do not preserve its order.
 
-() new =>
+() : new =
 /// - -> m
 ///
 /// Creates an empty map.
 
-() from =>
-/// l -> m
+() : from =
+/// a -> m
 ///
 /// Creates a map from a list of 's, *' alternately.
 ///
 /// Example:
-///   ["one": 1, "two": 2, "three": 3] map.from : m3 =
+///   ["one", 1, "two", 2, "three", 3] map.from : m3 =
 ///
-///   ls: A list
+///   a: A list
 
-() copy =>
+() : copy =
 /// m -> m
 ///
 /// Makes a shallow copy of 'mp'
 ///   mp: A map.
 
-() size =>
+() : size =
 /// m -> i
 ///
 /// Returns the number of pairs of 'mp'.
 ///   mp: A map.
 
-() get =>
+() : get =
 /// ms -> *
 ///
 /// Returns the value of 'k'. If key is not found produces a "Map error".
+/// You can use '..' for this procedure:
+///   m "name" map.get
+/// can be writen as
+///   m ..name
+/// Note that '..' must be immediately before the name.
 ///   mp: A map.
 ///   k : A key.
 
-() oget =>
-/// ms -> l
+() : oget =
+/// ms -> a
 ///
-/// Returns an option (list with one element) with the value of 'k' or
-/// an empty option (empty list) if 'k' is missing.
+/// Returns an option (arr with one element) with the value of 'k' or
+/// an empty option (empty arr) if 'k' is missing.
 ///   mp: A map.
 ///   k : A key.
 
-() has? =>
+() : has =
 /// ms -> b
 ///
 /// Returns 'true' if 'mp' has the key 'k'.
 ///   mp: A map.
 ///   k : A key.
 
-() put =>
+() : put =
 /// ms* -> -
 ///
 /// Set the value of 'k' with 'v'. If 'k' already exists, its value is replaced
@@ -62,7 +67,7 @@
 ///   k : A key.
 ///   v : A value.
 
-() up =>
+() : up =
 /// msp -> -
 ///
 /// Set the value of 'k' with the result of apply 'pr' to the value of 'k'.
@@ -71,7 +76,7 @@
 ///   k : A key.
 ///   pr: Procedure (* -> *) to update a value.
 
-() remove =>
+() : remove =
 /// ms -> -
 ///
 /// Removes the pair 'k - value' from 'mp'. If 'k' is missing the procedure
@@ -79,7 +84,7 @@
 ///   mp: A map.
 ///   k : A key.
 
-() eq? =>
+() : eq =
 /// mmp -> b
 ///
 /// Returns 'true' if mp1 == mp2 using 'pr' as comparator.
@@ -92,7 +97,7 @@
 ///   mp2: Another map.
 ///   pr : Procedure (** -> b) to compare elements of maps.
 
-() neq? =>
+() : neq =
 /// mmp -> b
 ///
 /// Returns 'eq? !'. See 'map.eq?'.
@@ -101,35 +106,35 @@
 ///   pr : Procedure (** -> b) to compare elements of maps.
 
 
-() keys =>
-/// m - l
+() : keys =
+/// m - a
 ///
-/// Returns a list with the keys of 'mp'.
+/// Returns an array with the keys of 'mp'.
 ///   mp: A map.
 
-() values =>
-/// m - l
+() : values =
+/// m - a
 ///
-/// Returns a list with the values of 'mp'.
+/// Returns an array with the values of 'mp'.
 ///   mp: A map.
 
-() pairs =>
-/// m - l
+() : pairs =
+/// m - a
 ///
-/// Returns a list with the pairs [key: value] of 'mp'.
+/// Returns an array with the pairs [key: value] of 'mp'.
 ///
 /// Example:
-///   [ "one": 1, "two": 2, "three": 3 ] map.from : m3 =
+///   [ "one": 1, "two", 2, "three", 3 ] map.from : m3 =
 ///   m3 map.pairs puts // Produces '[["one",1],["two",2],["three",3]]'
 ///
 ///   mp: A map.
 
-() to =>
-/// m - l
+() : to =
+/// m - a
 ///
-/// Returns a list with a sequency 'key, value' of 'mp'.
+/// Returns an array with a sequency 'key, value' of 'mp'.
 /// Example:
-///   [ "one": 1, "two": 2, "three": 3 ] map.from : m3 =
+///   [ "one", 1, "two", 2, "three", 3 ] map.from : m3 =
 ///   m3 map.to puts // Produces '["one",1,"two",2,"three",3]'
 ///
 ///   mp: A map.

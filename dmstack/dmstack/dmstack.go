@@ -1,4 +1,4 @@
-// Copyright 24-Apr-2020 ºDeme
+// Copyright 03-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Start program.
@@ -9,9 +9,11 @@ import (
 	"github.com/dedeme/dmstack/args"
 	"github.com/dedeme/dmstack/imports"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/reader"
 	"github.com/dedeme/dmstack/runner"
 	"github.com/dedeme/dmstack/symbol"
+	"github.com/dedeme/dmstack/token"
 	"io/ioutil"
 	"os"
 	"path"
@@ -19,7 +21,6 @@ import (
 	"strings"
 )
 
-// Run main process and recover machine panics
 func run(m *machine.T) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -38,7 +39,7 @@ func run(m *machine.T) {
 }
 
 // Process main .dms file.
-func process(file, module string) {
+func process(file string, module symbol.T) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(err)
@@ -57,14 +58,22 @@ func process(file, module string) {
 	if !ok {
 		panic("Reader process does not return a Program")
 	}
+	if rd.LastChar() != "" {
+		rd.Fail(fmt.Sprintf("Unexpected end of program (%v)", rd.LastChar()))
+	}
 
-	m := machine.NewIsolate(path.Dir(file), []*machine.T{}, prg)
+	imports.Initialize(module)
+	m := machine.New(
+		module, []*machine.T{}, token.NewP(prg, token.NewPos(module, 0)),
+	)
 	run(m)
 }
 
 // Program entry.
 func main() {
+	operator.Initialize()
 	symbol.Initialize()
+
 	if ok := args.Initialize(); !ok {
 		return
 	}
@@ -79,9 +88,7 @@ func main() {
 		return
 	}
 
-	module := file[0 : len(file)-4]
-	source := symbol.New(module)
-	imports.PutOnWay(source)
-
+	module := symbol.New(file[0 : len(file)-4])
+	imports.Add(module)
 	process(file, module)
 }

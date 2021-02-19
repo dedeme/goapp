@@ -6,7 +6,13 @@
 /// Some procedures use 'runes' to indicate UTF-8 codes. Operations with
 /// them are slower than opreations with bytes.
 
-() cmp =>
+() : fromIso =
+/// s -> s
+///
+/// Creates an UTF-8 string for an ISO string.
+///   s: An ISO string
+
+() : cmp =
 /// ss -> i
 ///
 /// Returns 1, 0 or -1, according to if 's1' is >, == or < than 's2'. Strings
@@ -14,77 +20,77 @@
 ///   s1: A string.
 ///   s2: Another string.
 
-() == =>
+() : eq =
 /// ss -> b
 ///
 /// Returns 'true' if 's1' == 's2'. Strings are compared in locale.
 ///   s1: A string.
 ///   s2: Another string.
 
-() != =>
+() : neq =
 /// ss -> b
 ///
 /// Returns 'true' if 's1' != 's2'. Strings are compared in locale.
 ///   s1: A string.
 ///   s2: Another string.
 
-() > =>
+() : gt =
 /// ss -> b
 ///
 /// Returns 'true' if 's1' > 's2'. Strings are compared in locale.
 ///   s1: A string.
 ///   s2: Another string.
 
-() >= =>
+() : ge =
 /// ss -> b
 ///
 /// Returns 'true' if 's1' >= 's2'. Strings are compared in locale.
 ///   s1: A string.
 ///   s2: Another string.
 
-() < =>
+() : lt =
 /// ss -> b
 ///
 /// Returns 'true' if 's1' == 's2'. Strings are compared in locale.
 ///   s1: A string.
 ///   s2: Another string.
 
-() <= =>
+() : le =
 /// ss -> b
 ///
 /// Returns 'true' if 's1' == 's2'. Strings are compared in locale.
 ///   s1: A string.
 ///   s2: Another string.
 
-() starts? =>
+() : starts =
 /// ss -> b
 ///
 /// Returns 'true' if 's' starts with 'sub'.
 ///   s  : Container string.
 ///   sub: Substring to search.
 
-() ends? =>
+() : ends =
 /// ss -> b
 ///
 /// Returns 'true' if 's' ends with 'sub'.
 ///   s  : Container string.
 ///   sub: Substring to search.
 
-() len =>
+() : len =
 /// s -> i
 ///
 /// Returns the number of bytes of 's' (e.g. "año" str.len -> 4). See
 /// 'str.runesLen'.
 ///   s: A string.
 
-() runesLen =>
+() : runesLen =
 /// s -> i
 ///
 /// Returns the number of runes of 's' (e.g. "año" str.len -> 3). See
 /// 'str.len'. Throws a "Str error" if 's' is a bad 'UTF8' string.
 ///   s: A string.
 
-() get =>
+() : get =
 /// si -> s
 ///
 /// Returns the byte in position 'ix' (e.g. "año" 3 str.get -> "o" [ñ occupies
@@ -93,7 +99,7 @@
 ///   s : A string.
 ///   ix: Position 0-based index.
 
-() getRune =>
+() : getRune =
 /// si -> s
 ///
 /// Returns the rune in position 'ix' (e.g. "año" 2 str.get -> "o"). See
@@ -103,20 +109,20 @@
 ///   s : A string.
 ///   ix: Position 0-based index.
 
-() rune =>
+() : rune =
 /// s -> i
 ///
 /// Returns the rune code of the first rune of 's'. Throws "Str error" if 's'
 /// is empty or not a valid 'UTF8' string.
 ///   s: A non empty string.
 
-() fromRune =>
+() : fromRune =
 /// i -> s
 ///
 /// Returns the rune which corresponds to 'rn'.
 ///   rn: Rune code.
 
-() each =>
+() : each =
 /// sp -> -
 ///
 /// Executes 'p' passing it successively runes of 's' as strings.
@@ -130,7 +136,7 @@
 ///   s: A string.
 ///   p: Procedure type 's -> -'
 
-() index =>
+() : index =
 /// ss -> i
 ///
 /// Returns 0-based index of the first occurrence of 'sub' in 's', or -1 if
@@ -138,7 +144,7 @@
 ///   s  : A string.
 ///   sub: A substring to find.
 
-() indexFrom =>
+() : indexFrom =
 /// ssi -> i
 ///
 /// Returns 0-based index of the first occurrence of 'sub' in 's' from 'ix', or
@@ -148,7 +154,7 @@
 ///   sub: A substring to find.
 ///   ix : 0-based index (inclusive) to start searching.
 
-() lastIndex =>
+() : lastIndex =
 /// ss -> i
 ///
 /// Returns 0-based index of the last occurrence of 'sub' in 's', or -1 if
@@ -156,7 +162,7 @@
 ///   s  : A string.
 ///   sub: A substring to find.
 
-() replace =>
+() : replace =
 /// sss -> s
 ///
 /// Returns a new string with every occurrence of 'old' replaced by 'new' in
@@ -165,14 +171,14 @@
 ///   old: Old substring.
 ///   new: New substring.
 
-() join =>
+() : join =
 /// ls -> s
 ///
 /// Returns a string joining elements of list with 'sep'.
 ///   l  : List of strings.
 ///   sep: Separator to join the strings of 'l'.
 
-() split =>
+() : split =
 /// ss -> l
 ///
 /// Splits 's' using 'sep'.
@@ -189,7 +195,7 @@
 ///   s  : String to split.
 ///   sep: Separator.
 
-() splitTrim =>
+() : splitTrim =
 /// ss -> l
 ///
 /// Splits 's' using 'sep' and 'trimming' results.
@@ -206,64 +212,64 @@
 ///   s  : String to split.
 ///   sep: Separator.
 
-() trim =>
+() : trim =
 /// s -> s
 ///
 /// Returns a new string removing spaces at the beginning and at the end of
 /// 's'.
 ///   s: String to 'trimming'.
 
-() ltrim =>
+() : ltrim =
 /// s -> s
 ///
 /// Returns a new string removing spaces at the beginning of 's'.
 ///   s: String to 'trimming'.
 
-() rtrim =>
+() : rtrim =
 /// s -> s
 ///
 /// Returns a new string removing spaces at the end of 's'.
 ///   s: String to 'trimming'.
 
-() toUpper =>
+() : toUpper =
 /// s -> s
 ///
 /// Returns a new string with every rune in uppercase.
 ///   s: String to modify.
 
-() toLower =>
+() : toLower =
 /// s -> s
 ///
 /// Returns a new string with every rune in lowercase.
 ///   s: String to modify.
 
-() digits? =>
+() : digits =
 /// s -> b
 ///
 /// Returns 'true' if every rune of 's' is a digit (0-9). If 's' is empty,
 /// also returns 'true'.
 ///   s: String to evaluate.
 
-() number? =>
+() : number =
 /// s -> b
 ///
 /// Returns 'true' if 's' represents a number (float) in decimal notation.
 /// If 's' is empty, returns 'false'.
 ///   s: String to evaluate.
 
-() regularizeIso =>
+() : regularizeIso =
 /// s -> s
 ///
 /// Returns 's' replacing '.' by '' and ',' by '.'.
 ///   s: String to modify.
 
-() regularizeEn =>
+() : regularizeEn =
 /// s -> s
 ///
 /// Returns 's' replacing ',' by ''.
 ///   s: String to modify.
 
-() sub =>
+() : sub =
 /// sii -> s
 ///
 /// Returns a substring of 's' from 'begin' (inclusive) to 'end' (exclusive). If
@@ -276,14 +282,14 @@
 ///   begin: Index to start.
 ///   end  : Index to end.
 
-() left =>
+() : left =
 /// si -> s
 ///
 /// Equals to '0 end str.sub'
 ///   s    : A string.
 ///   end  : Index to end.
 
-() right =>
+() : right =
 /// si -> s
 ///
 /// Equals to 'begin : s str.len : str.sub'

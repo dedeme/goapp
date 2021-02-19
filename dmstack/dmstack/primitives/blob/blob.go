@@ -1,4 +1,4 @@
-// Copyright 29-Sep-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Blob procedures.
@@ -6,6 +6,7 @@ package blob
 
 import (
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 )
@@ -13,16 +14,16 @@ import (
 // Auxiliar function
 func popBlob(m *machine.T) []byte {
 	tk := m.PopT(token.Native)
-	sym, i, _ := tk.N()
-	if sym != symbol.Blob_ {
-		m.Failt("\n  Expected: Blob object.\n  Actual  : '%v'.", sym)
+	o, i, _ := tk.N()
+	if o != operator.Blob_ {
+		m.Failt("\n  Expected: Blob object.\n  Actual  : '%v'.", o)
 	}
 	return i.([]byte)
 }
 
 // Auxiliar function
 func pushBlob(m *machine.T, d []byte) {
-	m.Push(token.NewN(symbol.Blob_, d, m.MkPos()))
+	m.Push(token.NewN(operator.Blob_, d, m.MkPos()))
 }
 
 // Returns a '0' blob with length 'l'. If 'l' < 0, it raises a "Blob error".
@@ -31,7 +32,7 @@ func prNew(m *machine.T) {
 	tk := m.PopT(token.Int)
 	l, _ := tk.I()
 	if l < 0 {
-		m.Fail("Blob error", "Blob length < 0 (%v)", l)
+		m.Fail(machine.ERange(), "Blob length < 0 (%v)", l)
 	}
 	pushBlob(m, make([]byte, l))
 }
@@ -52,10 +53,10 @@ func prFill(m *machine.T) {
 // Returns a blob from a list of Int.
 //    m: Virtual machine.
 func prFrom(m *machine.T) {
-	tk1 := m.PopT(token.List)
-	l, _ := tk1.L()
-	b := make([]byte, len(l))
-	for i, tk := range l {
+	tk1 := m.PopT(token.Array)
+	a, _ := tk1.A()
+	b := make([]byte, len(a))
+	for i, tk := range a {
 		v, ok := tk.I()
 		if !ok {
 			m.Failt("\n  Expected: Int object.\n  Actual  : '%v'.", tk)
@@ -81,7 +82,7 @@ func prGet(m *machine.T) {
 	i, _ := tk1.I()
 	b := popBlob(m)
 	if i < 0 || i > int64(len(b)) {
-		m.Fail("Index out of range error", "%v", i)
+		m.Fail(machine.ERange(), "%v [0, %v]", i, len(b))
 	}
 	m.Push(token.NewI(int64(b[i]), m.MkPos()))
 }
@@ -96,7 +97,7 @@ func prSet(m *machine.T) {
 	i, _ := tk1.I()
 	b := popBlob(m)
 	if i < 0 || i > int64(len(b)) {
-		m.Fail("Index out of range error", "%v", i)
+		m.Fail(machine.ERange(), "%v [0, %v]", i, len(b))
 	}
 	b[i] = byte(v & 255)
 }
@@ -106,14 +107,13 @@ func prSet(m *machine.T) {
 //    m: Virtual machine.
 func prUp(m *machine.T, run func(m *machine.T)) {
 	tk2 := m.PopT(token.Procedure)
-	p, _ := tk2.P()
 	tk1 := m.PopT(token.Int)
 	i, _ := tk1.I()
 	b := popBlob(m)
 	if i < 0 || i > int64(len(b)) {
-		m.Fail("Index out of range error", "%v", i)
+		m.Fail(machine.ERange(), "%v [0, %v]", i, len(b))
 	}
-	m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+	m2 := machine.New(m.Source, m.Pmachines, tk2)
 	m2.Push(token.NewI(int64(b[i]), m.MkPos()))
 	run(m2)
 	tk3 := m2.PopT(token.Int)
@@ -175,10 +175,10 @@ func sub(m *machine.T, b []byte, begin, end int64) []byte {
 		end = l + end
 	}
 	if begin < 0 || begin > l {
-		m.Fail("Index out of range error", "%v", begin)
+		m.Fail(machine.ERange(), "%v [0, %v]", begin, l)
 	}
 	if end > l {
-		m.Fail("Index out of range error", "%v", end)
+		m.Fail(machine.ERange(), "%v (> %v)", end, l)
 	}
 	if end < begin {
 		end = begin
@@ -224,7 +224,7 @@ func prRight(m *machine.T) {
 
 // Concatenates two blobs.
 //    m: Virtual machine.
-func prPlus2(m *machine.T) {
+func prCat(m *machine.T) {
 	b2 := popBlob(m)
 	b1 := popBlob(m)
 	var r []byte
@@ -234,7 +234,7 @@ func prPlus2(m *machine.T) {
 
 // Returns b1 + b2
 //    m: Virtual machine.
-func prPlus(m *machine.T) {
+func prAdd(m *machine.T) {
 	b2 := popBlob(m)
 	b1 := popBlob(m)
 	l := len(b1)
@@ -251,7 +251,7 @@ func prPlus(m *machine.T) {
 
 // Returns b1 - b2
 //    m: Virtual machine.
-func prMinus(m *machine.T) {
+func prSubs(m *machine.T) {
 	b2 := popBlob(m)
 	b1 := popBlob(m)
 	l := len(b1)
@@ -322,11 +322,11 @@ func prXor(m *machine.T) {
 func prTo(m *machine.T) {
 	pos := m.MkPos()
 	b := popBlob(m)
-	var l []*token.T
+	var a []*token.T
 	for _, v := range b {
-		l = append(l, token.NewI(int64(v), pos))
+		a = append(a, token.NewI(int64(v), pos))
 	}
-	m.Push(token.NewL(l, pos))
+	m.Push(token.NewA(a, pos))
 }
 
 // Returns a String from a blob.
@@ -337,20 +337,12 @@ func prToStr(m *machine.T) {
 }
 
 // Processes date procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'blob' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'blob' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+// Processes date procedures.
+//    m   : Virtual machine.
+//    proc: Procedure
+//    run : Function which running a machine.
+func Proc(m *machine.T, proc symbol.T, run func(m *machine.T)) {
+	switch proc {
 	case symbol.New("new"):
 		prNew(m)
 	case symbol.New("fill"):
@@ -367,9 +359,9 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prUp(m, run)
 	case symbol.New("size"):
 		prSize(m)
-	case symbol.New("=="):
+	case symbol.New("eq"):
 		prEq(m)
-	case symbol.New("!="):
+	case symbol.New("neq"):
 		prNeq(m)
 	case symbol.New("sub"):
 		prSub(m)
@@ -377,23 +369,23 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prLeft(m)
 	case symbol.New("right"):
 		prRight(m)
-	case symbol.New("++"):
-		prPlus2(m)
-	case symbol.New("+"):
-		prPlus(m)
-	case symbol.New("-"):
-		prMinus(m)
-	case symbol.New("&"):
+	case symbol.New("cat"):
+		prCat(m)
+	case symbol.New("add"):
+		prAdd(m)
+	case symbol.New("subs"):
+		prSubs(m)
+	case symbol.New("and"):
 		prAnd(m)
-	case symbol.New("|"):
+	case symbol.New("or"):
 		prOr(m)
-	case symbol.New("^"):
+	case symbol.New("xor"):
 		prXor(m)
 	case symbol.New("to"):
 		prTo(m)
 	case symbol.New("toStr"):
 		prToStr(m)
 	default:
-		m.Failt("'blob' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'blob' does not contains the procedure '%v'.", proc.String())
 	}
 }

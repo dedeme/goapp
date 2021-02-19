@@ -1,9 +1,10 @@
-// Copyright 16-May-2020 ºDeme
+// Copyright 06-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 package primitives
 
 import (
+	"fmt"
 	"github.com/dedeme/dmstack/imports"
 	"github.com/dedeme/dmstack/machine"
 	"github.com/dedeme/dmstack/reader"
@@ -11,8 +12,6 @@ import (
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 	"io/ioutil"
-	"os"
-	"path"
 	"sync"
 )
 
@@ -21,65 +20,54 @@ import (
 //    run: Function which running a machine.
 func prRun(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	proc, _ := tk.P()
-	run(machine.New(m.SourceDir, m.Pmachines, proc))
-}
-
-// Execute a procedure in an isolated machine. The stack of the isolated
-// machine is put en the current stack as a list.
-//    m: Virtual machine
-//    run: Function which running a machine.
-func prData(m *machine.T, run func(m *machine.T)) {
-	tk := m.PopT(token.Procedure)
-	proc, _ := tk.P()
-	m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, proc)
-	run(m2)
-	m.Push(token.NewL(*m2.Stack, m.MkPos()))
+	run(machine.New(m.Source, m.Pmachines, tk))
 }
 
 // Process an 'import'.
 //    m: Virtual machine.
 //    run: Function which running a machine.
 func prImport(m *machine.T, run func(m *machine.T)) {
-	tk := m.Pop()
-	sourceKv, err := imports.ReadSymbol(tk)
-	if err != nil {
-		m.Fail("Import error", err.Error())
+	tk := m.PopT(token.Symbol)
+	sym, _ := tk.Sy()
+	if heap, ok := imports.Get(sym); ok {
+		if heap == nil {
+			bs, err := ioutil.ReadFile(sym.String() + ".dms")
+			if err != nil {
+				m.Fail(
+					machine.EImport(),
+					"File '%v' can not be read", sym.String()+".dms",
+				)
+			}
+
+			rd := reader.New(sym, string(bs))
+			tkP := rd.Process()
+			_, ok := tkP.P()
+			if !ok {
+				m.Fail(
+					machine.EImport(),
+					"File '%v' is not a valid program", sym.String()+".dms",
+				)
+			}
+			if rd.LastChar() != "" {
+				m.Fail(
+					machine.EImport(),
+					"Unexpected end of program (%v) in %v",
+					rd.LastChar(),
+					sym.String()+".dms",
+				)
+			}
+
+			imports.Initialize(sym)
+			m2 := machine.NewThread(sym, []*machine.T{}, tkP)
+			run(m2)
+			for k, v := range m2.Heap {
+				imports.AddKey(sym, k, v)
+			}
+		}
+		return
 	}
-	source := sourceKv.Value
-	sourcef := path.Clean(path.Join(m.SourceDir, source.String()))
-	sourcefSym := symbol.New(sourcef)
-
-	onWay := imports.IsOnWay(sourcefSym)
-	_, imported := imports.Get(sourcefSym)
-	if !onWay && !imported {
-		f := sourcef + ".dms"
-		if _, err := os.Stat(f); err != nil {
-			m.Fail("Import error", "File '%v' not found.", f)
-			return
-		}
-
-		imports.PutOnWay(sourcefSym)
-		bs, err := ioutil.ReadFile(f)
-		if err != nil {
-			panic(err)
-		}
-		rd := reader.New(sourcef, string(bs))
-
-		prg, ok := rd.Process().P()
-		if !ok {
-			m.Fail("Import error", "Reader process does not return a Program.")
-		}
-
-		m2 := machine.NewIsolate(path.Dir(f), m.Pmachines, prg)
-		run(m2)
-
-		imports.Add(sourcefSym, m2.Heap)
-		imports.QuitOnWay(sourcefSym)
-	} else if onWay {
-		m.Fail("Import error", "Cyclic import of '%v'.", sourcefSym)
-	}
-	m.ImportsAdd(sourcefSym)
+	// sym should be registred by the reader.
+	panic(fmt.Sprintf("Symbol '%v' not found", sym))
 }
 
 // Process an 'if'.
@@ -93,7 +81,7 @@ func prIf(m *machine.T, run func(m *machine.T)) {
 		b, ok := tk2.B()
 		if ok {
 			if b {
-				run(machine.New(m.SourceDir, m.Pmachines, p))
+				run(machine.New(m.Source, m.Pmachines, tk))
 			}
 			return
 		}
@@ -138,35 +126,26 @@ func prIf(m *machine.T, run func(m *machine.T)) {
 		a2, tk1, _ := stack.Pop(a)
 		a3, tk2, _ := stack.Pop(a2)
 		a = a3
-		p1, _ := tk1.P()
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p1)
+		m2 := machine.New(m.Source, m.Pmachines, tk1)
 		run(m2)
-		if len(*m2.Stack) != 1 {
+		l := len(*m.Stack) - 1
+		if l < 0 || (*m.Stack)[l].Type() != token.Bool {
 			m.Failt(
-				"\n  Expected: Only one value returned of type Bool."+
-					"\n  Actual  : %v values returned."+
-					"\nIn '%v'.",
-				len(*m2.Stack), tk1,
+				"\n  Expected: Procedure with a Bool return."+
+					"\n  Actual  : '%v'.",
+				tk1.StringDraft(),
 			)
 		}
-		tk11 := m2.Pop()
-		b, ok := tk11.B()
-		if !ok {
-			m.Failt(
-				"\n  Expected: Value of type Bool."+
-					"\n  Actual  : %v."+
-					"\nIn '%v'.",
-				tk11, tk1,
-			)
-		}
+
+		tk11 := m.Pop()
+		b, _ := tk11.B()
 		if b {
-			p2, _ := tk2.P()
-			run(machine.New(m.SourceDir, m.Pmachines, p2))
+			run(machine.New(m.Source, m.Pmachines, tk2))
 			return
 		}
 	}
 	if p != nil {
-		run(machine.New(m.SourceDir, m.Pmachines, p))
+		run(machine.New(m.Source, m.Pmachines, tk))
 	}
 }
 
@@ -179,12 +158,10 @@ func prElif(m *machine.T, run func(m *machine.T)) {
 	tk3 := m.PopT(token.Bool)
 	b, _ := tk3.B()
 	if b {
-		p, _ := tk2.P()
-		run(machine.New(m.SourceDir, m.Pmachines, p))
+		run(machine.New(m.Source, m.Pmachines, tk2))
 		return
 	}
-	p, _ := tk1.P()
-	run(machine.New(m.SourceDir, m.Pmachines, p))
+	run(machine.New(m.Source, m.Pmachines, tk1))
 }
 
 // Process a loop.
@@ -192,9 +169,8 @@ func prElif(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func prLoop(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	for {
-		run(machine.New(m.SourceDir, m.Pmachines, p))
+		run(machine.New(m.Source, m.Pmachines, tk))
 		tk2, ok := stack.Peek(*m.Stack)
 		if ok {
 			sy, ok2 := tk2.Sy()
@@ -212,35 +188,25 @@ func prLoop(m *machine.T, run func(m *machine.T)) {
 func prWhile(m *machine.T, run func(m *machine.T)) {
 	tk1 := m.PopT(token.Procedure)
 	tk2 := m.PopT(token.Procedure)
-	p, _ := tk1.P()
-	pb, _ := tk2.P()
 	for {
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, pb)
+		m2 := machine.New(m.Source, m.Pmachines, tk2)
 		run(m2)
+		l := len(*m.Stack) - 1
+		if l < 0 || (*m.Stack)[l].Type() != token.Bool {
+			m.Failt(
+				"\n  Expected: Procedure with a Bool return."+
+					"\n  Actual  : '%v'.",
+				tk2.StringDraft(),
+			)
+		}
 
-		if len(*m2.Stack) != 1 {
-			m.Failt(
-				"\n  Expected: Only one value returned of type Bool."+
-					"\n  Actual  : %v values returned."+
-					"\nIn '%v'.",
-				len(*m2.Stack), tk2,
-			)
-		}
-		tk21 := m2.Pop()
-		b, ok := tk21.B()
-		if !ok {
-			m.Failt(
-				"\n  Expected: Value of type Bool."+
-					"\n  Actual  : %v."+
-					"\nIn '%v'.",
-				tk21, tk2,
-			)
-		}
+		tk21 := m.Pop()
+		b, _ := tk21.B()
 		if !b {
 			break
 		}
 
-		run(machine.New(m.SourceDir, m.Pmachines, p))
+		run(machine.New(m.Source, m.Pmachines, tk1))
 		tk12, ok := stack.Peek(*m.Stack)
 		if ok {
 			sy, ok2 := tk12.Sy()
@@ -257,13 +223,12 @@ func prWhile(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func prFor(m *machine.T, run func(m *machine.T)) {
 	tk1 := m.PopT(token.Procedure)
-	p, _ := tk1.P()
 	tk2 := m.Pop()
 	step := int64(1)
 	begin := int64(0)
 	end, ok := tk2.I()
 	if !ok {
-		l, ok := tk2.L()
+		a, ok := tk2.A()
 		if !ok {
 			m.Failt(
 				"\n  Expected: Value of type Int or List."+
@@ -271,32 +236,32 @@ func prFor(m *machine.T, run func(m *machine.T)) {
 				tk2.StringDraft(),
 			)
 		}
-		ok = len(l) == 2 || len(l) == 3
+		ok = len(a) == 2 || len(a) == 3
 		var ok1, ok2, ok3 bool
 		if ok {
-			begin, ok1 = l[0].I()
-			end, ok2 = l[1].I()
+			begin, ok1 = a[0].I()
+			end, ok2 = a[1].I()
 			ok3 = true
-			if len(l) == 3 {
-				step, ok3 = l[2].I()
+			if len(a) == 3 {
+				step, ok3 = a[2].I()
 			}
 		}
 		if !(ok && ok1 && ok2 && ok3) {
-			m.Fail(
+			m.Failt(
 				"\n  Expected: [Int, Int] or [Int, Int, Int]."+
 					"\n  Actual  : %v.",
 				tk2.StringDraft(),
 			)
 		}
 		if step == 0 {
-			m.Fail("For error", "Step can not be 0")
+			m.Fail(machine.EMachine(), "For step can not be 0")
 		}
 	}
 
 	pos := m.MkPos()
 	if step > 0 {
 		for i := begin; i < end; i += step {
-			m2 := machine.New(m.SourceDir, m.Pmachines, p)
+			m2 := machine.New(m.Source, m.Pmachines, tk1)
 			m2.Push(token.NewI(i, pos))
 			run(m2)
 		}
@@ -304,7 +269,7 @@ func prFor(m *machine.T, run func(m *machine.T)) {
 	}
 
 	for i := begin; i > end; i += step {
-		m2 := machine.New(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk1)
 		m2.Push(token.NewI(i, pos))
 		run(m2)
 	}
@@ -317,9 +282,7 @@ var mutex sync.Mutex
 //    run: Function which running a machine.
 func prSync(m *machine.T, run func(m *machine.T)) {
 	tk1 := m.PopT(token.Procedure)
-	p, _ := tk1.P()
-
 	mutex.Lock()
-	run(machine.New(m.SourceDir, m.Pmachines, p))
+	run(machine.New(m.Source, m.Pmachines, tk1))
 	mutex.Unlock()
 }

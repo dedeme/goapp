@@ -3,26 +3,26 @@
 
 /// B64 converters.
 
-() encode =>
+() : encode =
 /// s -> s
 ///
 /// Returns a B64 string from a normal string.
 ///   s: Normal string to convert.
 
-() encodeBytes =>
+() : encodeBytes =
 /// <=Blob> -> s
 ///
 /// Returns a B64 string from a Blob.
 ///   b: Blob.
 
-() decode =>
+() : decode =
 /// s -> s
 ///
 /// Returns a string from a B64 string. If decoding fails, it raises a
 /// "B64 error".
 ///   b64: String to convert.
 
-() decodeBytes =>
+() : decodeBytes =
 /// s -> <=Blob>
 ///
 /// Returns a Blob from a B64 string. If decoding fails, it raises a

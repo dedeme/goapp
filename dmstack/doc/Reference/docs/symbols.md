@@ -148,6 +148,11 @@ This symbol is substituted by the module path symbol.
 Used after a new symbol to save a token. If the symbol is not a new one,
 an error will be raised.
 
+**`=>` Symbol**
+
+Used after a new symbol to save an exported token. If the symbol is not a new
+one, an error will be raised.
+
 **Global Module**
 
 See [API](http://localhost/dmcgi/DmsDoc/?_system@global).

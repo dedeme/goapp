@@ -1,4 +1,4 @@
-// Copyright 08-May-2020 ºDeme
+// Copyright 04-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Management of []*token.T as stack.
@@ -8,7 +8,7 @@ package stack
 import (
 	"errors"
 	"fmt"
-	"github.com/dedeme/dmstack/symbol"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/token"
 	"strings"
 )
@@ -109,13 +109,13 @@ func TypesOk(st []*token.T, types string) (n int, err error) {
 	}
 }
 
-// Returns an error if stack types from stopt mark do not match 'types'.
+// Returns an error if stack types from stop mark do not match 'types'.
 func StopTypesOk(st []*token.T, types string) (n int, err error) {
 	var st2 []*token.T
 	st2 = nil
 	for _, tk := range st {
-		sym, ok := tk.Sy()
-		if ok && sym == symbol.StackStop {
+		op, ok := tk.O()
+		if ok && op == operator.StackStop {
 			st2 = []*token.T{}
 			continue
 		}

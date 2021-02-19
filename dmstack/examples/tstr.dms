@@ -7,26 +7,26 @@
   "caÑón" "canon" str.cmp 0 < assert
   "canón" "canon" str.cmp 0 == assert
 
-  "Pérez" "Pitas" str.< assert
-  "Pérez" "Pitas" str.<= assert
-  "Pérez" "Pitas" str.!= assert
-  "cañón" "canon" str.> assert
-  "cañón" "canon" str.>= assert
-  "cañón" "canon" str.!= assert
-  "caÑón" "canon" str.< assert
-  "canón" "canon" str.== assert
+  "Pérez" "Pitas" str.lt assert
+  "Pérez" "Pitas" str.le assert
+  "Pérez" "Pitas" str.neq assert
+  "cañón" "canon" str.gt assert
+  "cañón" "canon" str.ge assert
+  "cañón" "canon" str.neq assert
+  "caÑón" "canon" str.lt assert
+  "canón" "canon" str.eq assert
 
-  "" "" str.ends? assert
-  "abc" "" str.ends? assert
-  "abc" "a" str.ends? ! assert
-  "abc" "c" str.ends? assert
-  "abc" "abc" str.ends? assert
+  "" "" str.ends assert
+  "abc" "" str.ends assert
+  "abc" "a" str.ends ! assert
+  "abc" "c" str.ends assert
+  "abc" "abc" str.ends assert
 
-  "" "" str.starts? assert
-  "abc" "" str.starts? assert
-  "abc" "a" str.starts? assert
-  "abc" "c" str.starts? ! assert
-  "abc" "abc" str.starts? assert
+  "" "" str.starts assert
+  "abc" "" str.starts assert
+  "abc" "a" str.starts assert
+  "abc" "c" str.starts ! assert
+  "abc" "abc" str.starts assert
 
   "año" str.len 4 expect
   "año" str.runesLen 3 expect
@@ -37,8 +37,8 @@
 
   "abc" str.rune 97 expect
   97 str.fromRune "a" expect
-  "" list.ref : s =
-  "z3f" (ch =; s (ch +) ^^) str.each
+  "" arr.ref : s =
+  "z3f" (: ch =; s (ch +) ^^) str.each
   s >> "z3f" expect
 
   "" "" str.index 0 expect
@@ -111,18 +111,18 @@
   "" str.toLower "" expect
   "CAÑÓNcañón" str.toLower "cañóncañón" expect
 
-  "" str.digits? assert
-  "123" str.digits? assert
-  "12b3" str.digits? ! assert
+  "" str.digits assert
+  "123" str.digits assert
+  "12b3" str.digits ! assert
 
-  "" str.number? ! assert
-  "-12.14" str.number? assert
-  "+12.14" str.number? assert
-  "12.14" str.number? assert
-  "0xFF" str.number? ! assert
-  "NaN" str.number? assert
-  "+Inf" str.number? assert
-  "-Inf" str.number? assert
+  "" str.number ! assert
+  "-12.14" str.number assert
+  "+12.14" str.number assert
+  "12.14" str.number assert
+  "0xFF" str.number ! assert
+  "NaN" str.number assert
+  "+Inf" str.number assert
+  "-Inf" str.number assert
 
   "" 0 0 str.sub "" expect
   "abc" 0 3 str.sub "abc" expect
@@ -135,6 +135,16 @@
   "abc" 1 str.right "bc" expect
   "abc" -2 str.left "a" expect
   "abc" -2 str.right "bc" expect
+
+  `
+  a
+  heredoc string
+  ` "  a\n  heredoc string\n  " expect
+
+  `here
+  a
+  heredoc string
+  `<` here` "  a\n  heredoc string\n  `<` " expect
 
   @
 ) run

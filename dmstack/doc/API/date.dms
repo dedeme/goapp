@@ -3,7 +3,7 @@
 
 /// Date-time procedures.
 
-() new =>
+() : new =
 /// iii -> <=Date>
 ///
 /// Creates a new date.
@@ -15,7 +15,7 @@
 ///      valid date.
 ///   y: Year with four digits.
 
-() newTime =>
+() : newTime =
 /// iiiiiii -> <=Date>
 ///
 /// Creates a new date.
@@ -29,38 +29,38 @@
 ///   s : Second
 ///   ml: Millisecond
 
-() now =>
+() : now =
 /// - -> <=Date>
 ///
 /// Creates a new date with the current moment.
 
-() from =>
-/// s -> l
+() : from =
+/// s -> <=Date>
 ///
 /// Returns a data in format YYYYMMDD. If it fails, throws a "Date error".
 ///   s: A String with a data in format YYYYMMDD.
 
-() fromIso =>
-/// s -> l
+() : fromIso =
+/// s -> <=Date>
 ///
 /// Returns a data in format DD/MM/YYYY. If it fails, throws a "Date error".
 ///   s: A String with a data in format DD/MM/YYYY.
 
-() fromEn =>
-/// s -> l
+() : fromEn =
+/// s -> <=Date>
 ///
 /// Returns a data in format MM/DD/YYYY. If it fails, throws a "Date error".
 ///   s: A String with a data in format MM/DD/YYYY.
 
-() fromFormat =>
-/// ss -> l
+() : fromFormat =
+/// ss -> <=Date>
 ///
 /// Returns a data from a string in format 'fmt'. If it fails, throws a
 /// "Date error".
 ///   s: A String with a data if a valid format.
 ///   t: Template defining format. See 'date.format'.
 
-() format =>
+() : format =
 /// <=Date>s -> s
 ///
 /// Returns a string with a date formatted with 't'.
@@ -81,66 +81,66 @@
 ///      - %T  Time with milliseconds -> 15:03:55.345
 ///      - %%  The sign '%'.
 
-() toIso =>
+() : toIso =
 /// <=Date> -> s
 ///
 /// Returns a string with a date formatted as "DD/MM/YYYY".
 ///   d: Date.
-() toEn =>
+() : toEn =
 /// <=Date> -> s
 ///
 /// Returns a string with a date formatted as "MM/DD/YYYY".
 ///   d: Date.
 
-() to =>
+() : to =
 /// <=Date> -> s
 ///
 /// Returns a string with a date formatted as "YYYYMMDD".
 ///   d: Date.
 
-() year =>
+() : year =
 /// <=Date> -> i
 ///
 /// Returns the year of 'd'.
 ///   d: Date.
 
-() month =>
+() : month =
 /// <=Date> -> i
 ///
 /// Returns the month of 'd' (range 1-12).
 ///   d: Date.
 
-() day =>
+() : day =
 /// <=Date> -> i
 ///
 /// Returns the day of 'd' (range 1-31).
 ///   d: Date.
 
-() hour =>
+() : hour =
 /// <=Date> -> i
 ///
 /// Returns the hour of 'd'.
 ///   d: Date.
 
-() min =>
+() : min =
 /// <=Date> -> i
 ///
 /// Returns the minute of 'd'.
 ///   d: Date.
 
-() sec =>
+() : sec =
 /// <=Date> -> i
 ///
 /// Returns the second of 'd'.
 ///   d: Date.
 
-() millis =>
+() : millis =
 /// <=Date> -> i
 ///
 /// Returns the millisecond of 'd' (range 0-999).
 ///   d: Date.
 
-() week =>
+() : week =
 /// <=Date> -> ii
 ///
 /// Returns the number of week (range 1-53) and the year of 'd'.
@@ -157,69 +157,69 @@
 ///   w: Number of week (range 1-53).
 ///   y: Year.
 
-() weekday =>
+() : weekday =
 /// <=Date> -> i
 ///
 /// Returns the year of 'd' (0->Sunday ... 6->Saturday).
 ///   d: Date.
 
-() add =>
+() : add =
 /// <=Date>i -> <=Date>
 ///
 /// Adds 'n' days to 'd'.
 ///   d: Date.
 ///   n: Days to add (it can be negative)
 
-() addSec =>
+() : addSec =
 /// <=Date>i -> <=Date>
 ///
 /// Adds 'n' seconds to 'd'.
 ///   d: Date.
 ///   n: Seconds to add (it can be negative)
 
-() addMillis =>
+() : addMillis =
 /// <=Date>i -> <=Date>
 ///
 /// Adds 'n' milliseconds to 'd'.
 ///   d: Date.
 ///   n: Milliseconds to add (it can be negative)
 
-() df =>
+() : df =
 /// <=Date><=Date> -> i
 ///
 /// Returns d1 - d2 in days
 ///   d1: A date.
 ///   d2: Another date.
 
-() dfTime =>
+() : dfTime =
 /// <=Date><=Date> -> i
 ///
 /// Returns d1 - d2 in milliseconds
 ///   d1: A date.
 ///   d2: Another date.
 
-() cmp =>
+() : cmp =
 /// <=Date><=Date> -> i
 ///
 /// Returns d1 - d2 in days
 ///   d1: A date.
 ///   d2: Another date.
 
-() cmpTime =>
+() : cmpTime =
 /// <=Date><=Date> -> i
 ///
 /// Returns d1 - d2 in days
 ///   d1: A date.
 ///   d2: Another date.
 
-() eq? =>
+() : eq =
 /// <=Date><=Date> -> b
 ///
 /// Returns d1 - d2 in days
 ///   d1: A date.
 ///   d2: Another date.
 
-() eqTime? =>
+() : eqTime =
 /// <=Date><=Date> -> b
 ///
 /// Returns d1 - d2 in milliseconds

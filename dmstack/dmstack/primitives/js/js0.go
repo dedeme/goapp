@@ -1,14 +1,13 @@
-// Copyright 27-Sep-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-// Json procedures.
 package js
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/dedeme/dmstack/machine"
-	"github.com/dedeme/dmstack/symbol"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/token"
 	"strings"
 )
@@ -16,7 +15,7 @@ import (
 // Auxiliar function
 func excf(m *machine.T, template string, values ...interface{}) {
 	panic(&machine.Error{
-		Machine: m, Type: "Js error", Message: fmt.Sprintf(template, values...),
+		m, machine.EJs(), fmt.Sprintf(template, values...),
 	})
 }
 
@@ -106,7 +105,7 @@ func prRa(m *machine.T) {
 				if e == "" {
 					excf(m, "Missing elements in\n'%v'", s)
 				}
-				v = append(v, token.NewN(symbol.Js_, e, pos))
+				v = append(v, token.NewN(operator.Js_, e, pos))
 				i = i2 + 1
 				continue
 			}
@@ -115,11 +114,11 @@ func prRa(m *machine.T) {
 			if e == "" {
 				excf(m, "Missing elements in\n'%v'", s)
 			}
-			v = append(v, token.NewN(symbol.Js_, e, pos))
+			v = append(v, token.NewN(operator.Js_, e, pos))
 			break
 		}
 	}
-	m.Push(token.NewL(v, pos))
+	m.Push(token.NewA(v, pos))
 }
 
 // Reads Object
@@ -165,7 +164,7 @@ func prRo(m *machine.T) {
 				if val == "" {
 					excf(m, "Value missing in\n'%v'", s)
 				}
-				v[k] = token.NewN(symbol.Js_, val, pos)
+				v[k] = token.NewN(operator.Js_, val, pos)
 
 				i = i2 + 1
 				continue
@@ -175,7 +174,7 @@ func prRo(m *machine.T) {
 			if val == "" {
 				excf(m, "Value missing in\n'%v'", s)
 			}
-			v[k] = token.NewN(symbol.Js_, val, pos)
+			v[k] = token.NewN(operator.Js_, val, pos)
 			break
 		}
 	}
@@ -222,8 +221,8 @@ func prWs(m *machine.T) {
 
 // Writes Array
 func prWa(m *machine.T) {
-	tk := m.PopT(token.List)
-	v, _ := tk.L()
+	tk := m.PopT(token.Array)
+	v, _ := tk.A()
 
 	var b strings.Builder
 	b.WriteByte('[')
@@ -231,9 +230,9 @@ func prWa(m *machine.T) {
 		if i > 0 {
 			b.WriteByte(',')
 		}
-		sym, s, _ := tk.N()
-		if sym != symbol.Js_ {
-			m.Failt("\n  Expected: Json object.\n  Actual  : '%v'.", sym)
+		o, s, _ := tk.N()
+		if o != operator.Js_ {
+			m.Failt("\n  Expected: Json object.\n  Actual  : '%v'.", o)
 		}
 		b.WriteString(s.(string))
 	}
@@ -262,9 +261,9 @@ func prWo(m *machine.T) {
 
 		b.WriteByte(':')
 
-		sym, s, _ := tk.N()
-		if sym != symbol.Js_ {
-			m.Failt("\n  Expected: Json object.\n  Actual  : '%v'.", sym)
+		o, s, _ := tk.N()
+		if o != operator.Js_ {
+			m.Failt("\n  Expected: Json object.\n  Actual  : '%v'.", o)
 		}
 		b.WriteString(s.(string))
 	}

@@ -1,4 +1,4 @@
-// Copyright 14-May-2020 ºDeme
+// Copyright 06-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Virtual machine
@@ -11,47 +11,99 @@ import (
 	"github.com/dedeme/dmstack/token"
 )
 
+type TError struct {
+	e string
+}
+
+func EType() *TError {
+	return &TError{"Type error"}
+}
+func EImport() *TError {
+	return &TError{"Import error"}
+}
+func EStack() *TError {
+	return &TError{"Stack error"}
+}
+func EMachine() *TError {
+	return &TError{"Machine error"}
+}
+func EAssert() *TError {
+	return &TError{"Assert error"}
+}
+func EExpect() *TError {
+	return &TError{"Expect error"}
+}
+func ERuntime() *TError {
+	return &TError{"Runtime error"}
+}
+func ERange() *TError {
+	return &TError{"Index out of range error"}
+}
+func ENotFound() *TError {
+	return &TError{"Not found error"}
+}
+func ESys() *TError {
+	return &TError{"'sys' module error"}
+}
+func EMath() *TError {
+	return &TError{"Math error"}
+}
+func EJs() *TError {
+	return &TError{"Json error"}
+}
+func EFile() *TError {
+	return &TError{"File error"}
+}
+func ECustom(t string) *TError {
+	return &TError{t}
+}
+func (e *TError) String() string {
+	return e.e
+}
+
 // Dmstack error
 type Error struct {
 	Machine *T
-	Type    string
+	Type    *TError
 	Message string
 }
 
 // Machine structure
 type T struct {
-	SourceDir string // Path of parent to source file.
-	Pmachines []*T   // Parent machines including this.
+	Source    symbol.T //file path without extension.
+	Pmachines []*T     // Parent machines including this.
 	Stack     *[]*token.T
-	imports   []symbol.T
 	Heap      map[symbol.T]*token.T
 	prg       []*token.T
 	ix        int
 }
 
-// Creates a new virtual machine.
-//    sourceDir: Path of source directory.
-//    pmachines : Parent machines.
-//    prg       : Token list read from the procedure takes out from sourceFile.
-func New(sourceDir string, pmachines []*T, prg []*token.T) *T {
-	if sourceDir == "" {
-		panic("sourceFile is missing")
-	}
+// Creates a new virtual machine to use with procedures.
+//    module   : Symbol of file path without extension.
+//    pmachines: Parent machines.
+//    prg      : Token type Procedure.
+//    isThread : 'true' if 'proc' is a thread.
+func new(
+	module symbol.T, pmachines []*T, proc *token.T, isThread bool,
+) *T {
+	l := len(pmachines) - 1
 
 	stack := &[]*token.T{}
-	imports := []symbol.T{}
-	heap := map[symbol.T]*token.T{}
-	l := len(pmachines) - 1
-	if l >= 0 {
-		stack = pmachines[l].Stack
-		imports = pmachines[l].imports
+	if l >= 0 && !isThread {
+		m2 := pmachines[l]
+		stack = m2.Stack
 	}
 
+	prg, ok := proc.P()
+	if !ok {
+		panic("Expected a procedure")
+	}
+	heap := proc.GetHeap()
+
 	m := &T{
-		sourceDir,
+		module,
 		nil,
 		stack,
-		imports,
 		heap,
 		prg,
 		0,
@@ -61,37 +113,24 @@ func New(sourceDir string, pmachines []*T, prg []*token.T) *T {
 	return m
 }
 
-// Creates a new virtual machine.
-//
-// An isolate machine differs with a normal one on that the latter inherits
-// the stack from pmachines and the former has a new stack.
-//    sourceDir: Path of source directory.
-//    pmachines : Parent machines.
-//    prg       : Token list read from the procedure takes out from sourceFile.
-func NewIsolate(sourceDir string, pmachines []*T, prg []*token.T) *T {
-	if sourceDir == "" {
-		panic("sourceDir is missing")
-	}
+// Creates a new virtual machine to use with procedures.
+//    module   : Symbol of file path without extension.
+//    pmachines: Parent machines.
+//    prg      : Token type Procedure.
+func New(
+	module symbol.T, pmachines []*T, proc *token.T,
+) *T {
+	return new(module, pmachines, proc, false)
+}
 
-	imports := []symbol.T{}
-	heap := map[symbol.T]*token.T{}
-	l := len(pmachines) - 1
-	if l >= 0 {
-		imports = pmachines[l].imports
-	}
-
-	m := &T{
-		sourceDir,
-		nil,
-		&[]*token.T{},
-		imports,
-		heap,
-		prg,
-		0,
-	}
-	m.Pmachines = append(pmachines, m)
-
-	return m
+// Creates a new virtual machine to use with procedures.
+//    module   : Symbol of file path without extension.
+//    pmachines: Parent machines.
+//    prg      : Token type Procedure.
+func NewThread(
+	module symbol.T, pmachines []*T, proc *token.T,
+) *T {
+	return new(module, pmachines, proc, true)
 }
 
 // Returns the stack trace of 'm'
@@ -153,7 +192,7 @@ func (m *T) Pop() (tk *token.T) {
 		tk = (*m.Stack)[ix]
 		*m.Stack = (*m.Stack)[0:ix]
 	} else {
-		m.Fail("Stack error", "Stack is empty")
+		m.Fail(EStack(), "Stack is empty")
 	}
 	return
 }
@@ -171,54 +210,19 @@ func (m *T) PopT(tp token.TypeT) (tk *token.T) {
 	return
 }
 
-// Adds an import. If 'sym' has already been defined, it raises an
-// "Import error".
-//    sym: Import symbol.
-func (m *T) ImportsAdd(sym symbol.T) {
-	if m.InImports(sym) {
-		m.Fail("Import error", "Redefinition of import '%v'", sym)
-	}
-	m.imports = append(m.imports, sym)
-}
-
-func (m *T) InImports(sym symbol.T) bool {
-	for _, s := range m.imports {
-		if s == sym {
-			return true
-		}
-	}
-	return false
-}
-
-// Adds a symbol to heap
-func (m *T) HeapAdd(sym symbol.T, tk *token.T) {
-	m.Heap[sym] = tk
-}
-
-// Gets a heap token
-func (m *T) HeapGet(sym symbol.T) (tk *token.T, ok bool) {
-	for i := len(m.Pmachines) - 1; i >= 0; i-- {
-		tk, ok = m.Pmachines[i].Heap[sym]
-		if ok {
-			return
-		}
-	}
-	return
-}
-
 // Returns a position (symbol, 0) for created tokens.
 func (m *T) MkPos() *token.PosT {
 	return token.NewPos(m.prg[0].Pos.Source, 0)
 }
 
 // Panic with a formatted error message.
-func (m *T) Fail(t, template string, values ...interface{}) {
+func (m *T) Fail(t *TError, template string, values ...interface{}) {
 	panic(&Error{Machine: m, Type: t, Message: fmt.Sprintf(template, values...)})
 }
 
 // "Type error" panic with a formatted error message.
 func (m *T) Failt(template string, values ...interface{}) {
 	panic(&Error{
-		Machine: m, Type: "Type error", Message: fmt.Sprintf(template, values...),
+		Machine: m, Type: EType(), Message: fmt.Sprintf(template, values...),
 	})
 }

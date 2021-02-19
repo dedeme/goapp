@@ -1,15 +1,15 @@
-// Copyright 07-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
-/// Float functions.
+/// Float procedures.
 
-() round =>
+() : round =
 /// f -> f
 ///
 /// Returns 'n' rounded without decimals.
 ///   n: A number.
 
-() roundn =>
+() : roundn =
 /// fi -> f
 ///
 /// Returns 'n' rounded with 'scale' decimals. If 'scale' is out of [0-9) throws
@@ -17,140 +17,140 @@
 ///   n : A number.
 ///   scale: Decimals number between [0-9).
 
-() pi =>
+() : pi =
 /// - -> f
 ///
 /// Returns the number Pi.
 
-() sin =>
+() : sin =
 /// f -> f
 ///
 /// Returns sin(n).
 ///   n: A number.
 
-() cos =>
+() : cos =
 /// f -> f
 ///
 /// Returns cos(n).
 ///   n: A number.
 
-() tan =>
+() : tan =
 /// f -> f
 ///
 /// Returns tan(n).
 ///   n: A number.
 
-() asin =>
+() : asin =
 /// f -> f
 ///
 /// Returns asin(n).
 ///   n: A number.
 
-() acos =>
+() : acos =
 /// f -> f
 ///
 /// Returns acos(n).
 ///   n: A number.
 
-() atan =>
+() : atan =
 /// f -> f
 ///
 /// Returns atan(n).
 ///   n: A number.
 
-() atan2 =>
+() : atan2 =
 /// ff -> f
 ///
 /// Returns atan(n1/n2).
 ///   n1: A number.
 ///   n2: Another number.
 
-() sinh =>
+() : sinh =
 /// f -> f
 ///
 /// Returns sinh(n).
 ///   n: A number.
 
-() cosh =>
+() : cosh =
 /// f -> f
 ///
 /// Returns cosh(n).
 ///   n: A number.
 
-() tanh =>
+() : tanh =
 /// f -> f
 ///
 /// Returns tanh(n).
 ///   n: A number.
 
-() asinh =>
+() : asinh =
 /// f -> f
 ///
 /// Returns asinh(n).
 ///   n: A number.
 
-() acosh =>
+() : acosh =
 /// f -> f
 ///
 /// Returns acosh(n).
 ///   n: A number.
 
-() atanh =>
+() : atanh =
 /// f -> f
 ///
 /// Returns atanh(n).
 ///   n: A number.
 
 
-() e =>
+() : e =
 /// - -> f
 ///
 /// Returns the number e.
 
-() exp =>
+() : exp =
 /// f -> f
 ///
 /// Returns e^n.
 ///   n: A number.
 
-() exp2 =>
+() : exp2 =
 /// f -> f
 ///
 /// Returns 2^n.
 ///   n: A number.
 
-() exp10 =>
+() : exp10 =
 /// f -> f
 ///
 /// Returns 10^n.
 ///   n: A number.
 
-() log =>
+() : log =
 /// f -> f
 ///
 /// Returns log(n).
 ///   n: A number.
 
-() log2 =>
+() : log2 =
 /// f -> f
 ///
 /// Returns log2(n).
 ///   n: A number.
 
-() log10 =>
+() : log10 =
 /// f -> f
 ///
 /// Returns log10(n).
 ///   n: A number.
 
-() pow =>
+() : pow =
 /// ff -> f
 ///
 /// Returns n1^n2.
 ///   n1: A number.
 ///   n2: Another number.
 
-() sqrt =>
+() : sqrt =
 /// f -> f
 ///
 /// Returns n^(1/2).

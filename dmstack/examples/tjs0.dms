@@ -1,9 +1,9 @@
-// Copyright 28-Sep-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
-  "null" js.from js.null? assert
-  js.wn js.null? assert
+  "null" js.from js.null assert
+  js.wn js.null assert
   js.wn js.to "null" expect
   "true" js.from js.rb dup assert js.wb js.to "true" expect
   "false" js.from js.rb dup ! assert js.wb js.to "false" expect
@@ -14,22 +14,22 @@
 
   "[]" js.from js.ra dup [] expect js.wa js.to "[]" expect
   "[true, 2, 1.5, \"a\", [], [2, 3]]" js.from js.ra : a =
-  a !0 js.rb true expect
-  a !1 js.ri 2 expect
-  a !2 js.rf 1.5 expect
-  a !3 js.rs "a" expect
-  a !4 js.ra [] expect
-  a !5 js.ra : a2 =
-  a2 !0 js.ri 2 expect
-  a2 !1 js.ri 3 expect
+  a .0 js.rb true expect
+  a .1 js.ri 2 expect
+  a .2 js.rf 1.5 expect
+  a .3 js.rs "a" expect
+  a .4 js.ra [] expect
+  a .5 js.ra : a2 =
+  a2 .0 js.ri 2 expect
+  a2 .1 js.ri 3 expect
   a js.wa js.to "[true,2,1.5,\"a\",[],[2, 3]]" expect
   [true, 2, 1.5, "a", [], [2, 3]] : oa =
-  [ oa !0 js.wb
-    oa !1 js.wi
-    oa !2 js.wf
-    oa !3 js.ws
-    oa !4 js.wa
-    [oa !5 !0 js.wi, oa !5 !1 js.wi] js.wa
+  [ oa .0 js.wb,
+    oa .1 js.wi,
+    oa .2 js.wf,
+    oa .3 js.ws,
+    oa .4 js.wa,
+    [oa .5 .0 js.wi, oa .5 .1 js.wi] js.wa
   ]
     js.wa js.to "[true,2,1.5,\"a\",[],[2,3]]" expect
 
@@ -48,30 +48,30 @@
   o "d" map.get js.rs "a" expect
   o "e" map.get js.ra [] expect
   o "f" map.get js.ra : oarr =
-  oarr !0 js.ri 1 expect
-  oarr !1 js.ri 2 expect
+  oarr .0 js.ri 1 expect
+  oarr .1 js.ri 2 expect
   o "g" map.get js.ro {} expect
   o "h" map.get js.ro : oobj =
   oobj "a" map.get js.ri 1 expect
   oobj "b" map.get js.ri 2 expect
   // o js.wo js.to puts
-  { "a": true
-    "b": 1
-    "c": 1.5
-    "d": "a"
-    "e": []
-    "f": [1, 2]
-    "g": {}
+  { "a": true,
+    "b": 1,
+    "c": 1.5,
+    "d": "a",
+    "e": [],
+    "f": [1, 2],
+    "g": {},
     "h": {"a": 1, "b": 2}
   } : oo =
 
-  { "a": oo "a" map.get js.wb
-    "b": oo "b" map.get js.wi
-    "c": oo "c" map.get js.wf
-    "d": oo "d" map.get js.ws
-    "e": oo "e" map.get js.wa
-    "f": [oo "f" map.get !0 js.wi, oo "f" map.get !1 js.wi] js.wa
-    "g": oo "g" map.get js.wo
+  { "a": oo "a" map.get js.wb,
+    "b": oo "b" map.get js.wi,
+    "c": oo "c" map.get js.wf,
+    "d": oo "d" map.get js.ws,
+    "e": oo "e" map.get js.wa,
+    "f": [oo "f" map.get .0 js.wi, oo "f" map.get .1 js.wi] js.wa,
+    "g": oo "g" map.get js.wo,
     "h": {"a": oo "h" map.get "a" map.get js.wi,
           "b": oo "h" map.get "b" map.get js.wi} js.wo
   } : oojs =
@@ -83,8 +83,8 @@
   o2 "d" map.get js.rs "a" expect
   o2 "e" map.get js.ra [] expect
   o2 "f" map.get js.ra : o2arr =
-  o2arr !0 js.ri 1 expect
-  o2arr !1 js.ri 2 expect
+  o2arr .0 js.ri 1 expect
+  o2arr .1 js.ri 2 expect
   o2 "g" map.get js.ro {} expect
   o2 "h" map.get js.ro : o2obj =
   o2obj "a" map.get js.ri 1 expect

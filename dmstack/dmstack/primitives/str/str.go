@@ -1,4 +1,4 @@
-// Copyright 24-Jul-2020 ºDeme
+// Copyright 09-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // String procedures.
@@ -39,12 +39,12 @@ func runesLength(m *machine.T, tk *token.T, s string) int64 {
 		if e == io.EOF {
 			break
 		}
-		m.Fail("Str error", "Wrong UTF-8 string '%s'", tk.StringDraft())
+		m.Failt("Wrong UTF-8 string '%s'", tk.StringDraft())
 	}
 	return c
 }
 
-// Creeates a UTF-8 string for a ISO string.
+// Creates an UTF-8 string for an ISO string.
 //    m : Virtual machine.
 func prFromIso(m *machine.T) {
 	s := popStr(m)
@@ -153,7 +153,7 @@ func prIndexFrom(m *machine.T) {
 	tk2 := m.PopT(token.String)
 	s, _ := tk2.S()
 	if i < 0 || i > int64(len(s)) {
-		m.Fail("Index out of range error", "%v", i)
+		m.Fail(machine.ERange(), "%v [0, %v]", i, len(s))
 	}
 	r := int64(strings.Index(s[i:], sub))
 	if r != -1 {
@@ -184,8 +184,8 @@ func prReplace(m *machine.T) {
 //    m : Virtual machine.
 func prJoin(m *machine.T) {
 	sep := popStr(m)
-	tk := m.PopT(token.List)
-	ss, _ := tk.L()
+	tk := m.PopT(token.Array)
+	ss, _ := tk.A()
 	var as []string
 	for _, sTk := range ss {
 		s, ok := sTk.S()
@@ -206,7 +206,7 @@ func prSplit(m *machine.T) {
 	for _, elem := range strings.Split(s, sep) {
 		tks = append(tks, token.NewS(elem, m.MkPos()))
 	}
-	m.Push(token.NewL(tks, m.MkPos()))
+	m.Push(token.NewA(tks, m.MkPos()))
 }
 
 // Splits 's' by separator 'sep' in a List, 'trimming' each element of it.
@@ -218,7 +218,7 @@ func prSplitTrim(m *machine.T) {
 	for _, elem := range strings.Split(s, sep) {
 		tks = append(tks, token.NewS(strings.TrimSpace(elem), m.MkPos()))
 	}
-	m.Push(token.NewL(tks, m.MkPos()))
+	m.Push(token.NewA(tks, m.MkPos()))
 }
 
 // Removes spaces at the beginning and at the end of 's'
@@ -320,7 +320,7 @@ func prGet(m *machine.T) {
 	tk2 := m.PopT(token.String)
 	s, _ := tk2.S()
 	if i < 0 || i >= int64(len(s)) {
-		m.Fail("Index out of range error", "%v", i)
+		m.Fail(machine.ERange(), "%v [0, %v)", i, len(s))
 	}
 	pushStr(m, string(s[i]))
 }
@@ -333,7 +333,7 @@ func prGetRune(m *machine.T) {
 	tk2 := m.PopT(token.String)
 	s, _ := tk2.S()
 	if i < 0 || i >= runesLength(m, tk2, s) {
-		m.Fail("Index out of range error", "%v", i)
+		m.Fail(machine.ERange(), "%v [0, %v)", runesLength(m, tk2, s))
 	}
 	rd := strings.NewReader(s)
 	ix := int64(0)
@@ -354,7 +354,7 @@ func prRune(m *machine.T) {
 	rd := strings.NewReader(popStr(m))
 	rn, _, err := rd.ReadRune()
 	if err != nil {
-		m.Fail("Str error", "String is empty or invalid")
+		m.Failt("String is empty or invalid")
 	}
 	m.Push(token.NewI(int64(rn), m.MkPos()))
 }
@@ -370,14 +370,13 @@ func prFromRune(m *machine.T) {
 // Executes p with each rune.
 func prEach(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	rd := strings.NewReader(popStr(m))
 	for {
 		rn, _, err := rd.ReadRune()
 		if err != nil {
 			return
 		}
-		m2 := machine.New(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(token.NewS(string(rn), m2.MkPos()))
 		run(m2)
 	}
@@ -394,13 +393,13 @@ func subaux(
 		end = l + end
 	}
 	if begin < 0 {
-		m.Fail("Index out of range error", "%v", begin)
+		m.Fail(machine.ERange(), "%v < 0", begin)
 	}
 	if begin > l {
-		m.Fail("Index out of range error", "%v", begin)
+		m.Fail(machine.ERange(), "%v > %v", begin, l)
 	}
 	if end > l {
-		m.Fail("Index out of range error", "%v", end)
+		m.Fail(machine.ERange(), "%v > %v", end, l)
 	}
 	if end < begin {
 		end = begin
@@ -448,41 +447,32 @@ func prRight(m *machine.T) {
 }
 
 // Processes string procedures.
-//    m  : Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'str' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'str' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+//    run : Function which running a machine.
+func Proc(m *machine.T, proc symbol.T, run func(m *machine.T)) {
+	switch proc {
 	case symbol.New("fromIso"):
 		prFromIso(m)
 
 	case symbol.New("cmp"):
 		prCmp(m)
-	case symbol.New(">"):
+	case symbol.New("gt"):
 		prGreater(m)
-	case symbol.New("=="):
+	case symbol.New("eq"):
 		prEq(m)
-	case symbol.New("!="):
+	case symbol.New("neq"):
 		prNeq(m)
-	case symbol.New(">="):
+	case symbol.New("ge"):
 		prGreaterEq(m)
-	case symbol.New("<"):
+	case symbol.New("lt"):
 		prLess(m)
-	case symbol.New("<="):
+	case symbol.New("le"):
 		prLessEq(m)
 
-	case symbol.New("ends?"):
+	case symbol.New("ends"):
 		prEnds(m)
-	case symbol.New("starts?"):
+	case symbol.New("starts"):
 		prStarts(m)
 	case symbol.New("index"):
 		prIndex(m)
@@ -509,9 +499,9 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("toLower"):
 		prToLower(m)
 
-	case symbol.New("digits?"):
+	case symbol.New("digits"):
 		prDigits(m)
-	case symbol.New("number?"):
+	case symbol.New("number"):
 		prNumber(m)
 	case symbol.New("regularizeIso"):
 		prRegularizeIso(m)
@@ -540,6 +530,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("right"):
 		prRight(m)
 	default:
-		m.Failt("'str' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'str' does not contains the procedure '%v'.", proc.String())
 	}
 }

@@ -1,0 +1,475 @@
+// Copyright 22-Jul-2020 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Array procedures.
+///
+/// This module includes procedures for:
+///
+///   - References
+///     ref
+///
+///   - Tuples
+///     tp tp3 e1 e2 e3
+///
+///   - Options
+///     none, some
+///
+///   - Eithers
+///     left, right
+///
+///   - Results
+///     error, ok
+
+
+() : new =
+/// - -> a
+///
+/// Creates an empty array.
+
+() : make =
+/// *i -> a
+///
+/// Creates an array with 'n' elements 'e'. The element is cloned. (See
+/// global.clone).
+/// Throws a "Range error" if n < 0.
+///   e: Element to clone.
+///   n: Length of Array. Its value must be >= 0.
+
+() : size =
+/// a -> i
+///
+/// Returns the size of a.
+///   a: An arr.
+
+() : empty =
+/// a -> b
+///
+/// Returns 'true' if 'a' is empty.
+///   a: An arr.
+
+() : push =
+/// a* -> -
+///
+/// Adds an element at the end of 'a'.
+///   a: An arr.
+///   v: Value.
+
+() : push0 =
+/// a* -> -
+///
+/// Adds an element at the beginning of 'a'.
+///   a: An arr.
+///   v: Value.
+
+() : apop =
+/// a -> *
+///
+/// Removes and returns the last element of 'a'.
+/// Returns "Range error" if 'a' is empty.
+///   a: An arr.
+
+() : apop0 =
+/// a -> *
+///
+/// Removes and returns the first element of 'a'.
+/// Returns "Range error" if 'a' is empty.
+///   a: An arr.
+
+() : peek =
+/// a -> *
+///
+/// Returns, but not remove, the last element of 'a'.
+/// Returns "Range error" if 'a' is empty.
+///   a: An arr.
+
+() : peek0 =
+/// a -> *
+///
+/// Returns, but not remove, the first element of 'a'.
+/// Returns "Range error" if 'a' is empty.
+///   a: An arr.
+
+() : insert =
+/// ai* -> -
+///
+/// Inserts an element in 'a' at 'i'.
+/// Throws an "Index out of range error".
+///   a: Array to modify.
+///   i: Index of insertion [0-size(l))
+
+() : insertArray =
+/// ai* -> -
+///
+/// Inserts every element of 'aSub' in 'a' at 'i'.
+/// Throws an "Index out of range error".
+///   a   : Array to modify.
+///   i   : Index of insertion [0-size(l))
+///   aSub: Array to insert.
+
+() : remove =
+/// ai -> -
+///
+/// Removes the element at position 'i' in 'a'.
+/// Throws an "Index out of range error".
+///   a: Array to modify.
+///   i: Index to remove [0-(size(l)-1))
+
+() : removeRange =
+/// ai -> -
+///
+/// Removes elements from begin (inclusive) to end (exclusive) in 'a'.
+/// If 'end' <= 'begin', 'a' remains untouched.
+/// Throws an "Index out of range error".
+///   a    : Array to modify.
+///   begin: Index to begin removing [0-(size(l)-1))
+///   end  : Index to end removing [0-size(l))
+
+() : clear =
+/// a -> -
+///
+/// Removes every element of 'a'.
+///   a    : Array to modify.
+
+() : reverse =
+/// a -> -
+///
+/// Reverses elements of 'a'.
+///   a: Array to modify.
+
+() : suffle =
+/// a -> -
+///
+/// Sorts randomly the elements of 'a'.
+///   a: Array to modify.
+
+() : sort =
+/// ap -> -
+///
+/// Sorts 'a' using 'p'.
+///
+/// - Examples:
+///
+/// [1, 4, 2] : lst =
+/// lst (<) arr.sort; lst [1, 2, 4] expect
+/// lst (>) arr.sort; lst [4, 2, 1] expect
+///
+///   a: Array to modify
+///   p: Procedure (** -> b) for sorting.
+
+() : get =
+/// ai -> *
+///
+/// Returns the element ix of 'a'.
+/// Throws "Index out of range error".
+/// You can use '.' for this procedure:
+///   a 12 arr.get
+/// can be writen as
+///   a .12
+/// Note that '.' must be immediately before the index.
+///   a : An arr.
+///   ix: Index. If it is not valid an exception is thrown.
+///       For values between 0 and 9 can be used !0, !1 ... !9. For example,
+///       'a !1' is equals to 'a 1 arr.get'.
+
+() : set =
+/// ai* -> -
+///
+/// Sets the value of the element ix of 'a'.
+/// Throws "Index out of range error".
+///   a : An arr.
+///   ix: Index. If it is not valid an exception is thrown.
+///   v : Value.
+
+() : up =
+/// aip -> -
+///
+/// Updates the value of the element ix of 'a'.
+/// Throws "Index out of range error".
+///   a : An arr.
+///   ix: Index. If it is not valid an exception is thrown.
+///   p : Procedure (* -> *) to update 'a'
+
+() : fill =
+/// a* -> -
+///
+/// Fills an arr with elements 'e'. The element is cloned. (See global.clone).
+///   l: Array to fill.
+///   e: Element to clone.
+
+
+
+() : ref =
+/// * -> a
+///
+/// Creates a reference with the value 'v'. A reference is an arr of one
+/// element.
+///   v: Value.
+
+() : none =
+/// - -> a
+///
+/// Creates an empty option. It is equals to 'new'.
+
+() : some =
+/// * -> a
+///
+/// Creates a full option. A 'some' option is an arr of one element.
+///   v: Value.
+
+() : tp =
+/// ** -> a
+///
+/// Creates a tuple of two elements.
+/// A tuple of two elements is an arr of two elements.
+///   v1: First value.
+///   v2: Second value.
+
+() : tp3 =
+/// *** -> a
+///
+/// Creates a tuple of three elements.
+/// A tuple of three elements is an arr of three elements.
+///   v1: First value.
+///   v2: Second value.
+///   v3: Third value.
+
+() : e1 =
+/// a* -> -
+///
+/// Sets the first value of a tuple. Equals to '!0' or '0 arr.get'
+/// Throws "Index out of range error".
+///   a : Tuple.
+///   v : Value
+
+() : e2 =
+/// a* -> -
+///
+/// Sets the second value of a tuple. Equals to '!1' or '1 arr.get'
+/// Throws "Index out of range error".
+///   a : Tuple.
+///   v : Value
+
+() : e3 =
+/// a* -> -
+///
+/// Sets the third value of a tuple. Equals to '!2' or '2 arr.get'
+/// Throws "Index out of range error".
+///   a : Tuple.
+///   v : Value
+
+() : left =
+/// a* -> -
+///
+/// Sets the left value of an either array. Equals to a tuple '(false, v)'
+///   a : Either arr.
+///   v : Value.
+
+() : right =
+/// a* -> -
+///
+/// Sets the right value of an either array. Equals to a tuple '(true, v)'
+///   a: Either arr.
+///   v : Value.
+
+() : error =
+/// as -> -
+///
+/// Sets the error value of a result array. Equals to a tuple '(false, s)'
+///   a : Result arr.
+///   s : String value.
+
+() : ok =
+/// a* -> -
+///
+/// Sets the ok value of a result array. Equals to a tuple '(true, v)'
+///   a : Result arr.
+///   v : Value.
+
+() : removeDup =
+/// ap -> a
+///
+/// Returns a new arr with duplicate elements removed. Two elements are
+/// equals if 'proc' returns true.
+///   a   : An arr.
+///   proc: Equals check procedure (** -> b).
+
+() : all =
+/// ap -> b
+///
+/// Returns 'true' if every element of 'a' returns 'true' with 'proc'.
+///   a   : An arr
+///   proc: Test procedure (* -> b).
+
+() : any =
+/// ap -> b
+///
+/// Returns 'true' if some element of 'a' returns 'true' with 'proc'.
+///   a   : An arr
+///   proc: Test procedure (* -> b).
+
+() : each =
+/// ap -> -
+///
+/// Runs 'proc' with every element of 'a'.
+///   a   : A Array
+///   proc: Prodedure to run (* -> -)
+
+() : eachIx =
+/// ap -> -
+///
+/// Runs 'proc' with every element of 'a' and its index (base 0).
+///   a   : A Array
+///   proc: Prodedure to run (*i -> -)
+
+() : eq =
+/// aap -> b
+///
+/// Returns 'true' if elements of a1 are equals to elements of a2 and are in
+/// the same position, using the comparation procedure 'proc'.
+///   a1: An array.
+///   a2: Another array.
+///   proc: Equals check procedure (** -> b).
+
+() : neq =
+/// aap -> b
+///
+/// Returns 'false' if elements of a1 are equals to elements of a2 and are in
+/// the same position, using the comparation procedure 'proc'.
+///   a1: A array.
+///   a2: Another array.
+///   proc: Equals check procedure (** -> b).
+
+() : index =
+/// ap -> i
+///
+/// Returns index of the first element of 'a' which produces 'true' with
+/// 'proc'. If there is no element which match the condiction, returns -1.
+///   a   : An array.
+///   proc: Procedure to check an element (* -> b).
+
+() : find =
+/// ap -> a
+///
+/// Returns a option some (arr.some) with the the first element of 'a' which
+/// produces 'true' with 'proc'. If there is no element which match the
+/// condiction, returns 'arr.none'.
+///   a   : An array.
+///   proc: Procedure to check an element (* -> b).
+
+() : lastIndex =
+/// ap -> i
+///
+/// Returns index of the last element of 'a' which produces 'true' with
+/// 'proc'. If there is no element which match the condiction, returns -1.
+///   a   : An array.
+///   proc: Procedure to check an element (* -> b).
+
+() : reduce =
+/// a*p -> *
+///
+/// Returns the result of applying 'proc' to "seed = p(seed, element of 'a')"
+/// for each element of 'a'.
+///   a   : An array.
+///   seed: Value initial to apply 'proc'.
+///   proc: Procedure to apply (** -> *) [this is (seed, element -> newSeed)].
+
+() : copy =
+/// a -> a
+///
+/// Returns a new arr with elements of 'a' (shallow copy).
+///   a: An arr.
+
+() : drop =
+/// ai -> a
+///
+/// Returns a new arr with elements of 'a', removing those with index <= 'n'.
+///   a : A Array
+///   n : Top to element indices to remove. If it is less than 0, is changed to
+///       'len(a) + n'.
+
+() : dropf =
+/// ap -> a
+///
+/// Returns a new arr with elements of 'a', removing those firsts which match
+/// with 'proc'
+///   a   : A Array
+///   proc: Procedure to match elements (* -> b).
+
+() : filter =
+/// ap -> a
+///
+/// Returns a new arr with elements of 'a' with match 'proc'
+///   a   : A Array
+///   proc: Procedure to match elements (* -> b).
+
+() : flat =
+/// a -> a
+///
+/// Returns a new arr changing elements of 'a' which are list by its elements.
+/// The change is applied only once.
+///
+/// - Example:
+///   [1, [2, ["a"], 3], 4] arr.flat [1, 2, ["a"], 3, 4] expect
+///
+///   a : An array.
+
+() : map =
+/// ap -> a
+///
+/// Returns a new arr with elements returned from 'proc'.
+///   a: A Array
+///   proc: Procedure to transform elements (* -> *).
+
+() : sub =
+/// aii -> a
+///
+/// Equals to 'a end arr.take begin arr.drop'.
+///   a    : An array.
+///   begin: First elemento to add (inclusive). If it is less than 0, is changed
+///          to 'len(a) + begin'.
+///   end  : Last elemento to add (exclusive). If it is less than 0, is changed
+///          to 'len(a) + end'.
+
+() : take =
+/// ai -> a
+///
+/// Returns a new arr with elements of 'a' with index < 'n'.
+///   a  : An array.
+///   n : Top to element indices to remove. If it is less than 0, is changed to
+///       'len(a) + n'.
+
+() : takef =
+/// ap -> a
+///
+/// Returns a new arr adding the firsts elements of 'a' which match
+/// with 'proc'
+///   a   : An array.
+///   proc: Procedure to match elements (* -> b).
+
+() : zip =
+/// aa -> a
+///
+/// Returns a new list with tuples of elements from 'a1', 'a2'. Spare elements
+/// of a1 or a2 are ignored.
+///   a1: An array.
+///   a2: Another Array.
+
+() : zip3 =
+/// aaa -> a
+///
+/// Returns a new list with triples of elements from 'a1', 'a2', 'a3'. Spare
+/// elements of a1, a2 or a3 are ignored.
+///   a1: An array.
+///   a2: Another Array.
+///   a3: Another more Array.
+
+() : unzip =
+/// a -> aa
+///
+/// Inverse of zip.
+
+() : unzip3 =
+/// a -> aa
+///
+/// Inverse of zip3.
+

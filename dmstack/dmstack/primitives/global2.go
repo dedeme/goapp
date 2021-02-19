@@ -1,4 +1,4 @@
-// Copyright 16-May-2020 ºDeme
+// Copyright 07-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 package primitives
@@ -67,14 +67,14 @@ func prPlus(m *machine.T) {
 		)
 	}
 
-	l1, ok := tk1.L()
+	a1, ok := tk1.A()
 	if ok {
-		l2, ok := tk2.L()
+		a2, ok := tk2.A()
 		if ok {
-			for _, e := range l1 {
-				l2 = append(l2, e)
+			for _, e := range a1 {
+				a2 = append(a2, e)
 			}
-			m.Push(token.NewL(l2, m.MkPos()))
+			m.Push(token.NewA(a2, m.MkPos()))
 			return
 		}
 		m.Failt(
@@ -135,7 +135,7 @@ func prMinus(m *machine.T) {
 			tk2.StringDraft(),
 		)
 	}
-	m.Fail(
+	m.Failt(
 		"\n  Expected: token of type 'Int' or 'Float'.\n  Actual  : '%v'.",
 		tk1.StringDraft(),
 	)
@@ -286,25 +286,25 @@ func prPlusPlus(m *machine.T) {
 		m.Push(token.NewS(s, m.MkPos()))
 		return
 	}
-	l, ok := tk.L()
+	a, ok := tk.A()
 	if ok {
 		st := m.Stack
 		for {
 			tk2, ok := stack.Peek(*st)
 			if ok {
-				l2, ok := tk2.L()
+				a2, ok := tk2.A()
 				if ok {
-					for _, e := range l {
-						l2 = append(l2, e)
+					for _, e := range a {
+						a2 = append(a2, e)
 					}
-					l = l2
+					a = a2
 					m.Pop()
 					continue
 				}
 			}
 			break
 		}
-		m.Push(token.NewL(l, m.MkPos()))
+		m.Push(token.NewA(a, m.MkPos()))
 		return
 	}
 	m.Failt(

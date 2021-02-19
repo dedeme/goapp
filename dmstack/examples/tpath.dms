@@ -1,22 +1,22 @@
-// Copyright 01-Oct-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
   "./" path.canonical "." expect
   "/xxx/" path.canonical "/xxx" expect
 
-  "" "" path.+ "" expect
-  "a" "" path.+ "a" expect
-  "" "a" path.+ "a" expect
-  "a" "b" path.+ "a/b" expect
+  "" "" path.add "" expect
+  "a" "" path.add "a" expect
+  "" "a" path.add "a" expect
+  "a" "b" path.add "a/b" expect
 
-  [""] path.++ "" expect
-  ["a"] path.++ "a" expect
-  ["", ""] path.++ "" expect
-  ["a", ""] path.++ "a" expect
-  ["", "a"] path.++ "a" expect
-  ["a", "b"] path.++ "a/b" expect
-  ["/a", "b"] path.++ "/a/b" expect
+  [""] path.join "" expect
+  ["a"] path.join "a" expect
+  ["", ""] path.join "" expect
+  ["a", ""] path.join "a" expect
+  ["", "a"] path.join "a" expect
+  ["a", "b"] path.join "a/b" expect
+  ["/a", "b"] path.join "/a/b" expect
 
   "" path.name "" expect
   "/" path.name "" expect

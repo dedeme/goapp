@@ -1,10 +1,10 @@
-// Copyright 28-Sep-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
   // genk
 
-  6 cryp.genk str,len 6 == assert
+  6 cryp.genk str.len 6 == assert
   // 6 cryp.genk puts
 
   // key

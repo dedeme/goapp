@@ -1,10 +1,12 @@
-// Copyright 03-May-2020 ºDeme
+// Copyright 04-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 package reader
 
 import (
 	"fmt"
+	"github.com/dedeme/dmstack/operator"
+	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 	"strconv"
 	"strings"
@@ -22,7 +24,7 @@ func (rd *T) processString() *token.T {
 	prgLen := len(prg)
 
 	if prgIx >= prgLen {
-		rd.fail("Unclosed quotes")
+		rd.Fail("Unclosed quotes")
 	}
 
 	rs := ""
@@ -56,7 +58,7 @@ func (rd *T) processString() *token.T {
 					hex = 1
 				}
 			} else {
-				rd.fail(fmt.Sprintf("Bad escape sequence '\\%v'", rn))
+				rd.Fail(fmt.Sprintf("Bad escape sequence '\\%v'", rn))
 			}
 		} else if hex > 0 {
 			ch := s[0]
@@ -69,7 +71,7 @@ func (rd *T) processString() *token.T {
 					hex++
 				}
 			} else {
-				rd.fail(fmt.Sprintf(
+				rd.Fail(fmt.Sprintf(
 					"Bad unicode sequence '\\u%v'", prg[prgIx-hex:prgIx],
 				))
 			}
@@ -77,7 +79,7 @@ func (rd *T) processString() *token.T {
 			if l == 1 {
 				ch := s[0]
 				if ch < ' ' {
-					rd.fail(fmt.Sprintf("Control code '%v' don't allowed", ch))
+					rd.Fail(fmt.Sprintf("Control code '%v' don't allowed", ch))
 				} else if ch == '"' {
 					closed = true
 					break
@@ -91,10 +93,10 @@ func (rd *T) processString() *token.T {
 	}
 
 	if isEsc {
-		rd.fail("'\\' at the end of string")
+		rd.Fail("'\\' at the end of string")
 	}
 	if !closed {
-		rd.fail("Unclosed quotes")
+		rd.Fail("Unclosed quotes")
 	}
 
 	rd.prgIx = prgIx
@@ -105,12 +107,13 @@ func (rd *T) processString() *token.T {
 //    key : "here doc" text value. (e.g. ` -> "", `abc -> abc)
 func (rd *T) processString2(key string) *token.T {
 	lineStart := rd.nLine - 1
+
 	prg := rd.prg
 	prgIx := rd.prgIx
 	ix := strings.Index(prg[prgIx:], key+"`")
 	if ix == -1 {
 		rd.nLine = lineStart
-		rd.fail("Unclosed multiline string")
+		rd.Fail("Unclosed multiline string")
 	}
 	start := prgIx
 	end := prgIx + ix
@@ -123,4 +126,58 @@ func (rd *T) processString2(key string) *token.T {
 
 	rd.prgIx = end + len(key) + 1
 	return token.NewS(prg[start:end], token.NewPos(rd.source, rd.nLine))
+}
+
+// Process a String interpolation
+func (rd *T) processInterpolation(tk *token.T) []*token.T {
+	fpos := func(nline int) *token.PosT {
+		return token.NewPos(tk.Pos.Source, nline)
+	}
+
+	s, _ := tk.S()
+	nline := tk.Pos.Nline
+
+	pos := 0
+	var tks []*token.T
+	ix := strings.Index(s, "${")
+	for ix != -1 {
+		tks = append(tks, token.NewS(s[pos:pos+ix], fpos(nline)))
+		if pos > 0 {
+			tks = append(tks, token.NewO(operator.Plus, fpos(nline)))
+		}
+		nline += strings.Count(s[pos:pos+ix], "\n")
+		pos += ix + 2
+
+		subr := newFromReader(rd, s[pos:], nline)
+		prg, _ := subr.Process().P()
+
+		if subr.LastChar() != "}" {
+			subr.Fail("Interpolation not closed")
+		}
+		ix2 := subr.prgIx
+		nline += strings.Count(s[pos:pos+ix2], "\n")
+
+		lprg := len(prg)
+		if lprg == 0 {
+			tks = append(tks, token.NewS("", fpos(nline)))
+			tks = append(tks, token.NewO(operator.Plus, fpos(nline)))
+		} else {
+			for _, tk2 := range prg {
+				tks = append(tks, tk2)
+			}
+			tks = append(tks, token.NewSy(symbol.ToString, fpos(nline)))
+			tks = append(tks, token.NewO(operator.Plus, fpos(nline)))
+		}
+
+		pos += ix2 + 1
+		ix = strings.Index(s[pos:], "${")
+	}
+
+	tks = append(tks, token.NewS(s[pos:], fpos(nline)))
+	if len(tks) > 1 {
+		nline += strings.Count(s[pos:], "\n")
+		tks = append(tks, token.NewO(operator.Plus, fpos(nline)))
+	}
+
+	return tks
 }

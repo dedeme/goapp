@@ -3,33 +3,33 @@
 
 /// Blob procedures.
 
-() new =>
+() : new =
 /// i -> <=Blob>
 ///
 /// Creates a Blob of length 'l', filled with 0. If 'l' < 0, it throws a
 /// "Blob error".
 ///   l: Bytes number.
 
-() fill =>
+() : fill =
 /// <=Blob>i -> -
 ///
 /// Sets all bytes of 'b' to 'v'.
 ///   b: Blob.
 ///   v: Value to fill.
 
-() from =>
-/// l -> <=Blob>
+() : from =
+/// a -> <=Blob>
 ///
-/// Creates a Blob from a List of Int.
-///   ls: A List of Int.
+/// Creates a Blob from an array of Int.
+///   a: An array of Int.
 
-() fromStr =>
+() : fromStr =
 /// s -> <=Blob>
 ///
 /// Creates a Blob from a String.
 ///   s: String to convert.
 
-() get =>
+() : get =
 /// <=Blob>i -> i
 ///
 /// Returns the byte at 'i'. If i is out of range throws an
@@ -37,7 +37,7 @@
 ///   b: Blob.
 ///   i: Index of byte to retrieve.
 
-() set =>
+() : set =
 /// <=Blob>ii -> -
 ///
 /// Sets the byte placed at 'i'. If i is out of range throws an
@@ -46,7 +46,7 @@
 ///   i: Index of byte to retrieve.
 ///   v: Value to put in b[i].
 
-() up =>
+() : up =
 /// <=Blob>ip -> -
 ///
 /// Updates the byte placed at 'i' with the result of applying 'pr' to b[i].
@@ -55,27 +55,27 @@
 ///   i : Index of byte to retrieve.
 ///   pr: Procedure (i -> i) to update b[i]
 
-() size =>
+() : size =
 /// <=Blob> -> i
 ///
 /// Returns the size of 'b'.
 ///   b : Blob.
 
-() == =>
+() : eq =
 /// <=Blob><=Blob> -> i
 ///
 /// Returns 'true' if b1 == b2 (Same elements in the same order).
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() != =>
+() : neq =
 /// <=Blob><=Blob> -> i
 ///
 /// Returns 'false' if b1 == b2 (Same elements in the same order).
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() sub =>
+() : sub =
 /// <=Blob>ii -> <=Blob>
 ///
 /// Returns a new blob with the bytes of 'b' from 'begin' (inclusive) to
@@ -92,28 +92,28 @@
 ///   begin: Start to subblob (inclusive).
 ///   end  : End to subblob (exclusive).
 
-() left =>
+() : left =
 /// <=Blob>i -> <=Blob>
 ///
 /// Equals to 'b 0 end blob.sub'
 ///   b    : Blob
 ///   end  : End to subblob (exclusive).
 
-() left =>
+() : right =
 /// <=Blob>i -> <=Blob>
 ///
-/// Equals to 'b : begin : b blob.size : blob.sub'
+/// Equals to 'b ;; begin ;; b blob.size ;; blob.sub'
 ///   b    : Blob
 ///   begin: Start to subblob (inclusive).
 
-() ++ =>
+() : cat =
 /// <=Blob><=Blob> -> <=Blob>
 ///
 /// Returns a new Blob joining b1 with b2.
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() + =>
+() : add =
 /// <=Blob><=Blob> -> <=Blob>
 ///
 /// Returns a new Blob adding each element of b1 and b2.
@@ -128,7 +128,7 @@
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() - =>
+() : subs =
 /// <=Blob><=Blob> -> <=Blob>
 ///
 /// Returns a new Blob substracting each element of b1 and b2.
@@ -143,7 +143,7 @@
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() & =>
+() : and =
 /// <=Blob><=Blob> -> <=Blob>
 ///
 /// Returns a new Blob applying bitwise 'and' to each element of b1 and b2.
@@ -158,7 +158,7 @@
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() | =>
+() : or =
 /// <=Blob><=Blob> -> <=Blob>
 ///
 /// Returns a new Blob applying bitwise 'or' to each element of b1 and b2.
@@ -173,7 +173,7 @@
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() ^ =>
+() : xor =
 /// <=Blob><=Blob> -> <=Blob>
 ///
 /// Returns a new Blob applying bitwise 'xor' to each element of b1 and b2.
@@ -188,13 +188,13 @@
 ///   b1: A Blob.
 ///   b2: Another Blob.
 
-() to =>
-/// <=Blob> -> l
+() : to =
+/// <=Blob> -> l¡a
 ///
-/// Returns a list of Int with the values of 'b'.
+/// Returns an array of Int with values of 'b'.
 ///   b: Blob.
 
-() toStr =>
+() : toStr =
 /// <=Blob> -> s
 ///
 /// Returns a String with the values of 'b'.

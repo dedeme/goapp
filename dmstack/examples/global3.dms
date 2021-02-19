@@ -1,4 +1,4 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 09-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
@@ -65,9 +65,9 @@
   false true ||  assert
   false false || ! assert
 
-  (false)(3 0 /) && ! assert
+  false (3 0 /) && ! assert
 
-  (6 6 ==)(3 0 /) || assert
+  6 6 == (3 0 /) || assert
 
   @
 ) run

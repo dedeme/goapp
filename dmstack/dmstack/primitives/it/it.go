@@ -1,4 +1,4 @@
-// Copyright 10-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Iterator constructor and procedures.
@@ -6,6 +6,7 @@ package it
 
 import (
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 )
@@ -26,31 +27,24 @@ func New(next func() (*token.T, bool)) *T {
 // Auxiliar function
 func popIt(m *machine.T) *T {
 	tk := m.PopT(token.Native)
-	sym, i, _ := tk.N()
-	if sym != symbol.Iterator_ {
-		m.Failt("\n  Expected: Iterator object.\n  Actual  : '%v'.", sym)
+	o, i, _ := tk.N()
+	if o != operator.Iterator_ {
+		m.Failt("\n  Expected: Iterator object.\n  Actual  : '%v'.", o)
 	}
 	return i.(*T)
 }
 
 // Auxiliar function
 func pushIt(m *machine.T, i *T) {
-	m.Push(token.NewN(symbol.Iterator_, i, m.MkPos()))
+	m.Push(token.NewN(operator.Iterator_, i, m.MkPos()))
 }
 
 // Processes it procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'it' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt("\n  Expected: 'it' procedure.\n  Actual  : '%v'.", tk.StringDraft())
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+//    run : Function which running a machine.
+func Proc(m *machine.T, proc symbol.T, run func(m *machine.T)) {
+	switch proc {
 	// it0.go ------------------------------------
 	case symbol.New("new"):
 		prNew(m, run)
@@ -73,10 +67,10 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("next"):
 		prNext(m)
 	// it1.go ------------------------------------
-	case symbol.New("+"):
-		prPlus(m)
-	case symbol.New("++"):
-		prPlus2(m)
+	case symbol.New("add"):
+		prAdd(m)
+	case symbol.New("join"):
+		prJoin(m)
 	case symbol.New("drop"):
 		prDrop(m)
 	case symbol.New("dropf"):
@@ -98,24 +92,24 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("zip3"):
 		prZip3(m)
 	// it2.go ------------------------------------
-	case symbol.New("all?"):
+	case symbol.New("all"):
 		prAll(m, run)
-	case symbol.New("any?"):
+	case symbol.New("any"):
 		prAny(m, run)
-	case symbol.New("contains?"):
+	case symbol.New("contains"):
 		prContains(m, run)
 	case symbol.New("each"):
 		prEach(m, run)
 	case symbol.New("eachIx"):
 		prEachIx(m, run)
-	case symbol.New("eq?"):
-		prEq(m, run)
-	case symbol.New("neq?"):
-		prNeq(m, run)
-	case symbol.Eq:
-		prEquals(m)
-	case symbol.Neq:
-		prNequals(m)
+	case symbol.New("eqp"):
+		prEqp(m, run)
+	case symbol.New("neqp"):
+		prNeqp(m, run)
+	case symbol.New("eq"):
+		prEq(m)
+	case symbol.New("neq"):
+		prNeq(m)
 	case symbol.New("find"):
 		prFind(m, run)
 	case symbol.New("index"):
@@ -142,6 +136,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prBox2(m)
 
 	default:
-		m.Failt("'it' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'it' does not contains the procedure '%v'.", proc.String())
 	}
 }

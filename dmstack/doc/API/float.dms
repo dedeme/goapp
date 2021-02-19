@@ -1,15 +1,15 @@
-// Copyright 02-Aug-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 /// Float procedures.
 
-() fromStr =>
+() : fromStr =
 /// s -> f
 ///
 /// Returns the float value of 's'. If it fails, throws a "Float error".
 ///   s: String which represent a floating number.
 
-() == =>
+() : eq =
 /// fff -> b
 ///
 /// Returns 'true' if n2 <= n1 + gap and n2 >= n1 - gap. If gap < 0 returns
@@ -18,7 +18,7 @@
 ///   n1 : Another number to compare.
 ///   gap: Admissible difference to equality.
 
-() != =>
+() : neq =
 /// fff -> b
 ///
 /// Returns 'false' if n2 <= n1 + gap and n2 >= n1 - gap. If gap < 0 returns
@@ -27,34 +27,34 @@
 ///   n1 : Another number to compare.
 ///   gap: Admissible difference to equality.
 
-() abs =>
+() : abs =
 /// f -> f
 ///
 /// Returns the absolute value of 'f'.
 ///   f: A floating number.
 
-() rnd =>
+() : rnd =
 /// - -> f
 ///
 /// Returns a randon Float between 0 (inclusive) and 1 (exclusive)
 
-() max =>
+() : max =
 /// - -> f
 ///
 /// Returns the maximum Float.
 
-() min =>
+() : min =
 /// - -> f
 ///
 /// Returns the minimum Float.
 
-() toInt =>
+() : toInt =
 /// f -> i
 ///
 /// Returns 'n' converted to Int.
 ///   n: A number.
 
-() toIso =>
+() : toIso =
 /// f -> s
 ///
 /// Returns 'n' converted to string with ',' as decimal separator and '.' as
@@ -62,7 +62,7 @@
 ///   n: A number.
 ///   scale: Decimals positions [0-9)
 
-() toEn =>
+() : toEn =
 /// f -> s
 ///
 /// Returns 'n' converted to string with '.' as decimal separator and ',' as

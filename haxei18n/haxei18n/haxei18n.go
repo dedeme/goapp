@@ -156,7 +156,7 @@ func extractFile(keys map[string][]*pos, source string) {
 							keys[key] = []*pos{ps}
 						}
 					} else {
-						fmt.Printf("Line %d: Sign '=' is not allowed in keys", nl)
+						fmt.Printf("Line %d: Sign '=' is not allowed in keys\n", nl)
 					}
 					bf.Reset()
 					state = CODE

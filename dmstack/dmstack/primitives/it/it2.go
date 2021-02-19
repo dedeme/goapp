@@ -5,7 +5,7 @@ package it
 
 import (
 	"github.com/dedeme/dmstack/machine"
-	"github.com/dedeme/dmstack/primitives/list"
+	"github.com/dedeme/dmstack/primitives/arr"
 	"github.com/dedeme/dmstack/token"
 	"math/rand"
 )
@@ -15,14 +15,13 @@ import (
 //    run: Function which running a machine.
 func prAll(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	r := true
 	for r && i.ok {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
 		tk2 := m2.PopT(token.Bool)
@@ -36,14 +35,13 @@ func prAll(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func prAny(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	r := false
 	for !r && i.ok {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
 		tk2 := m2.PopT(token.Bool)
@@ -73,13 +71,12 @@ func prContains(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func prEach(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	for i.ok {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
 	}
@@ -90,14 +87,13 @@ func prEach(m *machine.T, run func(m *machine.T)) {
 //    run: Function which running a machine.
 func prEachIx(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	ix := int64(0)
 	for i.ok {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		m2.Push(token.NewI(ix, m.MkPos()))
 		ix++
@@ -108,9 +104,8 @@ func prEachIx(m *machine.T, run func(m *machine.T)) {
 // Returns 'true' if each element of i1 is equals to i2 with 'p'.
 //    m: Virtual machine.
 //    run: Function which running a machine.
-func prEq(m *machine.T, run func(m *machine.T)) {
+func prEqp(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i2 := popIt(m)
 	i1 := popIt(m)
 	r := true
@@ -124,7 +119,7 @@ func prEq(m *machine.T, run func(m *machine.T)) {
 		e2 := i2.e
 		i2.e, i2.ok = i2.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e1)
 		m2.Push(e2)
 		run(m2)
@@ -143,9 +138,8 @@ func prEq(m *machine.T, run func(m *machine.T)) {
 // Returns !prEq.
 //    m: Virtual machine.
 //    run: Function which running a machine.
-func prNeq(m *machine.T, run func(m *machine.T)) {
+func prNeqp(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i2 := popIt(m)
 	i1 := popIt(m)
 	r := false
@@ -159,7 +153,7 @@ func prNeq(m *machine.T, run func(m *machine.T)) {
 		e2 := i2.e
 		i2.e, i2.ok = i2.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e1)
 		m2.Push(e2)
 		run(m2)
@@ -178,7 +172,7 @@ func prNeq(m *machine.T, run func(m *machine.T)) {
 
 // Returns 'true' if each element of i1 is equals to i2 with '=='.
 //    m: Virtual machine.
-func prEquals(m *machine.T) {
+func prEq(m *machine.T) {
 	i2 := popIt(m)
 	i1 := popIt(m)
 
@@ -204,9 +198,9 @@ func prEquals(m *machine.T) {
 	m.Push(token.NewB(r, m.MkPos()))
 }
 
-// Returns !prEquals.
+// Returns !prEq.
 //    m: Virtual machine.
-func prNequals(m *machine.T) {
+func prNeq(m *machine.T) {
 	i2 := popIt(m)
 	i1 := popIt(m)
 
@@ -238,14 +232,13 @@ func prNequals(m *machine.T) {
 //    run: Function which running a machine.
 func prFind(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 	var r []*token.T
 	for i.ok {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
 		tk2 := m2.PopT(token.Bool)
@@ -255,7 +248,7 @@ func prFind(m *machine.T, run func(m *machine.T)) {
 			break
 		}
 	}
-	m.Push(token.NewL(r, m.MkPos()))
+	m.Push(token.NewA(r, m.MkPos()))
 }
 
 // Returns the index of the first element of 'i' equals to tk or -1 if such
@@ -284,7 +277,6 @@ func prIndex(m *machine.T) {
 //    m: Virtual machine.
 func prIndexF(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 
 	c := int64(0)
@@ -292,7 +284,7 @@ func prIndexF(m *machine.T, run func(m *machine.T)) {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
 		tk2 := m2.PopT(token.Bool)
@@ -333,7 +325,6 @@ func prLastIndex(m *machine.T) {
 //    m: Virtual machine.
 func prLastIndexF(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	i := popIt(m)
 
 	r := int64(-1)
@@ -342,7 +333,7 @@ func prLastIndexF(m *machine.T, run func(m *machine.T)) {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(e)
 		run(m2)
 		tk2 := m2.PopT(token.Bool)
@@ -360,7 +351,6 @@ func prLastIndexF(m *machine.T, run func(m *machine.T)) {
 //    m: Virtual machine.
 func prReduce(m *machine.T, run func(m *machine.T)) {
 	tk := m.PopT(token.Procedure)
-	p, _ := tk.P()
 	seed := m.Pop()
 	i := popIt(m)
 
@@ -368,7 +358,7 @@ func prReduce(m *machine.T, run func(m *machine.T)) {
 		e := i.e
 		i.e, i.ok = i.next()
 
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, p)
+		m2 := machine.New(m.Source, m.Pmachines, tk)
 		m2.Push(seed)
 		m2.Push(e)
 		run(m2)
@@ -382,16 +372,16 @@ func prReduce(m *machine.T, run func(m *machine.T)) {
 //    m: Virtual machine.
 func PrTo(m *machine.T) {
 	i := popIt(m)
-	var l []*token.T
+	var a []*token.T
 	for {
 		if i.ok {
-			l = append(l, i.e)
+			a = append(a, i.e)
 			i.e, i.ok = i.next()
 			continue
 		}
 		break
 	}
-	m.Push(token.NewL(l, m.MkPos()))
+	m.Push(token.NewA(a, m.MkPos()))
 }
 
 // Returns a new iterator with elements in reverse order.
@@ -399,7 +389,7 @@ func PrTo(m *machine.T) {
 func prReverse(m *machine.T) {
 	PrTo(m)
 	tk := (*m.Stack)[0]
-	list.PrReverse(m)
+	arr.PrReverse(m)
 	m.Push(tk)
 	PrFrom(m)
 }
@@ -409,7 +399,7 @@ func prReverse(m *machine.T) {
 func prShuffle(m *machine.T) {
 	PrTo(m)
 	tk := (*m.Stack)[0]
-	list.PrShuffle(m)
+	arr.PrShuffle(m)
 	m.Push(tk)
 	PrFrom(m)
 }
@@ -421,18 +411,18 @@ func prSort(m *machine.T, run func(m *machine.T)) {
 	PrTo(m)
 	tk2 := (*m.Stack)[0]
 	m.Push(tk)
-	list.PrSort(m, run)
+	arr.PrSort(m, run)
 	m.Push(tk2)
 	PrFrom(m)
 }
 
-// Returns an infinite iterator with elements of a list randomly placed in rows
+// Returns an infinite iterator with elements of an array randomly placed in rows
 // such that each row consume all its elements.
 //    m: Virtual machine.
 func prBox(m *machine.T) {
-	tk := m.PopT(token.List)
-	l, _ := tk.L()
-	ln := int64(len(l))
+	tk := m.PopT(token.Array)
+	a, _ := tk.A()
+	ln := int64(len(a))
 	c := ln
 	pushIt(m, New(func() (r *token.T, ok bool) {
 		if c == ln {
@@ -443,49 +433,49 @@ func prBox(m *machine.T) {
 				}
 				j := rand.Int63n(i)
 				i--
-				l[i], l[j] = l[j], l[i]
+				a[i], a[j] = a[j], a[i]
 			}
 
 			c = 0
 		}
-		r = l[c]
+		r = a[c]
 		ok = true
 		c++
 		return
 	}))
 }
 
-// Returns a 'it.box' from a list of 'tp' which first element is the number of
+// Returns a 'it.box' from an array of 'tp' which first element is the number of
 // duplicates and the second is the element to put in list for the 'it.box'.
 //    m: Virtual machine.
 func prBox2(m *machine.T) {
-	tk := m.PopT(token.List)
-	l, _ := tk.L()
+	tk := m.PopT(token.Array)
+	a, _ := tk.A()
 
-	var l2 []*token.T
-	for _, tk2 := range l {
-		pair, ok := tk2.L()
+	var a2 []*token.T
+	for _, tk2 := range a {
+		pair, ok := tk2.A()
 		if !ok || len(pair) != 2 {
-			m.Fail("Box error", "The element (%v) is not a 'pair'", tk2.StringDraft())
+			m.Failt("The element (%v) is not a 'pair'", tk2.StringDraft())
 		}
 		n, ok := pair[0].I()
 		if !ok {
-			m.Fail(
-				"Box error", "The first element of 'pair' (%v) is not an integer",
+			m.Failt(
+				"The first element of 'pair' (%v) is not an integer",
 				tk2.StringDraft(),
 			)
 		}
 		if n <= 0 {
 			m.Fail(
-				"Box error", "The first element of 'pair' (%v) is <= 0",
+				machine.ERange(), "The first element of 'pair' (%v) is <= 0",
 				tk2.StringDraft(),
 			)
 		}
 		for i := int64(0); i < n; i++ {
-			l2 = append(l2, pair[1])
+			a2 = append(a2, pair[1])
 		}
 	}
 
-	m.Push(token.NewL(l2, m.MkPos()))
+	m.Push(token.NewA(a2, m.MkPos()))
 	prBox(m)
 }

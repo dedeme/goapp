@@ -3,7 +3,7 @@
 
 /// System procedures.
 
-() init =>
+() : init =
 /// s -> -
 ///
 /// Set values for 'sys.uname', 'sys.udir', 'sys.locale' and 'sys.home'.
@@ -13,45 +13,45 @@
 ///   dir: Relative path of application home directory.
 ///        The 'home' directory is formed 'sys.udir'/.dmStackApp/'s'.
 
-() init? =>
+() : initialized =
 /// - -> b
 ///
 /// Returns 'true' if 'sys' was initialized.
 
-() uname =>
+() : uname =
 /// - -> s
 ///
 /// Returns user name. If 'sys.init' has not previously been called, it
 /// returns "".
 
-() udir =>
+() : udir =
 /// - -> s
 ///
 /// Returns user directory. If 'sys.init' has not previously been called,
 /// it returns "".
 
-() locale =>
+() : locale =
 /// - -> s
 ///
 /// Returns system locale. If 'sys.init' has not previously been called,
 /// it returns "".
 
-() home =>
+() : home =
 /// - -> s
 ///
 /// Returns application home directory. If 'sys.init' has not previously been
 /// called, it returns "".
 
-() args =>
+() : args =
 /// - -> l
 ///
 /// Returns a list of String with argumentes of program.
 /// 'args !0' is the program name.
 
-() cmd =>
-/// l -> ss
+() : cmd =
+/// a -> ss
 ///
-/// Execute a command with 'l' arguments and returns the stdout and stderror
+/// Execute a command with 'a' arguments and returns the stdout and stderror
 /// of the corresponding process.
 ///
 /// Examples:
@@ -60,25 +60,25 @@
 ///
 /// But is an error: '["ls -a"] sys.cmd pop puts'.
 ///
-///   l       : List of String. 'l !0' is the command name.
-///             Strings of 'l' can not contain blanks.
+///   a       : List of String. 'a !0' is the command name.
+///             Strings of 'a' can not contain blanks.
 ///   --------
 ///   stdOut  : Stdout of the process.
 ///   stdError: Stderror of the process.
 
-() sleep =>
+() : sleep =
 /// i -> -
 ///
 /// Stop the current thread 'n' milliseconds.
 ///   n: Milliseconds.
 
-() freeThread =>
+() : freeThread =
 /// p -> -
 ///
 /// Executes 'proc' in an independent thread.
-///   p: Procdure.
+///   p: Procedure. It has not access to the stack of the main one.
 
-() thread =>
+() : thread =
 /// p -> <.= Thread.>
 ///
 /// Executes 'proc' in an independent thread and returns a handle to wait
@@ -91,46 +91,46 @@
 ///   "Waiting..." puts
 ///   th sys.join
 ///   "Finished" puts
-///   p: Procedure.
+///   p: Procedure. It has not access to the stack of the main one.
 
-() join =>
+() : join =
 /// <.= Thread.> -> -
 ///
 /// Waits until the procedure linked to 'thread' finishes. See 'sys.thread'.
 ///   thread: Link retrieved with 'sys.thread'.
 
-() print =>
+() : print =
 /// s -> -
 ///
 /// Print tx in stdout.
 ///   tx: Text to print.
 
-() println =>
+() : println =
 /// s -> -
 ///
 /// Print tx in stdout adding a carriage return.
 ///   tx: Text to print.
 
-() error =>
+() : error =
 /// s -> -
 ///
 /// Print tx in stderr.
 ///   tx: Text to print.
 
-() getLine =>
+() : getLine =
 /// - -> s
 ///
 /// Reads a line from stdin until a carriage return is typed.
 /// If there is an error, returns "".
 
-() getText =>
+() : getText =
 /// - -> s
 ///
 /// Reads a line from stdin until 'tx' + carriage return is typed.
 /// 'tx' + CR at the end is removed.
 /// If there is an error, returns "".
 
-() getPass =>
+() : getPass =
 /// - -> s
 ///
 /// Reads a line from stdin, witout show echo, until a carriage return is typed.

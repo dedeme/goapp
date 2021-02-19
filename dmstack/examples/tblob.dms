@@ -1,4 +1,4 @@
-// Copyright 30-Sep-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 (
@@ -21,24 +21,24 @@
   [] blob.from blob.size 0 expect
   b blob.size 3 expect
 
-  [] blob.from [] blob.from blob.== assert
-  b [] blob.from blob.!= assert
-  [] blob.from b blob.!= assert
-  [1] blob.from b blob.!= assert
-  [1, 41, 3] blob.from b blob.== assert
+  [] blob.from [] blob.from blob.eq assert
+  b [] blob.from blob.neq assert
+  [] blob.from b blob.neq assert
+  [1] blob.from b blob.neq assert
+  [1, 41, 3] blob.from b blob.eq assert
 
-  [] blob.from [] blob.from blob.!= ! assert
-  b [] blob.from blob.== ! assert
-  [] blob.from b blob.== ! assert
-  [1] blob.from b blob.== ! assert
-  [1, 41, 3] blob.from b blob.!= ! assert
+  [] blob.from [] blob.from blob.neq ! assert
+  b [] blob.from blob.eq ! assert
+  [] blob.from b blob.eq ! assert
+  [1] blob.from b blob.eq ! assert
+  [1, 41, 3] blob.from b blob.neq ! assert
 
   [] blob.from : b0 =
   b0 0 0 blob.sub blob.to [] expect
   b0 0 blob.left blob.to [] expect
   b0 0 blob.right blob.to [] expect
 
-  b 0 3 blob.sub b blob.== assert
+  b 0 3 blob.sub b blob.eq assert
   b 0 2 blob.sub blob.to [1, 41] expect
   b 0 -1 blob.sub blob.to [1, 41] expect
   b 1 2 blob.sub blob.to [41] expect
@@ -54,18 +54,18 @@
   b -1 blob.right blob.to [3] expect
   b 3 blob.right blob.to [] expect
 
-  b0 b0 blob.++ b0 blob.== assert
-  b0 b blob.++ b blob.== assert
-  b b0 blob.++ b blob.== assert
-  b b blob.++ blob.to [1, 41, 3, 1, 41, 3] expect
+  b0 b0 blob.cat b0 blob.eq assert
+  b0 b blob.cat b blob.eq assert
+  b b0 blob.cat b blob.eq assert
+  b b blob.cat blob.to [1, 41, 3, 1, 41, 3] expect
 
   [1, 1, 0, 0, 23] blob.from : b1 =
   [1, 0, 1, 0] blob.from : b2 =
-  b1 b2 blob.+ blob.to [2, 1, 1, 0] expect
-  b1 b2 blob.- blob.to [0, 1, 255, 0] expect
-  b1 b2 blob.& blob.to [1, 0, 0, 0] expect
-  b1 b2 blob.| blob.to [1, 1, 1, 0] expect
-  b1 b2 blob.^ blob.to [0, 1, 1, 0] expect
+  b1 b2 blob.add blob.to [2, 1, 1, 0] expect
+  b1 b2 blob.subs blob.to [0, 1, 255, 0] expect
+  b1 b2 blob.and blob.to [1, 0, 0, 0] expect
+  b1 b2 blob.or blob.to [1, 1, 1, 0] expect
+  b1 b2 blob.xor blob.to [0, 1, 1, 0] expect
 
   @
 ) run

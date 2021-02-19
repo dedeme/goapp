@@ -1,4 +1,4 @@
-// Copyright 29-Sep-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Date procedures.
@@ -6,6 +6,7 @@ package date
 
 import (
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 	"strings"
@@ -41,16 +42,16 @@ func pushInt(m *machine.T, i int) {
 // Auxiliar function
 func popDate(m *machine.T) time.Time {
 	tk := m.PopT(token.Native)
-	sym, i, _ := tk.N()
-	if sym != symbol.Date_ {
-		m.Failt("\n Expected: Date object.\n  Actual  : '%v'.", sym)
+	o, i, _ := tk.N()
+	if o != operator.Date_ {
+		m.Failt("\n Expected: Date object.\n  Actual  : '%v'.", o)
 	}
 	return i.(time.Time)
 }
 
 // Auxiliar function
 func pushDate(m *machine.T, d time.Time) {
-	m.Push(token.NewN(symbol.Date_, d, m.MkPos()))
+	m.Push(token.NewN(operator.Date_, d, m.MkPos()))
 }
 
 // Returns a date from year, month and day values.
@@ -289,20 +290,10 @@ func prEqTime(m *machine.T) {
 }
 
 // Processes date procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'date' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'date' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+func Proc(m *machine.T, proc symbol.T) {
+	switch proc {
 	case symbol.New("new"):
 		prNew(m)
 	case symbol.New("newTime"):
@@ -357,11 +348,11 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prDf(m)
 	case symbol.New("cmpTime"):
 		prDfTime(m)
-	case symbol.New("eq?"):
+	case symbol.New("eq"):
 		prEq(m)
-	case symbol.New("eqTime?"):
+	case symbol.New("eqTime"):
 		prEqTime(m)
 	default:
-		m.Failt("'date' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'date' does not contains the procedure '%v'.", proc.String())
 	}
 }

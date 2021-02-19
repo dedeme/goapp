@@ -3,109 +3,109 @@
 
 /// JSON procedures.
 
-() from =>
+() : from =
 /// s -> <=Js>
 ///
 /// Creates a 'Js' from a string. No check is done.
 ///   s: String with a JSON value.
 
-() to =>
+() : to =
 /// <=Js> -> s
 ///
 /// Generates a string with a 'Js' value.
 ///   j: 'Js' value.
 
-() null? =>
+() : null =
 /// <=Js> -> b
 ///
 /// Returns true if 'j' is a 'null' value.
 ///   j: 'Js' value.
 
-() rb =>
+() : rb =
 /// <=Js> -> b
 ///
 /// Reads a Bool.
 /// Throws "Js error".
 ///   j: 'Js' value.
 
-() ri =>
+() : ri =
 /// <=Js> -> i
 ///
 /// Reads an Int.
 /// Throws "Js error".
 ///   j: 'Js' value.
 
-() rf =>
+() : rf =
 /// <=Js> -> f
 ///
 /// Reads a Float.
 /// Throws "Js error".
 ///   j: 'Js' value.
 
-() rs =>
+() : rs =
 /// <=Js> -> s
 ///
 /// Reads a String.
 /// Throws "Js error".
 ///   j: 'Js' value.
 
-() ra =>
-/// <=Js> -> l
+() : ra =
+/// <=Js> -> a
 ///
-/// Reads an Array and returns a List of <=Js>.
+/// Reads an Array and returns a Array of <=Js>.
 /// Throws "Js error".
 ///   j: 'Js' value.
 
-() ro =>
+() : ro =
 /// <=Js> -> m
 ///
 /// Reads an Object and returns a Map of <=Js>.
 /// Throws "Js error".
 ///   j: 'Js' value.
 
-() wn =>
+() : wn =
 /// - -> <=Js>
 ///
 /// Writes a 'null' value.
 
-() wb =>
+() : wb =
 /// b -> <=Js>
 ///
 /// Writes a Bool.
 ///   v -> Value.
 
-() wi =>
+() : wi =
 /// i -> <=Js>
 ///
 /// Writes an Int.
 ///   v -> Value.
 
-() wf =>
+() : wf =
 /// f -> <=Js>
 ///
 /// Writes a Float.
 ///   v -> Value.
 
-() ws =>
+() : ws =
 /// s -> <=Js>
 ///
 /// Writes a String.
 ///   v -> Value.
 
-() wa =>
-/// l -> <=Js>
+() : wa =
+/// a -> <=Js>
 ///
-/// Writes a List of <=Js> and generates a JSON Array.
+/// Writes an Array of <=Js> and generates a JSON Array.
 ///   v -> Value.
 
-() wo =>
+() : wo =
 /// m -> <=Js>
 ///
 /// Writes a Map of <=Js> and generates a JSON Object.
 ///   v -> Value.
 
-() rList =>
-/// <=Js>p -> l
+() : rList =
+/// <=Js>p -> a
 ///
 /// Reads a 'Js' containing an Array, using 'pr' to convert the JSON values
 /// of such Array.
@@ -113,7 +113,7 @@
 ///   pr: Procedure (<=Js> -> *) to convert elements of the Array contained in
 ///       'j'.
 
-() rMap =>
+() : rMap =
 /// <=Js>p -> m
 ///
 /// Reads a 'Js' containing a Map, using 'pr' to convert the JSON values
@@ -122,7 +122,7 @@
 ///   pr: Procedure (<=Js> -> *) to convert elements of the Map contained in
 ///       'j'.
 
-() rIt =>
+() : rIt =
 /// <=Js>p -> <=Iterator>
 ///
 /// Reads a 'Js' containing an Iterator, using 'pr' to convert the JSON values
@@ -131,21 +131,21 @@
 ///   pr: Procedure (<=Js> -> *) to convert elements of the Iterator contained
 ///       in 'j'.
 
-() wList =>
-/// lp -> <=Js>
+() : wList =
+/// ap -> <=Js>
 ///
-/// Writes a 'Js' from a List, using 'pr' to convert its values to JSON.
-///   l : List to convert.
-///   pr: Procedure (* -> <=Js>) to convert values of 'l' in JSON values.
+/// Writes a 'Js' from an array, using 'pr' to convert its values to JSON.
+///   a : List to convert.
+///   pr: Procedure (* -> <=Js>) to convert values of 'a' in JSON values.
 
-() wMap =>
+() : wMap =
 /// mp -> <=Js>
 ///
 /// Writes a 'Js' from a Map, using 'pr' to convert its values to JSON.
 ///   m : Map to convert.
 ///   pr: Procedure (* -> <=Js>) to convert values of 'm' in JSON values.
 
-() wIt =>
+() : wIt =
 /// <=Iterator>p -> <=Js>
 ///
 /// Writes a 'Js' from an Iterator, using 'pr' to convert its values to JSON.

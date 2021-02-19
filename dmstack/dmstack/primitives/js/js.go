@@ -1,4 +1,4 @@
-// Copyright 27-Sep-2020 ºDeme
+// Copyright 10-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Json procedures.
@@ -6,6 +6,7 @@ package js
 
 import (
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 )
@@ -13,37 +14,29 @@ import (
 // Auxiliar function
 func popJs(m *machine.T) string {
 	tk := m.PopT(token.Native)
-	sym, i, _ := tk.N()
-	if sym != symbol.Js_ {
-		m.Failt("\n  Expected: Json object.\n  Actual  : '%v'.", sym)
+	o, i, _ := tk.N()
+	if o != operator.Js_ {
+		m.Failt("\n  Expected: Json object.\n  Actual  : '%v'.", o)
 	}
 	return i.(string)
 }
 
 // Auxiliar function
 func pushJs(m *machine.T, s string) {
-	m.Push(token.NewN(symbol.Js_, s, m.MkPos()))
+	m.Push(token.NewN(operator.Js_, s, m.MkPos()))
 }
 
 // Processes js procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'js' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt("\n  Expected: 'js' procedure.\n  Actual  : '%v'.", tk.StringDraft())
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    run : Function which running a machine.
+func Proc(m *machine.T, proc symbol.T, run func(m *machine.T)) {
+	switch proc {
 	// js0.go ------------------------------------
 	case symbol.New("from"):
 		prFrom(m)
 	case symbol.New("to"):
 		prTo(m)
-	case symbol.New("null?"):
+	case symbol.New("null"):
 		prIsNull(m)
 	case symbol.New("rb"):
 		prRb(m)
@@ -86,6 +79,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 		prWit(m, run)
 
 	default:
-		m.Failt("'js' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'js' does not contains the procedure '%v'.", proc.String())
 	}
 }

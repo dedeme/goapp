@@ -1,4 +1,4 @@
-// Copyright 29-Sep-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // B64 management.
@@ -7,6 +7,7 @@ package b64
 import (
 	"encoding/base64"
 	"github.com/dedeme/dmstack/machine"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"github.com/dedeme/dmstack/token"
 )
@@ -25,53 +26,42 @@ func prEncode(m *machine.T) {
 //    m: Virtual machine.
 func prEncodeBytes(m *machine.T) {
 	tk := m.PopT(token.Native)
-	sym, b, _ := tk.N()
-	if sym != symbol.Blob_ {
-		m.Failt("\n  Expected: Blob object.\n  Actual  : '%v'.", sym)
+	o, b, _ := tk.N()
+	if o != operator.Blob_ {
+		m.Failt("\n  Expected: Blob object.\n  Actual  : '%v'.", o)
 	}
 	m.Push(token.NewS(b64.EncodeToString(b.([]byte)), m.MkPos()))
 }
 
-// Returns a string from a B64 string. If decoding fails, it raises a
-// "B64 error".
+// Returns a string from a B64 string. If decoding fails, it raises an error.
 //    m: Virtual machine.
 func prDecode(m *machine.T) {
 	tk := m.PopT(token.String)
 	s, _ := tk.S()
 	b, err := b64.DecodeString(s)
 	if err != nil {
-		m.Fail("B64 error", "Wrong B64 string:\n%v", s)
+		m.Failt("Wrong B64 string:\n%v", s)
 	}
 	m.Push(token.NewS(string(b), m.MkPos()))
 }
 
-// Returns a Blob from a B64 string. If decoding fails raises an "B64 error".
+// Returns a Blob from a B64 string. If decoding fails raises an error.
 //    m: Virtual machine.
 func prDecodeBytes(m *machine.T) {
 	tk := m.PopT(token.String)
 	s, _ := tk.S()
 	b, err := b64.DecodeString(s)
 	if err != nil {
-		m.Fail("B64 error", "Wrong B64 string:\n%v", s)
+		m.Failt("Wrong B64 string:\n%v", s)
 	}
-	m.Push(token.NewN(symbol.Blob_, b, m.MkPos()))
+	m.Push(token.NewN(operator.Blob_, b, m.MkPos()))
 }
 
 // Processes date procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'b64' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'b64' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+func Proc(m *machine.T, proc symbol.T) {
+	switch proc {
 	case symbol.New("encode"):
 		prEncode(m)
 	case symbol.New("encodeBytes"):
@@ -81,6 +71,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("decodeBytes"):
 		prDecodeBytes(m)
 	default:
-		m.Failt("'b64' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'b64' does not contains the procedure '%v'.", proc.String())
 	}
 }

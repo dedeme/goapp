@@ -1,4 +1,4 @@
-// Copyright 01-Oct-2020 ºDeme
+// Copyright 11-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // File path management.
@@ -32,19 +32,19 @@ func prCanonical(m *machine.T) {
 
 // Returns 'p1' joined to 'p2'.
 //    m: Virtual machine.
-func prPlus(m *machine.T) {
+func prAdd(m *machine.T) {
 	p2 := popStr(m)
 	p1 := popStr(m)
 	pushStr(m, path.Join(p1, p2))
 }
 
-// Returns paths of 'ls' joined.
+// Returns paths of 'a' joined.
 //    m: Virtual machine.
-func prPlus2(m *machine.T) {
-	tk := m.PopT(token.List)
-	ls, _ := tk.L()
+func prJoin(m *machine.T) {
+	tk := m.PopT(token.Array)
+	a, _ := tk.A()
 	var ps []string
-	for _, e := range ls {
+	for _, e := range a {
 		p, ok := e.S()
 		if !ok {
 			m.Failt("\n  Expected: String.\n  Actual:  '%v'.", e.StringDraft())
@@ -108,26 +108,16 @@ func prParent(m *machine.T) {
 }
 
 // Processes path procedures.
-//    m: Virtual machine.
-//    run: Function which running a machine.
-func Proc(m *machine.T, run func(m *machine.T)) {
-	tk, ok := m.PrgNext()
-	if !ok {
-		m.Failt("'path' procedure is missing")
-	}
-	sy, ok := tk.Sy()
-	if !ok {
-		m.Failt(
-			"\n  Expected: 'path' procedure.\n  Actual  : '%v'.", tk.StringDraft(),
-		)
-	}
-	switch sy {
+//    m   : Virtual machine.
+//    proc: Procedure
+func Proc(m *machine.T, proc symbol.T) {
+	switch proc {
 	case symbol.New("canonical"):
 		prCanonical(m)
-	case symbol.New("+"):
-		prPlus(m)
-	case symbol.New("++"):
-		prPlus2(m)
+	case symbol.New("add"):
+		prAdd(m)
+	case symbol.New("join"):
+		prJoin(m)
 	case symbol.New("extension"):
 		prExtension(m)
 	case symbol.New("name"):
@@ -137,6 +127,6 @@ func Proc(m *machine.T, run func(m *machine.T)) {
 	case symbol.New("parent"):
 		prParent(m)
 	default:
-		m.Failt("'path' does not contains the procedure '%v'.", sy.String())
+		m.Failt("'path' does not contains the procedure '%v'.", proc.String())
 	}
 }

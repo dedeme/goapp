@@ -15,9 +15,8 @@ import (
 //    run: Function which running a machine.
 func prNew(m *machine.T, run func(m *machine.T)) {
 	tk1 := m.PopT(token.Procedure)
-	next, _ := tk1.P()
 	nextf := func() (tk *token.T, ok bool) {
-		m2 := machine.NewIsolate(m.SourceDir, m.Pmachines, next)
+		m2 := machine.New(m.Source, m.Pmachines, tk1)
 		run(m2)
 		okTk := m2.PopT(token.Bool)
 		ok, _ = okTk.B()
@@ -52,13 +51,13 @@ func prUnary(m *machine.T) {
 
 // Creates a new It from a List.
 func PrFrom(m *machine.T) {
-	tk := m.PopT(token.List)
-	l, _ := tk.L()
-	ln := len(l)
+	tk := m.PopT(token.Array)
+	a, _ := tk.A()
+	ln := len(a)
 	i := 0
 	next := func() (tk *token.T, ok bool) {
 		if i < ln {
-			tk = l[i]
+			tk = a[i]
 			ok = true
 			i++
 		}

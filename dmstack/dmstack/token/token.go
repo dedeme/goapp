@@ -1,4 +1,4 @@
-// Copyright 27-Apr-2020 ºDeme
+// Copyright 04-Jan-2021 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 // Token data.
@@ -7,6 +7,7 @@ package token
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/dedeme/dmstack/operator"
 	"github.com/dedeme/dmstack/symbol"
 	"strings"
 )
@@ -38,9 +39,10 @@ const (
 	Float
 	String
 	Procedure
-	List
+	Array
 	Map
 	Symbol
+	Operator
 	Native
 )
 
@@ -72,16 +74,19 @@ func (tk st) tp() TypeT {
 	return String
 }
 
-type pr []*T
+type pr struct {
+	heap map[symbol.T]*T
+	code []*T
+}
 
 func (tk pr) tp() TypeT {
 	return Procedure
 }
 
-type li []*T
+type ar []*T
 
-func (tk li) tp() TypeT {
-	return List
+func (tk ar) tp() TypeT {
+	return Array
 }
 
 type ma map[string]*T
@@ -96,8 +101,14 @@ func (tk sy) tp() TypeT {
 	return Symbol
 }
 
+type op operator.T
+
+func (tk op) tp() TypeT {
+	return Operator
+}
+
 type na struct {
-	sym   symbol.T
+	o     operator.T
 	value interface{}
 }
 
@@ -111,9 +122,10 @@ func (tk na) tp() TypeT {
 //   "Float"
 //   "String"
 //   "Procedure
-//   "List"
+//   "Array"
 //   "Map"
 //   "Symbol"
+//   "Operator"
 //   "Native"
 func (t TypeT) String() string {
 	switch t {
@@ -127,12 +139,14 @@ func (t TypeT) String() string {
 		return "String"
 	case Procedure:
 		return "Procedure"
-	case List:
-		return "List"
+	case Array:
+		return "Array"
 	case Map:
 		return "Map"
 	case Symbol:
 		return "Symbol"
+	case Operator:
+		return "Operator"
 	case Native:
 		return "Native"
 	default:
@@ -146,9 +160,8 @@ func (t TypeT) String() string {
 //   "Float" -> f
 //   "String" -> s
 //   "Procedure -> p
-//   "List" -> l
+//   "Array" -> a
 //   "Map" -> m
-//   "Symbol" -> y
 //   "Native" -> <Identifier>
 func (tk T) TypeCode() string {
 	t := tk.Type()
@@ -163,18 +176,20 @@ func (tk T) TypeCode() string {
 		return "s"
 	case Procedure:
 		return "p"
-	case List:
-		return "l"
+	case Array:
+		return "a"
 	case Map:
 		return "m"
 	case Symbol:
 		return "y"
+	case Operator:
+		return "o"
 	case Native:
 		v := tk.tk.(na)
-		sym := v.sym
-		return "<" + sym.String() + ">"
+		o := v.o
+		return "<" + o.String() + ">"
 	default:
-		panic(fmt.Errorf("Token type not valid (%v)", float32(t)))
+		panic(fmt.Errorf("Token type not valid (%v)", t))
 	}
 }
 
@@ -235,12 +250,12 @@ func NewS(value string, p *PosT) *T {
 
 // Creates a token of type Procedure.
 func NewP(value []*T, p *PosT) *T {
-	return &T{pr(value), p}
+	return &T{pr{map[symbol.T]*T{}, value}, p}
 }
 
-// Creates a token of type List.
-func NewL(value []*T, p *PosT) *T {
-	return &T{li(value), p}
+// Creates a token of type Array.
+func NewA(value []*T, p *PosT) *T {
+	return &T{ar(value), p}
 }
 
 // Creates a token of type Map.
@@ -253,10 +268,15 @@ func NewSy(value symbol.T, p *PosT) *T {
 	return &T{sy(value), p}
 }
 
+// Creates a token of type Operator.
+func NewO(value operator.T, p *PosT) *T {
+	return &T{op(value), p}
+}
+
 // Creates a token of type Native.
 //   NOTE: 'value' must be a pointer.
-func NewN(sym symbol.T, value interface{}, p *PosT) *T {
-	return &T{na{sym, value}, p}
+func NewN(o operator.T, value interface{}, p *PosT) *T {
+	return &T{na{o, value}, p}
 }
 
 // Returns the value of a token of type Bool.
@@ -303,27 +323,17 @@ func (tk *T) S() (value string, ok bool) {
 //    If 'tk' is not of the spected type, it returns ok = false.
 func (tk *T) P() (value []*T, ok bool) {
 	if tk.tk.tp() == Procedure {
-		value = []*T(tk.tk.(pr))
+		value = []*T(tk.tk.(pr).code)
 		ok = true
 	}
 	return
 }
 
-// Returns the value of a token of type List.
+// Returns the value of a token of type Array.
 //    If 'tk' is not of the spected type, it returns ok = false.
-func (tk *T) L() (value []*T, ok bool) {
-	if tk.tk.tp() == List {
-		value = []*T(tk.tk.(li))
-		ok = true
-	}
-	return
-}
-
-// Changes the value of 'tk'
-//    If 'tk' is not of the spected type, it returns ok = false.
-func (tk *T) SetL(value []*T) (ok bool) {
-	if tk.tk.tp() == List {
-		tk.tk = li(value)
+func (tk *T) A() (value []*T, ok bool) {
+	if tk.tk.tp() == Array {
+		value = []*T(tk.tk.(ar))
 		ok = true
 	}
 	return
@@ -349,16 +359,64 @@ func (tk *T) Sy() (value symbol.T, ok bool) {
 	return
 }
 
+// Returns the value of a token of type Operator.
+//    If 'tk' is not of the spected type, it returns ok = false.
+func (tk *T) O() (value operator.T, ok bool) {
+	if tk.tk.tp() == Operator {
+		value = operator.T(tk.tk.(op))
+		ok = true
+	}
+	return
+}
+
 // Returns the value of a token of type Native.
 //    If 'tk' is not of the spected type, it returns ok = false.
-func (tk *T) N() (sym symbol.T, value interface{}, ok bool) {
+func (tk *T) N() (o operator.T, value interface{}, ok bool) {
 	if tk.tk.tp() == Native {
 		v := tk.tk.(na)
-		sym = v.sym
+		o = v.o
 		value = v.value
 		ok = true
 	}
 	return
+}
+
+// Change an array value.
+func (tk *T) SetA(value []*T) (ok bool) {
+	if tk.tk.tp() == Array {
+		tk.tk = ar(value)
+		ok = true
+	}
+	return
+}
+
+// Sets heap of 'tk' with a copy of 'heap'
+func (tk *T) SetHeap(heap map[symbol.T]*T) {
+	if tk.tk.tp() == Procedure {
+		h := tk.tk.(pr).heap
+		for k := range h {
+			delete(h, k)
+		}
+		for k, v := range heap {
+			h[k] = v
+		}
+
+		return
+	}
+	panic("'value' is not a procedure")
+}
+
+// Returns a copy of heap
+func (tk *T) GetHeap() map[symbol.T]*T {
+	if tk.tk.tp() == Procedure {
+		r := map[symbol.T]*T{}
+		proc := tk.tk.(pr)
+		for k, v := range proc.heap {
+			r[k] = v
+		}
+		return r
+	}
+	panic("'value' is not a procedure")
 }
 
 // Returns the type of 'tk'.
@@ -379,19 +437,26 @@ func (tk *T) Clone() *T {
 	case String:
 		return NewS(string(tk.tk.(st)), tk.Pos)
 	case Procedure:
-		v := []*T(tk.tk.(pr))
+		v := tk.tk.(pr).code
 		var v2 []*T
 		for _, e := range v {
 			v2 = append(v2, e.Clone())
 		}
-		return NewP(v2, tk.Pos)
-	case List:
-		v := []*T(tk.tk.(li))
+		r := NewP(v2, tk.Pos)
+		h := tk.tk.(pr).heap
+		h2 := make(map[symbol.T]*T)
+		for k, val := range h {
+			h2[k] = val.Clone()
+		}
+		r.SetHeap(h2)
+		return r
+	case Array:
+		v := []*T(tk.tk.(ar))
 		var v2 []*T
 		for _, e := range v {
 			v2 = append(v2, e.Clone())
 		}
-		return NewL(v2, tk.Pos)
+		return NewA(v2, tk.Pos)
 	case Map:
 		v := map[string]*T(tk.tk.(ma))
 		v2 := make(map[string]*T)
@@ -401,19 +466,21 @@ func (tk *T) Clone() *T {
 		return NewM(v2, tk.Pos)
 	case Symbol:
 		return NewSy(symbol.T(tk.tk.(sy)), tk.Pos)
+	case Operator:
+		return NewO(operator.T(tk.tk.(op)), tk.Pos)
 	case Native:
 		v := tk.tk.(na)
-		sym := v.sym
+		o := v.o
 		value := v.value
-		return NewN(sym, value, tk.Pos)
+		return NewN(o, value, tk.Pos)
 	default:
 		panic(fmt.Errorf("Token type not valid (%v)", tk.tk.tp()))
-
 	}
 }
 
 // Returns 'true' if 'tk' is equals to 'tk2' without taking into account
 // its position.
+// Native types are compared by pointer.
 func (tk *T) Eq(tk2 *T) bool {
 	if tk.tk.tp() != tk2.tk.tp() {
 		return false
@@ -429,8 +496,8 @@ func (tk *T) Eq(tk2 *T) bool {
 	case String:
 		return string(tk.tk.(st)) == string(tk2.tk.(st))
 	case Procedure:
-		v := []*T(tk.tk.(pr))
-		v2 := []*T(tk2.tk.(pr))
+		v := tk.tk.(pr).code
+		v2 := tk2.tk.(pr).code
 		if len(v) != len(v2) {
 			return false
 		}
@@ -439,10 +506,20 @@ func (tk *T) Eq(tk2 *T) bool {
 				return false
 			}
 		}
+		h := tk.tk.(pr).heap
+		h2 := tk2.tk.(pr).heap
+		if len(h) != len(h2) {
+			return false
+		}
+		for k, val := range h {
+			if val2, ok := h2[k]; !ok || !val.Eq(val2) {
+				return false
+			}
+		}
 		return true
-	case List:
-		v := []*T(tk.tk.(li))
-		v2 := []*T(tk2.tk.(li))
+	case Array:
+		v := []*T(tk.tk.(ar))
+		v2 := []*T(tk2.tk.(ar))
 		if len(v) != len(v2) {
 			return false
 		}
@@ -466,14 +543,16 @@ func (tk *T) Eq(tk2 *T) bool {
 		return true
 	case Symbol:
 		return symbol.T(tk.tk.(sy)) == symbol.T(tk2.tk.(sy))
+	case Operator:
+		return operator.T(tk.tk.(op)) == operator.T(tk2.tk.(op))
 	case Native:
 		v := tk.tk.(na)
-		sym := v.sym
+		o := v.o
 		value := v.value
 		v2 := tk2.tk.(na)
-		sym2 := v2.sym
+		o2 := v2.o
 		value2 := v2.value
-		return sym == sym2 && value == value2
+		return o == o2 && value == value2
 	default:
 		panic(fmt.Errorf("Token type not valid (%v)", tk.tk.tp()))
 	}
@@ -495,13 +574,13 @@ func (tk *T) str() string {
 		return string(v)
 	case Procedure:
 		var v []string
-		for _, e := range []*T(tk.tk.(pr)) {
+		for _, e := range []*T(tk.tk.(pr).code) {
 			v = append(v, e.str())
 		}
-		return "(" + strings.Join(v, ",") + ")"
-	case List:
+		return "(" + strings.Join(v, " ") + ")"
+	case Array:
 		var v []string
-		for _, e := range []*T(tk.tk.(li)) {
+		for _, e := range []*T(tk.tk.(ar)) {
 			v = append(v, e.str())
 		}
 		return "[" + strings.Join(v, ",") + "]"
@@ -513,9 +592,11 @@ func (tk *T) str() string {
 		return "{" + strings.Join(v, ",") + "}"
 	case Symbol:
 		return "<." + symbol.T(tk.tk.(sy)).String() + ".>"
+	case Operator:
+		return "<." + operator.T(tk.tk.(op)).String() + ".>"
 	case Native:
 		v := tk.tk.(na)
-		return fmt.Sprintf("<.%v|%p.>", v.sym.String(), v.value)
+		return fmt.Sprintf("<.%v|%p.>", v.o.String(), v.value)
 	default:
 		panic(fmt.Errorf("Token type not valid (%v)", tk.tk.tp()))
 	}
@@ -553,7 +634,8 @@ func (tk *T) StringDraft() string {
 }
 
 // Returns the following format:
-//    Bool, Int, Float and String -> Its JSON respresentation.
+//    Bool, Int and Float -> Its JSON respresentation.
+//    String -> Its value
 //    Procedure -> (element,element,...)
 //    List -> [element,element,...]
 //    Object -> {key:element,key:element,...}
@@ -563,5 +645,9 @@ func (tk *T) StringDraft() string {
 //                    PointerValue JSON representation + ">"
 // Proceudure, List, Object and Map show strings in JSON format.
 func (tk *T) String() string {
+	if tk.Type() == String {
+		r, _ := tk.S()
+		return r
+	}
 	return tk.str()
 }
