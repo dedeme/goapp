@@ -1,0 +1,71 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tmath ...");
+
+sys.rand();
+
+eq = \f1, f2 -> return math.eq(f1, f2, 0.0000001);;
+
+assert eq(math.fromEn("12,520.11"), 12520.11);
+assert eq(math.fromIso("-12.520,11"), -12520.11);
+
+assert math.toInt(12) == 12;
+assert math.toInt(-12.99) == -12;
+assert math.toInt("-12") == -12;
+
+assert eq(math.toFloat(12), 12.0);
+assert eq(math.toFloat(12.23), 12.23);
+assert eq(math.toFloat("12.23"), 12.23);
+
+assert math.toStr(12) == "12";
+assert math.toStr(12.23) == "12.23";
+assert math.toStr("12e2") == "12e2";
+assert math.eq(math.toFloat("12e2"), 1200.0, 0.000001);
+
+assert eq(math.abs(3.2), 3.2);
+assert eq(math.abs(-3.2), 3.2);
+
+assert math.acos(0.5) == 1.0471975511966;
+assert math.acosh(1.5) == 0.962423650119207;
+assert math.asin(0.5) == 0.523598775598299;
+assert math.asinh(1.5) == 1.19476321728711;
+assert math.atan(0.5) == 0.463647609000806;
+assert math.atanh(0.5) == 0.549306144334055;
+
+assert eq(math.ceil(1.2), 2.0);
+assert eq(math.ceil(-1.2), -1.0);
+assert eq(math.floor(1.2), 1.0);
+assert eq(math.floor(-1.2), -2.0);
+assert eq(math.trunc(1.2), 1.0);
+assert eq(math.trunc(-1.2), -1.0);
+assert eq(math.round(1.49999, 0), 1.0);
+assert eq(math.round(1.5, 0), 2.0);
+assert eq(math.round(1.6149999, 2), 1.61);
+assert eq(math.round(1.615, 2), 1.62);
+
+
+assert eq(math.cos(1.5), 0.070737201667703);
+assert eq(math.cosh(1.5), 2.35240961524325);
+assert eq(math.sin(1.5), 0.997494986604055);
+assert eq(math.sinh(1.5), 2.12927945509482);
+assert eq(math.tan(1.5), 14.1014199471717);
+assert eq(math.tanh(1.5), 0.905148253644866);
+
+assert eq(math.exp(1.5), 4.48168907033806);
+assert eq(math.exp2(1.5), 2.82842712474619);
+assert eq(math.pow(2.0, 1.5), 2.82842712474619);
+assert eq(math.pow10(2), 100.0);
+assert eq(math.sqrt(9.0), 3.0);
+
+assert eq(math.log(1.5), 0.405465108108164);
+assert eq(math.log10(1.5), 0.176091259055681);
+assert eq(math.log2(1.5), 0.584962500721);
+
+assert eq(math.max(1.5, -1.5), 1.5);
+assert eq(math.min(1.5, -1.5), -1.5);
+
+//trace math.rnd();
+//trace math.rndi(6);
+
+sys.println("  finished.");

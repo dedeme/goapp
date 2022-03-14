@@ -1,0 +1,52 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tpath ...");
+
+assert path.base("") == ".";
+assert path.base("ab.c") == "ab.c";
+assert path.base("p/ab.c") == "ab.c";
+assert path.base("/ab.c") == "ab.c";
+assert path.base("/p/ab.c") == "ab.c";
+assert path.base("ab") == "ab";
+assert path.base("p/ab") == "ab";
+assert path.base("/ab") == "ab";
+assert path.base("/p/ab") == "ab";
+
+assert path.extension("") == "";
+assert path.extension("ab.c") == ".c";
+assert path.extension("p/ab.c") == ".c";
+assert path.extension("/ab.c") == ".c";
+assert path.extension("/p/ab.c") == ".c";
+assert path.extension("ab") == "";
+assert path.extension("p/ab") == "";
+assert path.extension("/ab") == "";
+assert path.extension("/p/ab") == "";
+
+assert path.parent("") == ".";
+assert path.parent("ab.c") == ".";
+assert path.parent("p/ab.c") == "p";
+assert path.parent("/ab.c") == "/";
+assert path.parent("/p/ab.c") == "/p";
+assert path.parent("ab") == ".";
+assert path.parent("p/ab") == "p";
+assert path.parent("/ab") == "/";
+assert path.parent("/p/ab") == "/p";
+
+assert path.cat([]) == "";
+assert path.cat(["s"]) == "s";
+assert path.cat(["s", "b"]) == "s/b";
+assert path.cat(["/s", "b"]) == "/s/b";
+assert path.cat(["/s", "/b"]) == "/s/b";
+assert path.cat(["/s/x", "../b"]) == "/s/b";
+
+assert path.canonical("") == ".";
+assert path.canonical("///") == "/";
+assert path.canonical("a/b") == "a/b";
+assert path.canonical("a/b/") == "a/b";
+assert path.canonical("a////b") == "a/b";
+assert path.canonical("a/x/../b") == "a/b";
+assert path.canonical("/a////b") == "/a/b";
+assert path.canonical("/a/x/../b") == "/a/b";
+
+sys.println("  finished.");

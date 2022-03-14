@@ -1,0 +1,66 @@
+// Copyright 12-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tmap ...");
+
+M0 = {};
+assert arr.empty(map.keys(M0));
+assert arr.empty(map.values(M0));
+assert arr.empty(map.toArr(M0));
+assert !iter.hasNext(map.toIter(M0));
+
+M1 = {"one": 1, "two": 2, "three": 3};
+A = [""];
+B = [""];
+A[0] = map.keys(M1);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == '["one", "three", "two"]';
+A[0] = map.values(M1);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == "[1, 2, 3]";
+
+A[0] = map.toArr(M1);
+arr.sort(A[0], \A, B -> return A[0] < B[0];);
+assert arr.toStr(A[0]) == '[["one", 1], ["three", 3], ["two", 2]]';
+B[0] = map.keys(map.fromArr(A[0]));
+arr.sort(B[0], \a, b -> return a < b;);
+assert arr.toStr(B[0]) == '["one", "three", "two"]';
+B[0] = map.values(map.fromArr(A[0]));
+arr.sort(B[0], \a, b -> return a < b;);
+assert arr.toStr(B[0]) == '[1, 2, 3]';
+
+
+A[0] = arr.fromIter(map.toIter(M1));
+arr.sort(A[0], \a, b -> return a[0] < b[0];);
+assert arr.toStr(A[0]) == '[["one", 1], ["three", 3], ["two", 2]]';
+B[0] = map.keys(map.fromIter(map.toIter(M1)));
+arr.sort(B[0], \a, b -> return a < b;);
+assert arr.toStr(B[0]) == '["one", "three", "two"]';
+B[0] = map.values(map.fromIter(map.toIter(M1)));
+arr.sort(B[0], \a, b -> return a < b;);
+assert arr.toStr(B[0]) == '[1, 2, 3]';
+
+M2 = map.copy(M1);
+A[0] = map.keys(M2);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == '["one", "three", "two"]';
+A[0] = map.values(M2);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == "[1, 2, 3]";
+M2.one = 112;
+M2.four = 4;
+A[0] = map.keys(M1);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == '["one", "three", "two"]';
+A[0] = map.values(M1);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == "[1, 2, 3]";
+A[0] = map.keys(M2);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == '["four", "one", "three", "two"]';
+A[0] = map.values(M2);
+arr.sort(A[0], \a, b -> return a < b;);
+assert arr.toStr(A[0]) == "[2, 3, 4, 112]";
+
+
+sys.println("  finished.");

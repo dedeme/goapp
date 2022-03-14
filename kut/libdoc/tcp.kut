@@ -1,0 +1,111 @@
+// Copyright 14-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Tcp connections management.
+/// Some functions returns <tcpServer> or <tcpConnection>. This objects
+/// should be closed with 'tcp.CloseServer' or 'tcp.closeConnection'
+///
+/// [EXAMPLE]
+/// // Process to run in server
+/// process = \conn -> {
+///   tx = tcp.read(conn, 10000);
+///   if (tx == "end") {
+///     tcp.write(conn, "Closing server");
+///     tcp.closeConnection(conn);
+///     return true;
+///   }
+///   tcp.write(conn, "Send from server: " + tx);
+///   tcp.closeConnection(conn);
+///   return false;
+/// };
+///
+/// // Launch server.
+/// th1 = thread.start(\-> {
+///   sv = tcp.server(23344);
+///
+///   while () {
+///     Rq = tcp.accept(sv, 0);
+///     if (Rq[1] != "") sys.fail(Rq[1]);
+///     if (process(Rq[0])) break;
+///   }
+///
+///   tcp.closeServer(sv);
+/// });
+///
+/// // Three connection from client.
+/// for (i : 0::3) {
+///   CN = tcp.dial("localhost:23344", 0);
+///   c1 = CN[0];
+///   sys.println("Sending 'abc" + math.toStr(i) + "'");
+///   tcp.write(c1, "abc" + math.toStr(i));
+///   sys.println(tcp.read(c1, 10000));
+///   tcp.closeConnection(c1);
+/// }
+///
+/// // Ending server
+/// CN = tcp.dial("localhost:23344", 0);
+/// c1 = CN[0];
+/// tcp.write(c1, "end");
+/// sys.println(tcp.read(c1, 10000));
+/// tcp.closeConnection(c1);
+///
+/// // Wait until server is ended.
+/// thread.join(th1);
+
+/// Waits for a new connection on server 'sv'.
+/// The connection will have got a maximum 'tm' milliseconds to send a
+/// response. If 'tm' <= 0 there will not have limit for waiting.
+///
+/// tcp.accept returns an array with the following two elements:
+///   -First: A new tcp connection to use with tcp.read, tcp.readBin, tcp.Write
+///           or tcp.writeBin.
+///   -Second: An error message or an empty string there was no error.
+///
+/// \<tcpServer>, i -> [<tcpConn>, s]
+accept = \sv, tm -> {};
+
+/// Closes a connection.
+/// \<tcpConnection> -> ()
+closeConnection = \conn -> {};
+
+/// Closes a server.
+/// \<tcpServer> -> ()
+closeServer = \sv -> {};
+
+/// Client connection.
+///   server: Indicated as 'server:port'. Examples:
+///           'localhost:21786', '127.0.0.1:22454".
+///   tm    : Maximun time in milleseconds to wait for a response.
+///           If 'tm' <= 0 there will not have limit for waiting.
+///
+/// tcp.dial returns an array with the following two elements:
+///   -First: A new tcp connection to use with tcp.read, tcp.readBin, tcp.Write
+///           or tcp.writeBin.
+///   -Second: An error message or an empty string there was no error.
+///
+/// \s, i -> [<tcpConn>, s]
+dial = \server, tm -> {};
+
+/// Reads a string from connection 'conn' with a maximum bytes length of 'lim'
+/// \<tcpConnection> -> s
+read = \conn, lim -> {};
+
+/// Reads a <bytes> from connection 'conn' with a maximum length of 'lim'.
+/// \<tcpConnection> -> <bytes>
+readBin = \conn, lim -> {};
+
+/// Returns a tcp server to use with 'tcp.accept'.
+///   port: Comunications port.
+/// \i -> <tcpServer>.
+server = \port -> {};
+
+/// Writes a string through connection 'conn'.
+/// \<tcpConnection>, s -> ()
+write = \conn, s -> {}
+
+/// Writes a bytes through connection 'conn'.
+/// \<tcpConnection>, <bytes> -> ()
+writeBin = \conn, bs -> {}
+
+
+

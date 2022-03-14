@@ -1,0 +1,148 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Numerical and mathematical functions.
+
+/// Returns the absolute value of n.
+/// \f -> f
+abs = \n -> {};
+
+/// Returns arccosine of n.
+/// \f -> f
+acos = \n -> {};
+
+/// Returns arc-hyperbolic cosine of n.
+/// \f -> f
+acosh = \n -> {};
+
+/// Returns arcsine of n.
+/// \f -> f
+asin = \n -> {};
+
+/// Returns arc-hyperbolic sine of n.
+/// \f -> f
+asinh = \n -> {};
+
+/// Returns arctangent of n.
+/// \f -> f
+atan = \n -> {};
+
+/// Returns arc-hyperbolic tangent of n.
+/// \f -> f
+atanh = \n -> {};
+
+/// Returns the next less integer of n.
+/// \f -> f
+ceil = \n -> {};
+
+/// Returns cosine of n.
+/// \f -> f
+cos = \n -> {};
+
+/// Returns hyperbolic cosine of n.
+/// \f -> f
+cosh = \n -> {};
+
+/// Returns if n1 is equals to n2 +- gap
+/// \f, f, f -> b
+eq = \n1, n2, gap -> {};
+
+/// Returns 'pow(e, n)'.
+/// \f -> f
+exp = \n -> {};
+
+/// Returns 'pow(2, n)'.
+/// \f -> f
+exp2 = \n -> {};
+
+/// Returns the next greater integer of n.
+/// \f -> f
+floor = \n -> {};
+
+/// Returns the float value of 's', which contains a number in english format.
+/// \s -> f
+fromEn = \s -> {};
+
+/// Returns the float value of 's', which contains a number in ISO format.
+/// \s -> f
+fromIso = \s -> {};
+
+/// Returns the greater of n1 and n2.
+/// \f, f -> f
+max = \n1, n2 -> {};
+
+/// Returns the less of n1 and n2.
+/// \f, f -> f
+min = \n1, n2 -> {};
+
+/// Returns napierian logarithm of n.
+/// \f -> f
+log = \n -> {};
+
+/// Returns base 10 logarithm of n.
+/// \f -> f
+log10 = \n -> {};
+
+/// Returns base 2 logarithm of n.
+/// \f -> f
+log2 = \n -> {};
+
+/// Returns 10 raised to the power of 'ex'.
+/// \i -> f
+pow10 = \ex -> {};
+
+/// Returns 'base' raised to the power of 'ex'.
+/// \f, f -> f
+pow = \base, ex -> {};
+
+/// Rounds 'n' with 'dec' decimals.
+/// \f, i -> f
+round = \n, dec -> {};
+
+/// Returns sine of n.
+/// \f -> f
+sin = \n -> {};
+
+/// Returns hyperbolic sine of n.
+/// \f -> f
+sinh = \n -> {};
+
+/// Returns the square root of n.
+sqrt = \n -> {};
+
+/// Returns tangent of n.
+/// \f -> f
+tan = \n -> {};
+
+/// Returns hyperbolic tangent of n.
+/// \f -> f
+tanh = \n -> {};
+
+/// Returns the 'int' matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is a string is in format 'integer'.
+/// \i -> i
+/// \f -> i
+/// \s -> i
+toInt = \v -> {};
+
+/// Returns the 'float' matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is a string is in format 'integer.decimals'.
+/// \i -> f
+/// \f -> f
+/// \s -> f
+toFloat = \v -> {};
+
+/// Returns the 'string' matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is a string containing a number, returns the same string. In other
+/// case raise a exception.
+/// \i -> s
+/// \f -> s
+/// \s -> s
+toStr = \v -> {};
+
+/// Returns the integer part of n.
+/// \f -> f
+trunc = \n -> {};

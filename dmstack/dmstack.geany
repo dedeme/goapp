@@ -23,10 +23,14 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=1
+current_page=6
 FILE_NAME_0=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fprimitives.go;0;2
 FILE_NAME_1=504;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Fprimitives%2Fglobal5.go;0;2
 FILE_NAME_2=5336;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdmstack%2Freader%2Ftkreader.go;0;2
+FILE_NAME_3=0;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fexamples%2Ftfile.dms;0;2
+FILE_NAME_4=0;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Fblob.dms;0;2
+FILE_NAME_5=0;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Farr.dms;0;2
+FILE_NAME_6=0;DmstackC;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fdmstack%2Fdoc%2FAPI%2Fb64.dms;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -65,3 +69,12 @@ DmstackCFT_01_WD=
 line_wrapping=false
 line_break_column=80
 auto_continue_multiline=false
+
+[prjorg]
+source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
+header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
+ignored_dirs_patterns=.*;CVS;
+ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.pyc;*.mo;*.gmo;
+generate_tag_prefs=0
+show_empty_dirs=true
+external_dirs=

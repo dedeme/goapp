@@ -1,0 +1,93 @@
+// Copyright 10-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Iterator functions.
+
+/// Returns 'true' if fn returns true with every element of 'it'.
+/// \<iterator>, \*->b -> b
+all = \it, fn -> {};
+
+/// Returns 'true' if fn returns true with at leat one element of 'it'.
+/// \<iterator>, \*->b -> b
+any = \it, fn -> {};
+
+/// Concatenates it1 and it2 in a new iterator.
+/// \<iterator>, <iterator> -> <iterator>
+cat = \it1, it2 -> {};
+
+/// Returns the elements number of 'it'
+/// \<iterator> -> i
+count = \it -> {};
+
+/// Returns the remains elements of 'it' after make a 'iter.take' operation
+/// \<iterator>, i -> <iterator>
+drop = \it, n -> {};
+
+/// Returns the remains elements of 'it' after make a 'iter.takeWhile' operation
+/// (\<iterator>, \*->b) -> <iterator>
+dropWhile = \it, fn -> {};
+
+/// Applies 'fn' to each element of 'it'.
+/// If 'it' returns some value, it is descarded.
+/// (\<iterator>, \*->()) -> ()
+each = \it, fn -> {};
+
+/// Returns an iterator without any element.
+/// \-> <iterator>
+empty = \-> {};
+
+/// Returns an iterator with elements which produce 'true' with 'fn'.
+/// (\<iterator>, \*->b) -> <iterator>
+filter = \it, fn -> {};
+
+/// Returns an array with the first element which produces 'true' with 'fn' or
+/// an empty list if there is not such element.
+/// (\<iterator>, \*->b) -> ([*] | [])
+find = \it, fn -> {};
+
+/// Returns 'true' if the 'it' has more elements.
+/// \<iterator> -> b
+hasNext = \it -> {};
+
+/// Returns the index of element which produces 'true' with 'fn' or -1 if there
+/// is not such element.
+/// (\<iterator>, \*->b) -> i
+index = \it, fn -> {};
+
+/// Returns a new iterator, restult of applying 'fn' to each element of 'it'.
+/// (\<iterator>, \*->*) -> <iterator>
+mp = \it, fn -> {};
+
+/// Returns the next element of the iterator. If there are not more elements,
+/// the return is indeterminate.
+/// \<iterator> -> *
+next = \it -> {};
+
+/// Returns a new iterator:
+///   hasNext: Function that returns 'true' if the iterator has more elements.
+///   next: Function that returns the next element of the iterator. If
+///         there are not more elements, the return is indeterminate.
+/// (\\->b, \->*) -> <iterator>
+new = \hasNext, next -> {};
+
+/// Returns the result of apply 'fn' on seed and the current element of 'it',
+/// succesively over every element.
+/// (\iterator, seed, \seed, element->newSeed) -> finalSeed
+/// (\<iterator>, (*1), \(*1), (*2) -> (*1)) -> (*1)
+reduce = \it, seed, fn -> {};
+
+/// Returns an iterator with the 'n' first elements of 'it'.
+/// \<iterator>, i -> <iterator>
+take = \it, n -> {};
+
+/// Returns the first elements of 'it' which produce 'true' with fn.
+/// (\<iterator>, \*->b) -> <iterator>
+takeWhile = \it, fn -> {};
+
+/// Returns a representation of 'it'
+/// \<iterator> -> s
+toStr = \it -> {};
+
+/// Returns an iterator with only one element ('e').
+/// \* -> <iterator>
+unary = \e -> {};

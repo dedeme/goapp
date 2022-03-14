@@ -1,0 +1,21 @@
+// Copyright 02-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tbytes ...");
+
+assert bytes.toStr(bytes.fromStr("abcñ")) == "abcñ";
+b = bytes.fromArr([1, 2]);
+assert bytes.get(b, 0) == 1;
+assert bytes.get(b, 1) == 2;
+bytes.set(b, 1, 116);
+assert bytes.toArr(b)[1] == 116;
+
+b2 = bytes.new(3);
+assert arr.toStr(bytes.toArr(b2)) == "[0, 0, 0]";
+assert bytes.size(b2) == 3;
+
+assert bytes.checkType(b);
+assert bytes.checkType(b);
+assert !bytes.checkType(3);
+
+sys.println("  finished.");

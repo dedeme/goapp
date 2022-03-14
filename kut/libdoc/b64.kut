@@ -1,0 +1,17 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Encode and decode in B64.
+
+/// \s -> s
+decode -> \s -> {};
+
+/// \s -> <bytes>
+decodeBytes = \s -> {};
+
+/// \s -> s
+encode -> \s -> {};
+
+/// \<bytes> -> s
+encodeBytes = \bs -> {};
+

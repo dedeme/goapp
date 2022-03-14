@@ -1,0 +1,35 @@
+// Copyright 09-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("ttime ...");
+
+d0 = time.newDate(12, 2, 2022);
+assert time.toStr(d0) == "20220212";
+assert time.toIso(d0) == "12/02/2022";
+assert time.toEn(d0) == "02-12-2022";
+
+d1 = time.new(7, 2, 2022, 11, 45, 0);
+assert time.toStr(d1) + "-" + time.format("%t", d1) == "20220207-11:45:00";
+assert time.fromClock(time.addDays(d0, -5), "11:45:00") == d1;
+
+assert time.fromStr("20220212") == d0;
+assert time.fromIso("12/02/2022", "/") == d0;
+assert time.fromEn("02-12-2022", "-") == d0;
+
+assert time.dfDays(d0, d1) == 5;
+assert time.eqDay(time.addDays(d1, 5), d0);
+
+assert time.weekday(d0) == 6;
+assert time.yearDay(d0) == 43;
+
+assert time.day(d1) == 7;
+assert time.month(d1) == 2;
+assert time.year(d1) == 2022;
+assert time.hour(d1) == 11;
+assert time.minute(d1) == 45;
+assert time.second(d1) == 0;
+
+//trace time.format("%D%M%Y-%T", time.now());
+
+sys.println("  finished.");
+

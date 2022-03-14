@@ -1,0 +1,51 @@
+// Copyright 13-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// System functions.
+
+/// Returns arguments of calling 'kut' program.
+/// For example:
+///
+/// [file test.kut]
+/// sys.println(sys.args()[0]);
+///
+/// Callings of 'test.kut';
+/// 'kut test abc" -> prints "abc"
+/// 'kut test" -> Raise a runtime error.
+///
+/// \-> [s...]
+args = \-> {};
+
+/// Executes command 'c' with parameters 'pars' and returns an array with
+/// two strings:
+///   - First : Reponse on stdout.
+///   - Second: Response on stderror.
+/// \s, [s...] -> [s, s]
+cmd = \c, pars -> {}
+
+/// Set a function which will be called when 'sys.fail' is called and just
+/// before of ending the current thread or program.
+/// \\->() -> ()
+ffail = \fn -> {};
+
+/// Prints messages and ends the current thread or the total program if is
+/// invocked in the current thread is the main one.
+/// \s -> ()
+fail = \msg -> {};
+
+/// Shows a text for console.
+/// \s -> ()
+print = \text -> {};
+
+/// Shows a text followed by a carriage return for console.
+/// \s -> ()
+println = \text -> {};
+
+/// Starts the random generator of numbers.
+/// This functions must be called previously to use random functions.
+/// \-> ()
+rand = \-> {};
+
+/// Stop the current thread 'millis' milliseconds.
+/// \i -> ()
+sleep = \millis -> {};

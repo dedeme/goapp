@@ -1,0 +1,274 @@
+[begin] (Principal)
+  [submenu] (Programación)
+    [exec] (dmGo) {thunar /dm/dmGo}
+    [exec] (dmHaxe) {thunar /dm/dmHaxe}
+    [exec] (dmC) {thunar /dm/dmC}
+    [exec] (dmJs) {thunar /dm/dmJs}
+    [exec] (dmstack) {thunar /dm/dmstack}
+    [exec] (dmJava) {thunar /dm/dmJava}
+    [exec] (dmWeb) {thunar /dm/dmWeb}
+    [nop]
+    [exec] (jEdit) {jedit}
+    [nop]
+    [exec] (gitToken) {gedit /dm/github.io/gitHubToken.txt}
+  [end]
+  [submenu] (Bachillerato)
+    [submenu] (Anotaciones)
+      [submenu] (1)
+        [submenu] (Matematicas)
+          [exec] (Directorio) {thunar /home/deme/Documentos/Bachillerato/1/MCC}
+          [exec] (01. Los números reales) {lyx /home/deme/Documentos/Bachillerato/1/MCC/01.NumerosReales.lyx}
+          [exec] (02. Álgebra) {lyx  /home/deme/Documentos/Bachillerato/1/MCC/02.Algebra.lyx}
+          [exec] (03. Trigonometría) {lyx  /home/deme/Documentos/Bachillerato/1/MCC/03.Trigonometria.lyx}
+        [end]
+        [submenu] (Matemáticas CCSS)
+          [exec] (Directorio) {thunar /home/deme/Documentos/Bachillerato/1/MCCSS}
+          [exec] (01. Los números reales) {lyx /home/deme/Documentos/Bachillerato/1/MCCSS/01.LosNumerosReales.lyx}
+          [exec] (03. Ecuaciones e inecuaciones) {lyx /home/deme/Documentos/Bachillerato/1/MCCSS/03.EcuacionesEInecuaciones.lyx}
+          [exec] (04. Polinomios) {lyx /home/deme/Documentos/Bachillerato/1/MCCSS/04.Polinomios.lyx}
+          [exec] (05. Sistemas de ecuaciones e inecuaciones) {lyx /home/deme/Documentos/Bachillerato/1/MCCSS/05.SistemasDeEcuacionesEInecuaciones.lyx}
+        [end]
+        [submenu] (Física y Química)
+          [exec] (Directorio) {thunar /home/deme/Documentos/Bachillerato/1/FyQ}
+          [exec] (01. La teoría atómico molecular de la materia) {lyx /home/deme/Documentos/Bachillerato/1/FyQ/01.LaTeoriaAtomicoMolecularDeLaMateria.lyx}
+          [exec] (02. Los estados de la materia) {lyx /home/deme/Documentos/Bachillerato/1/FyQ/02.LosEstadosDeLaMateria.lyx}
+          [exec] (03. Las disoluciones) {lyx /home/deme/Documentos/Bachillerato/1/FyQ/03.LasDisoluciones.lyx}
+          [exec] (04. Los átomos) {lyx /home/deme/Documentos/Bachillerato/1/FyQ/04.LosAtomos.lyx}
+          [exec] (08. Cinemática-I) {lyx "/home/deme/Documentos/Bachillerato/1/FyQ/08.Cinematica-I.lyx"}
+          [exec] (09. Cinemática-II) {lyx "/home/deme/Documentos/Bachillerato/1/FyQ/09.Cinematica-II.lyx"}
+        [end]
+      [end]
+    [end]
+    [submenu] (Notas)
+      [submenu] (1)
+        [submenu] (Matematicas)
+          [exec] (01. Los números reales) {evince /home/deme/Documentos/Bachillerato/1/MCC/01.NumerosReales.pdf}
+          [exec] (02. Álgebra) {evince  /home/deme/Documentos/Bachillerato/1/MCC/02.Algebra.pdf}
+          [exec] (03. Trigonometría) {evince  /home/deme/Documentos/Bachillerato/1/MCC/03.Trigonometria.pdf}
+        [end]
+        [submenu] (Matemáticas CCSS)
+          [exec] (01. Los números reales) {evince /home/deme/Documentos/Bachillerato/1/MCCSS/01.LosNumerosReales.pdf}
+          [exec] (03. Ecuaciones e inecuaciones) {evince /home/deme/Documentos/Bachillerato/1/MCCSS/03.EcuacionesEInecuaciones.pdf}
+          [exec] (04. Polinomios) {evince /home/deme/Documentos/Bachillerato/1/MCCSS/04.Polinomios.pdf}
+          [exec] (04. Sistemas de ecuaciones e inecuaciones) {evince /home/deme/Documentos/Bachillerato/1/MCCSS/05.SistemasDeEcuacionesEInecuaciones.pdf}
+        [end]
+        [submenu] (Física y Química)
+          [exec] (01. La teoría atómico molecular de la materia) {evince /home/deme/Documentos/Bachillerato/1/FyQ/01.LaTeoriaAtomicoMolecularDeLaMateria.pdf}
+          [exec] (02. Los estados de la materia) {evince /home/deme/Documentos/Bachillerato/1/FyQ/02.LosEstadosDeLaMateria.pdf}
+          [exec] (03. Las disoluciones) {evince /home/deme/Documentos/Bachillerato/1/FyQ/03.LasDisoluciones.pdf}
+          [exec] (04. Los átomos) {evince /home/deme/Documentos/Bachillerato/1/FyQ/04.LosAtomos.pdf}
+          [exec] (08. Cinemática-I) {evince /home/deme/Documentos/Bachillerato/1/FyQ/08.Cinematica-I.pdf}
+          [exec] (09. Cinemática-II) {evince /home/deme/Documentos/Bachillerato/1/FyQ/09.Cinematica-II.pdf}
+        [end]
+      [end]
+    [end]
+  [end]
+  [exec] (Terminal) {gnome-terminal}
+  [exec] (Firefox) {firefox}
+  [exec] (Server) {vinagre 192.168.1.2}
+  [exec] (Calendario) {evince /home/deme/Documentos/tx/calendario.pdf}
+  [nop]
+  [exec] (home) {thunar ~}
+  [exec] (dm) {thunar /dm}
+  [exec] (fitness) {thunar "/home/deme/Documentos/fitness"}
+  [exec] (compra) {thunar /dm/github.io/dedeme.github.io/compra}
+  [exec] (tmp) {thunar /dm/www/tmp}
+  [exec] (trash) {thunar trash:///}
+  [nop]
+  [submenu] (Apuntes)
+    [submenu] (Anotaciones)
+      [submenu] (Filosofía)
+        [submenu] (Historia)
+          [exec] (Directorio) {thunar "/home/deme/Documentos/Apuntes/filosofia/historia"}
+          [exec] (Filosofía Occidental) {lyx "/home/deme/Documentos/Apuntes/filosofia/historia/FilosofiaOccidental.lyx"}
+        [end]
+      [end]
+      [submenu] (Física)
+        [submenu] (Feynman)
+          [exec] (Directorio) {thunar "/home/deme/Documentos/Apuntes/fisica/feynman"}
+          [exec] (I) {lyx "/home/deme/Documentos/Apuntes/fisica/feynman/I.lyx"}
+        [end]
+      [end]
+      [submenu] (Psicología Social)
+        [exec] (Directorio) {thunar "/home/deme/Documentos/Apuntes/psicologiaSocial/"}
+        [exec] (Psicología Social - Greenberg) {lyx /home/deme/Documentos/Apuntes/psicologiaSocial/PsicologiaSocial-Greenberg.lyx}
+      [end]
+    [end]
+    [submenu] (Notas)
+      [submenu] (Filosofía)
+        [submenu] (Historia)
+          [exec] (Filosofía Occidental) {evince "/home/deme/Documentos/Apuntes/filosofia/historia/FilosofiaOccidental.pdf"}
+        [end]
+      [end]
+      [submenu] (Física)
+        [submenu] (Feynman)
+          [exec] (I) {evince "/home/deme/Documentos/Apuntes/fisica/feynman/I.pdf"}
+        [end]
+      [end]
+      [submenu] (Psicología Social)
+        [exec] (Psicología Social - Greenberg) {evince /home/deme/Documentos/Apuntes/psicologiaSocial/PsicologiaSocial-Greenberg.pdf}
+      [end]
+    [end]
+  [end]
+  [submenu] (Música)
+    [exec] (lmms) {lmms}
+    [exec] (MuseScore) {MuseScore}
+    [exec] (Audacity) {audacity}
+    [nop]
+    [exec] (Audacious) {audacious}
+    [exec] (PureData) {pd}
+    [nop]
+    [exec] (dmMusic) {thunar /dm/dmMusic}
+    [nop]
+    [submenu] (Jack)
+      [exec] (Rosegarden) {rosegarden}
+      [exec] (Hydrogen) {hydrogen}
+      [exec] (Tuxguitar) {tuxguitar}
+      [exec] (Qtractor) {qsynth & qtractor}
+      [exec] (Qsynth) {qsynth}
+    [end]
+  [end]
+  [submenu] (MultiMarket)
+    [exec] (Inicio) {firefox http://localhost/dmcgi/MultiMarket}
+    [nop]
+    [exec] (Contabilidad) {firefox http://localhost/dmcgi/MultiMarket/?acc}
+    [exec] (Datos del día) {firefox http://localhost/dmcgi/MultiMarket/?daily}
+    [exec] (Pulgas) {firefox http://localhost/dmcgi/MultiMarket/?fleas}
+    [nop]
+    [exec] (Server start) {MultiMarket start & zenity --info --window-icon=info --text="Mutimarket running"}
+    [exec] (Server stop) {MultiMarket stop;zenity --info --window-icon=info --text="Mutimarket detenido"}
+  [end]
+  [nop]
+  [submenu] (Utilidades)
+    [exec] (root) {gksu thunar /}
+    [exec] (Collins-Google) {firefox http://www.collinsdictionary.com/ http://translate.google.es/?hl=es&tab=wT}
+    [exec] (Dictionary) {firefox http://www.wordreference.com/es http://www.thefreedictionary.com http://dictionary.cambridge.org/dictionary/british http://www.collinsdictionary.com/ http://translate.google.es/?hl=es&tab=wT http://www.google.es}
+    [exec] (Tor) {thunar /dm/tor}
+    [exec] (Google Chrome) {chromium --ppapi-flash-path=/usr/lib/PepperFlash/libpepflashplayer.so --ppapi-flash-version=14.0.0.125}
+    [exec] (Links2) {links2 -g www.google.es}
+    [exec] (Gimp) {gimp}
+    [exec] (Calibre) {/dm/calibre-bin/calibre/calibre}
+    [exec] (Audacity) {audacity}
+    [exec] (screenRecorder) {simplescreenrecorder}
+    [exec] (xkill) {xkill}
+    [submenu] (Escritorio)
+      [exec] (Editar menu) {thunar /home/deme/menu}
+    [end]
+  [end]
+  [submenu] (Edition)
+    [exec] (Lyx) {lyx}
+    [exec] (gedit) {gedit}
+    [exec] (OpenOffice - writer) {/usr/bin/lowriter}
+    [exec] (OpenOffice - calc ) {/usr/bin/localc}
+    [submenu] (mkdocks)
+      [submenu] (design)
+        [exec] (ctemplate doc) {gnome-terminal --working-directory=/dm/dmC/app/clang/ctemplate/doc -e "mkdocs serve" & thunar /dm/dmC/app/clang/ctemplate/doc & firefox "localhost:8000"}
+        [exec] (cnewfile doc) {gnome-terminal --working-directory=/dm/dmC/app/clang/cnewfile/doc -e "mkdocs serve" & thunar /dm/dmC/app/clang/cnewfile/doc & firefox "localhost:8000"}
+        [exec] (dmWeb/Dummy doc) {gnome-terminal --working-directory=/dm/dmWeb/app/Dummy/doc -e "mkdocs serve" & thunar /dm/dmWeb/app/Dummy/doc & firefox "localhost:8000"}
+        [exec] (Dmjs doc) {gnome-terminal --working-directory=/dm/dmC/app/minijs/doc -e "mkdocs serve" & thunar /dm/dmC/app/minijs/doc & firefox "localhost:8000"}
+      [end]
+      [submenu] (reading)
+        [exec] (ctemplate doc) { gnome-terminal --working-directory=/dm/dmC/app/clang/ctemplate/doc -e "mkdocs build -c -d /dm/www/mkdocs/ctemplateDoc"; firefox "localhost/mkdocs/ctemplateDoc"}
+        [exec] (cnewfile doc) { gnome-terminal --working-directory=/dm/dmC/app/clang/cnewfile/doc -e "mkdocs build -c -d /dm/www/mkdocs/cnewfileDoc"; firefox "localhost/mkdocs/cnewfileDoc"}
+        [exec] (dmWeb/Dummy doc) { gnome-terminal --working-directory=/dm/dmWeb/app/Dummy/doc -e "mkdocs build -c -d /dm/www/mkdocs/dmWebDummyDoc"; firefox "localhost/mkdocs/dmWebDummyDoc"}
+        [exec] (Dmjs doc) { gnome-terminal --working-directory=/dm/dmC/app/minijs/doc -e "mkdocs build -c -d /dm/www/mkdocs/minijsDoc"; firefox "localhost/mkdocs/minijsDoc"}
+      [end]
+    [end]
+  [end]
+  [submenu] (Net)
+    [submenu] (server)
+      [exec] (home) {thunar smb://deme@server/home}
+      [exec] (www) {thunar smb://deme@server/home/www}
+      [exec] (yellow) {thunar smb://deme@server/yellow}
+      [exec] (red) {thunar smb://deme@server/red}
+      [exec] (localhost) {firefox http://server}
+    [end]
+    [submenu] (servicios)
+      [exec] (bankia) {firefox https://www.bankia.es/es/particulares}
+      [exec] (R4) {firefox https://www.r4.com/login}
+      [exec] (Huawei) {firefox https://cloud.huawei.com}
+      [exec] (movistar) {firefox https://www.movistar.es/mi-movistar/acceso-unico?GAURI=https://www.movistar.es/mimovistar-cliente/publico/acceso/privado/home}
+    [end]
+    [nop]
+    [exec] (evolution) {evolution}
+    [nop]
+    [exec] (x10Hosting) {thunar ftp://dedeme@dedeme.x10.mx@ftp.dedeme.x10.mx}
+  [end]
+  [submenu] (Mis Programas)
+    [exec] (Conta) {firefox http://localhost/dmcgi/Hconta}
+    [exec] (Stocks) {firefox http://localhost/dmcgi/Stocks}
+    [exec] (Noticias) {firefox http://localhost/dmcgi/News}
+    [submenu] (MrBackup)
+      [exec] (Inicio) {firefox http://localhost/dmcgi/MrBackup}
+      [nop]
+      [exec] (Server start) {MrBackup start & zenity --info --window-icon=info --text="MrBackup started"}
+      [exec] (Server stop) {MrBackup stop;zenity --info --window-icon=info --text="MrBackup stopped"}
+    [end]
+    [submenu] (Kron)
+      [exec] (Server start) {kron start & zenity --info --window-icon=info --text="kron started"}
+      [exec] (Server stop) {kron stop & zenity --info --window-icon=info --text="kron stopped"}
+    [end]
+    [submenu] (Old)
+      [exec] (UnicodeDm) {firefox http://localhost/unicodedm}
+      [exec] (Califica) {firefox http://server/califica}
+      [exec] (CalificaAl) {firefox http://server:28438/CalificaAl}
+      [exec] (DualAgenda) {firefox http://server/dmcgi/DualAgenda/index.html}
+      [exec] (Notes) {firefox http://server/dmcgi/Notes/index.html}
+      [submenu] (Insti)
+        [exec] (YNTestsEdit) {firefox http://localhost/dmcgi/YNTests/index.html}
+        [exec] (CalcEdit) {java -jar /deme/dmJava7/app/insti/CalcEdit/0.1.0/CalcEdit/dist/CalcEdit.jar}
+        [exec] (dedemeSurvey) {firefox /deme/dmJs/app/moodle/dedemeSurvey/www/index.html}
+      [end]
+    [end]
+    [submenu] (Varios)
+      [exec] (iceWallpapers) {iceWallpapers}
+      [exec] (EditDm) {java "-jar" "/deme/dmJava5/aplicaciones/editDm/paquete/editDm.jar"}
+      [exec] (Unicode) {unicodejava}
+      [exec] (VirusScreen) {sh /deme/dmJava5/aplicaciones/virusScreen/paquete/VirusScreen}
+      [exec] (Carreras) {carreras}
+      [exec] (Sudoku) {java -jar /deme/dmJava5/aplicaciones/juegos/sudoku/paquete/sudoku.jar}
+    [end]
+  [end]
+  [submenu] (Dispositivos)
+    [exec] (disks) {gnome-disks}
+    [exec] (VERBATIM) {thunar /media/deme/VERBATIM}
+    [exec] (Elements SE) {thunar "/media/deme/Elements SE"}
+    [exec] (Documentos) {thunar /home/deme/Documentos}
+    [exec] (Disk1) {thunar /media/disk1}
+    [exec] (Disk2) {thunar /media/disk2}
+  [end]
+  [submenu] (Ayuda)
+    [exec] (dm-Hx) {firefox http://localhost/dmcgi/HxDoc}
+    [exec] (dm-C) {firefox http://localhost/dmcgi/CDoc}
+    [exec] (dm-js) {firefox http://localhost/dmcgi/JsDoc}
+    [submenu] (dmstack)
+      [exec] (API) {firefox http://localhost/dmcgi/DmsDoc}
+      [exec] (Reference) {firefox http://localhost/dmstack/reference/index.html}
+    [end]
+    [submenu] (Go)
+      [exec] (dm-Go) {firefox http://localhost/dmcgi/GoDoc}
+      [nop]
+      [exec] (dm Server :6060) {kill `ps -x | grep godoc | grep 6060 | sed -r 's/[0-9]+:/:/g' | sed -r 's/:[0-9]+//g' | sed 's/[^0-9]//g'`;dm/dmGo/go/bin/godoc -http=:6060 -play -goroot /dm/dmGo/go}
+      [exec] (standard Server :6061) {kill `ps -x | grep godoc | grep 6061 | sed -r 's/[0-9]+:/:/g' | sed -r 's/:[0-9]+//g' | sed 's/[^0-9]//g'`;dm/dmGo/go/bin/godoc -http=:6061 -play}
+    [end]
+    [exec] (dm-Yeti) {firefox http://localhost/dmcgi/YetiDoc}
+    [exec] (dm-H) {firefox file:/dm/dmH/doc/index.html}
+    [exec] (dm-Groovy) {firefox file:/dm/dmGroovy/api/index.html}
+    [exec] (dm-Java) {firefox file:/dm/dmJava/api/index.html}
+    [exec] (dm-Crystal) {firefox file:/dm/dmCrystal/docs/index.html}
+    [exec] (C) {sh /deme/dmC15/doc/doc.sh}
+    [exec] (manuales) {thunar /home/deme/Documentos/manuales}
+    [exec] (dm-Haxe) {chromium --new-window http://localhost/dmcgi/HDoc}
+    [exec] (Java8-Api) {firefox /deme/dmJava8/doc/java8/docs/api/index.html}
+    [exec] (Gvim ) {firefox /home/deme/Documentos/manuales/vim/help.html}
+    [exec] (gtk) {firefox /home/deme/Documentos/manuales/gtk/gtk.html}
+    [exec] (Html) {firefox /home/deme/Documentos/manuales/html/index.html}
+    [exec] (Css) {firefox /home/deme/Documentos/manuales/css/referenciaCss.html}
+  [end]
+  [nop]
+  [exec] (Salir) {/usr/bin/jIceShutdown}
+  [nop]
+  [submenu] (fluxbox)
+    [include] (/etc/X11/fluxbox/fluxbox-menu)
+  [end]
+[end]

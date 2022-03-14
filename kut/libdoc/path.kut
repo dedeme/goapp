@@ -1,0 +1,31 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Path management.
+
+/// Returns the last component of path 'p'.
+/// If the path is empty, Base returns "."
+/// If the path consists entirely of slashes, Base returns "/".
+/// \s -> s
+base = \p -> {};
+
+/// Removes duplicates '/' and redundant '..'.
+/// The returns ends in a slash only if it is the root "/".
+/// If the result were an empty strint, it returns ".".
+/// \s -> s
+canonical = \p -> {};
+
+/// Join elements of 'paths' with "/".
+/// The result is made canonical.
+/// \[s...] -> s
+cat = \paths -> {};
+
+/// Returns the extension of path 'p', includind the dot, or an empty string
+/// if 'p' has not extension.
+/// \s -> s
+extension = \p -> {};
+
+/// Returns the parent directory or path 'p'.
+/// If there is no parent directory, it returns ".".
+/// \s -> \s
+parent = \p -> {};

@@ -1,0 +1,36 @@
+// Copyright 12-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Map functions.
+
+/// Returns a shallow copy of 'm'.
+/// \m -> m
+copy = \m -> {};
+
+/// Creates a map from one array with pairs [key, value].
+/// \[[s,*]...] -> m
+fromArr = \A -> {};
+
+/// Creates a map from one iterator with pairs [key, value].
+/// \<iterator>[[s,*]...] -> m
+fromArr = \it -> {};
+
+/// Returns keys of 'M'.
+/// \m -> [s...]
+keys = \M -> {};
+
+/// Returns the entries number of 'M'.
+/// \m -> i
+size = \M -> {};
+
+/// Returns values of 'M'.
+/// \m -> a
+values = \M -> {};
+
+/// Returns an array with the pairs [key, value] of 'M'
+/// |m -> [[s,*]...]
+toArr = \M -> {};
+
+/// Returns an iterator with the pairs [key, value] of 'M'
+/// |m -> <iterator>[[s,*]...]
+toIter = \M -> {};

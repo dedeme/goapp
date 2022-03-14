@@ -1,0 +1,65 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// JSON functions.
+
+/// Returns 'true' if json is "null" or 'false' in another case.
+/// \s -> b
+isNull = \s -> {};
+
+/// Read boolean.
+/// \s -> b
+rb = \s -> {};
+
+/// Read int.
+/// \s -> i
+ri = \s -> {};
+
+/// Read float.
+/// \s -> f
+rf = \s -> {};
+
+/// Read string.
+/// \s -> s
+rs = \s -> {};
+
+/// Read array of js-strings.
+/// \s -> [s...]
+ra = \s -> {};
+
+/// Read map of js-strings.
+/// \s -> {s...]
+ro = \s -> {};
+
+/// Write a null value.
+/// \-> s
+wn = \-> {};
+
+/// Write boolean.
+/// \b -> s
+wb = \v -> {};
+
+/// Write int.
+/// \i -> s
+wi = \v -> {};
+
+/// Write float.
+/// \f -> s
+wf = \v -> {};
+
+/// Write float with 'dec' decimals.
+/// \f, i -> s
+wf2 = \v, dec -> {};
+
+/// Write string.
+/// \s -> s
+ws = \v -> {};
+
+/// Write array of js-strings.
+/// \[s...] -> s
+wa = \V -> {};
+
+/// Write map of js-strings.
+/// \m -> s
+wo = \V -> {};
+

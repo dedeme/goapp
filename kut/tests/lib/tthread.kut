@@ -1,0 +1,48 @@
+// Copyright 13-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tthread ...");
+
+A = [];
+
+badFn = \A -> sys.println(A[125]);;
+
+populate = \A -> {
+  for (i : 1::10) {
+    arr.push(A, i);
+    sys.sleep(10);
+  }
+};
+
+thread.run(\-> populate(A););
+sys.sleep(5);
+thread.run(\-> {
+  for (i : 1::10) {
+    arr.push(A, i);
+    sys.sleep(10);
+  }
+  // badFn(A);
+});
+sys.sleep(500);
+assert arr.toStr(A) == "[1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9]";
+
+B = [];
+th1 = thread.start(\-> populate(B););
+assert thread.checkType(th1);
+sys.sleep(5);
+th2 = thread.start(\-> populate(B););
+thread.join(th1);
+thread.join(th2);
+assert arr.toStr(B) == "[1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9]";
+
+
+C = [];
+th3 = thread.start(\-> thread.sync(\-> populate(C);););
+sys.sleep(5);
+th4 = thread.start(\-> thread.sync(\-> populate(C);););
+thread.join(th3);
+thread.join(th4);
+assert arr.toStr(C) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9]";
+
+sys.println("  finished.");
+

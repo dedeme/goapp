@@ -1,0 +1,49 @@
+// Copyright 14-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("ttcp ...");
+
+process = \conn -> {
+  tx = tcp.read(conn, 10000);
+  if (tx == "end") {
+    tcp.write(conn, "Closing server");
+    tcp.closeConnection(conn);
+    return true;
+  }
+  tcp.write(conn, "Send from server: " + tx);
+  tcp.closeConnection(conn);
+  return false;
+};
+
+th1 = thread.start(\-> {
+  sv = tcp.server(23344);
+
+  while () {
+    Rq = tcp.accept(sv, 0);
+    if (Rq[1] != "") sys.fail(Rq[1]);
+    if (process(Rq[0])) break;
+  }
+
+  tcp.closeServer(sv);
+});
+
+for (i : 0::3) {
+  CN = tcp.dial("localhost:23344", 0);
+  c1 = CN[0];
+  //sys.println("Sending 'abc" + math.toStr(i) + "'");
+  tcp.write(c1, "abc" + math.toStr(i));
+  ///sys.println(tcp.read(c1, 10000));
+  assert tcp.read(c1, 10000) == "Send from server: abc" + math.toStr(i);
+  tcp.closeConnection(c1);
+}
+
+CN = tcp.dial("localhost:23344", 0);
+c1 = CN[0];
+tcp.write(c1, "end");
+//sys.println(tcp.read(c1, 10000));
+assert tcp.read(c1, 10000) == "Closing server";
+tcp.closeConnection(c1);
+
+thread.join(th1);
+sys.println("  finished.");
+

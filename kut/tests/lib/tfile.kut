@@ -1,0 +1,81 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tfile ...");
+
+pdf = "db/physics.pdf";
+work = "db/work";
+work2 = "db/work2";
+assert file.isDirectory("db");
+file.del(work);
+assert !file.isDirectory(work);
+assert file.exists(pdf);
+assert !file.exists("db/physic.pdf");
+assert file.size(pdf) == 20298536;
+assert file.tm(pdf) >= 1545549713565;
+
+file.mkdir(work);
+assert file.isDirectory(work);
+file.copy(pdf, work);
+assert file.exists(path.cat([work, "physics.pdf"]));
+file.rename(path.cat([work, "physics.pdf"]), path.cat([work, "ph.pdf"]));
+
+file.write(path.cat([work, "tx1.txt"]), "A text\nwith\nfour\nlines.");
+fw1 = file.wopen(path.cat([work, "tx2.txt"]));
+file.writeText(fw1, "A text\nwith");
+file.close(fw1);
+fa1 = file.aopen(path.cat([work, "tx2.txt"]));
+file.writeText(fa1, "\nfour\nlines.");
+file.close(fa1);
+fw2 = file.wopen(path.cat([work, "tx3.txt"]));
+assert file.checkType(fw2);
+file.writeText(fw2, "A text\nwith");
+file.close(fw2);
+fa2 = file.aopen(path.cat([work, "tx3.txt"]));
+assert file.checkType(fa2);
+file.writeBin(fa2, bytes.fromStr("\nfour\nlines."));
+file.close(fa2);
+
+tx1 = file.read(path.cat([work, "tx1.txt"]));
+
+fr1 = file.ropen(path.cat([work, "tx2.txt"]));
+assert file.checkType(fr1);
+Tx2 = [];
+while () {
+  L = file.readLine(fr1);
+  if (arr.empty(L)) break;
+  else arr.push(Tx2, L[0]);
+}
+file.close(fr1);
+assert tx1 == arr.join(Tx2, "\n");
+
+fr2 = file.ropen(path.cat([work, "tx3.txt"]));
+Bs = [[]];
+while () {
+  bs = file.readBin(fr2, 4);
+  if (bytes.size(bs) == 0) break;
+  else Bs[0] += bytes.toArr(bs);
+}
+file.close(fr2);
+assert tx1 == bytes.toStr(bytes.fromArr(Bs[0]));
+
+assert arr.join(file.dir(work), "-") == "ph.pdf-tx1.txt-tx2.txt-tx3.txt";
+
+file.copy(work, work2);
+file.copy(work, work2);
+
+//trace file.home();
+tmp1 = file.tmp("", "abc");
+assert str.starts(tmp1, "./abc") & str.len(tmp1) == 13;
+tmp2 = file.tmp("/tmp", "abc");
+assert str.starts(tmp2, "/tmp/abc") & str.len(tmp2) == 16;
+assert str.ends(file.wd(), "lib");
+file.cd("db/work2");
+assert str.ends(file.wd(), "work2");
+file.cd("../../");
+assert str.ends(file.wd(), "lib");
+assert file.isDirectory("db");
+
+//file.del(work);
+
+sys.println("  finished.");

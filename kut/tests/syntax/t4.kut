@@ -1,0 +1,26 @@
+// Copyright 01-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+import "im1";
+
+assert im1.v == 3;
+
+assert im1.fn1() == 1;
+im1.a[0] = 33;
+assert im1.fn1() == 33;
+
+f2 = im1.fn2;
+assert im1.fn2("A message") == "a) A message";
+assert f2("A message") == "a) A message";
+
+im1.m.v = "b";
+assert f2("A message") == "b) A message";
+
+assert im1.vv[0] == "a";
+vv = im1.vv;
+vv[0] = "b";
+assert im1.im.fn(3) == "3: b";
+
+assert im1.fn3() == "b";
+
+sys.println("t4 test OK");

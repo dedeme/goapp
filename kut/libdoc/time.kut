@@ -1,0 +1,109 @@
+// Copyright 09-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Date and time management.
+/// Time is stored as an integer corresponding to the Unix time (milliseconds
+/// since January 1, 1970).
+/// Therefore it is possible to use integer functions like '+', '-', '>', '==',
+/// etc.
+
+/// Returns a new time.
+/// \i, i, i, i, i, i -> i
+new = \day, month, year, hour, minute, second -> {};
+
+/// Returns a new time with hour = 12 and  minute, seconds and millisecond to 0.
+/// \i, i, i -> i
+newDate = \day, month, year -> {};
+
+/// Returns the current time.
+/// \-> i
+now = \-> {};
+
+/// Returns a time from a string type: MM*DD*YYYY, where '*' is the separator 'sep'.
+/// \s, s -> i
+fromEn = \s, sep -> {};
+
+/// Returns a time from a string type: DD*MM*YYYY, where '*' is the separator 'sep'.
+/// \s, s -> i
+fromIso = \s, sep -> {};
+
+/// Returns a time from a string type: YYYYMMDD.
+/// \s -> i
+fromStr = \s -> {};
+
+/// Returns a new time equals to 'tm', but setting hour, minute and second
+/// matching a string type: "HH:MM:SS", and milliseconds to 0.
+/// \i, s -> i
+fromClock = \tm, s -> {};
+
+/// Returns the day of 'tm', between 1 and 31, both inclusive.
+/// \i -> i
+day = \tm -> {};
+
+/// Returns the month of 'tm', between 1 and 12, both inclusive.
+/// \i -> i
+month = \tm -> {};
+
+/// Returns the year of 'tm'.
+/// \i -> i
+year = \tm -> {};
+
+/// Returns the weekday of 'tm', between 0 (Sunday) and 6 (Saturday).
+/// \i -> i
+weekday = \tm -> {};
+
+/// Returns the year day of 'tm'.
+/// \i -> i
+yearDay = \tm -> {};
+
+/// Returns the hour of 'tm', between 0 and 23, both inclusive.
+/// \i -> i
+hour = \tm -> {};
+
+/// Returns the minute of 'tm', between 0 and 59, both inclusive.
+/// \i -> i
+minute = \tm -> {};
+
+/// Returns the second of 'tm', between 0 and 59, both inclusive.
+/// \i -> i
+second = \tm -> {};
+
+/// Add 'days' to 'tm'. 'days' can be negative.
+/// \i, i -> i
+addDays = \tm, days -> {};
+
+/// Returns tm1 - tm2 in days.
+/// \i, i -> i
+dfDays = \tm1, tm2 -> {};
+
+/// Returns 'true' if 'time.dfDays(tm1, tm2) == 0'.
+/// \i, i -> b
+eqDay = \tm1, tm2 -> {};
+
+/// Returns a string representation of 'tm'.
+/// Template uses the folowing variables to do substitution:
+///   %d  Day in number 06 -> 6.
+///   %D  Day with tow digits 06 -> 06.
+///   %m  Month in number 03 -> 3.
+///   %M  Month with two digits 03 -> 03.
+///   %y  Year with two digits 2010 -> 10.
+///   %Y  Year with four digits 2010 -> 2010.
+///   %t  Time without milliseconds -> 15:03:55
+///   %T  Time with milliseconds -> 15:03:55.345
+///   %%  The sign '%'.
+/// \s, i -> s
+format = \template, tm -> {};
+
+/// Equals to 'time.format("%Y%M%D", tm)'. (e.g.; "20220130")
+/// \i -> s
+toStr = \tm -> {};
+
+/// Equals to 'time.format("%M-%D-%Y", tm)'. (e.g.; "02-30-2022")
+/// \i -> s
+toEn = \tm -> {};
+
+/// Equals to 'time.format("%D/%M/%Y", tm)'. (e.g.; "30/01/2022")
+/// \i -> s
+toIso = \tm -> {};
+
+

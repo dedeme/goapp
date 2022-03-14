@@ -1,0 +1,268 @@
+/Programación
+  *dmGo||thunar /dm/dmGo
+  *dmHaxe||thunar /dm/dmHaxe
+  *dmC||thunar /dm/dmC
+  *dmJs||thunar /dm/dmJs
+  *dmstack||thunar /dm/dmstack
+  *dmJava||thunar /dm/dmJava
+  *dmWeb||thunar /dm/dmWeb
+  -
+  *jEdit||jedit
+  -
+  *gitToken||gedit /dm/github.io/gitHubToken.txt
+<
+/Bachillerato
+  /Anotaciones
+    /1
+      /Matematicas
+        *Directorio||thunar /home/deme/Documentos/Bachillerato/1/MCC
+        *01. Los números reales||lyx /home/deme/Documentos/Bachillerato/1/MCC/01.NumerosReales.lyx
+        *02. Álgebra||lyx  /home/deme/Documentos/Bachillerato/1/MCC/02.Algebra.lyx
+        *03. Trigonometría||lyx  /home/deme/Documentos/Bachillerato/1/MCC/03.Trigonometria.lyx
+      <
+      /Matemáticas CCSS
+        *Directorio||thunar /home/deme/Documentos/Bachillerato/1/MCCSS
+        *01. Los números reales||lyx /home/deme/Documentos/Bachillerato/1/MCCSS/01.LosNumerosReales.lyx
+        *03. Ecuaciones e inecuaciones||lyx /home/deme/Documentos/Bachillerato/1/MCCSS/03.EcuacionesEInecuaciones.lyx
+        *04. Polinomios||lyx /home/deme/Documentos/Bachillerato/1/MCCSS/04.Polinomios.lyx
+        *05. Sistemas de ecuaciones e inecuaciones||lyx /home/deme/Documentos/Bachillerato/1/MCCSS/05.SistemasDeEcuacionesEInecuaciones.lyx
+      <
+      /Física y Química
+        *Directorio||thunar /home/deme/Documentos/Bachillerato/1/FyQ
+        *01. La teoría atómico molecular de la materia||lyx /home/deme/Documentos/Bachillerato/1/FyQ/01.LaTeoriaAtomicoMolecularDeLaMateria.lyx
+        *02. Los estados de la materia||lyx /home/deme/Documentos/Bachillerato/1/FyQ/02.LosEstadosDeLaMateria.lyx
+        *03. Las disoluciones||lyx /home/deme/Documentos/Bachillerato/1/FyQ/03.LasDisoluciones.lyx
+        *04. Los átomos||lyx /home/deme/Documentos/Bachillerato/1/FyQ/04.LosAtomos.lyx
+        *08. Cinemática-I||lyx "/home/deme/Documentos/Bachillerato/1/FyQ/08.Cinematica-I.lyx"
+        *09. Cinemática-II||lyx "/home/deme/Documentos/Bachillerato/1/FyQ/09.Cinematica-II.lyx"
+      <
+    <
+  <
+  /Notas
+    /1
+      /Matematicas
+        *01. Los números reales||evince /home/deme/Documentos/Bachillerato/1/MCC/01.NumerosReales.pdf
+        *02. Álgebra||evince  /home/deme/Documentos/Bachillerato/1/MCC/02.Algebra.pdf
+        *03. Trigonometría||evince  /home/deme/Documentos/Bachillerato/1/MCC/03.Trigonometria.pdf
+      <
+      /Matemáticas CCSS
+        *01. Los números reales||evince /home/deme/Documentos/Bachillerato/1/MCCSS/01.LosNumerosReales.pdf
+        *03. Ecuaciones e inecuaciones||evince /home/deme/Documentos/Bachillerato/1/MCCSS/03.EcuacionesEInecuaciones.pdf
+        *04. Polinomios||evince /home/deme/Documentos/Bachillerato/1/MCCSS/04.Polinomios.pdf
+        *04. Sistemas de ecuaciones e inecuaciones||evince /home/deme/Documentos/Bachillerato/1/MCCSS/05.SistemasDeEcuacionesEInecuaciones.pdf
+      <
+      /Física y Química
+        *01. La teoría atómico molecular de la materia||evince /home/deme/Documentos/Bachillerato/1/FyQ/01.LaTeoriaAtomicoMolecularDeLaMateria.pdf
+        *02. Los estados de la materia||evince /home/deme/Documentos/Bachillerato/1/FyQ/02.LosEstadosDeLaMateria.pdf
+        *03. Las disoluciones||evince /home/deme/Documentos/Bachillerato/1/FyQ/03.LasDisoluciones.pdf
+        *04. Los átomos||evince /home/deme/Documentos/Bachillerato/1/FyQ/04.LosAtomos.pdf
+        *08. Cinemática-I||evince /home/deme/Documentos/Bachillerato/1/FyQ/08.Cinematica-I.pdf
+        *09. Cinemática-II||evince /home/deme/Documentos/Bachillerato/1/FyQ/09.Cinematica-II.pdf
+      <
+    <
+  <
+<
+*Terminal||gnome-terminal
+*Firefox||firefox
+*Server||vinagre 192.168.1.2
+*Calendario||evince /home/deme/Documentos/tx/calendario.pdf
+-
+*home||thunar ~
+*dm||thunar /dm
+*fitness||thunar "/home/deme/Documentos/fitness"
+*compra||thunar /dm/github.io/dedeme.github.io/compra
+*tmp||thunar /dm/www/tmp
+*trash||thunar trash:///
+-
+/Apuntes
+  /Anotaciones
+    /Filosofía
+      /Historia
+        *Directorio||thunar "/home/deme/Documentos/Apuntes/filosofia/historia"
+        *Filosofía Occidental||lyx "/home/deme/Documentos/Apuntes/filosofia/historia/FilosofiaOccidental.lyx"
+      <
+    <
+    /Física
+      /Feynman
+        *Directorio||thunar "/home/deme/Documentos/Apuntes/fisica/feynman"
+        *I||lyx "/home/deme/Documentos/Apuntes/fisica/feynman/I.lyx"
+      <
+    <
+    /Psicología Social
+      *Directorio||thunar "/home/deme/Documentos/Apuntes/psicologiaSocial/"
+      *Psicología Social - Greenberg||lyx /home/deme/Documentos/Apuntes/psicologiaSocial/PsicologiaSocial-Greenberg.lyx
+    <
+  <
+  /Notas
+    /Filosofía
+      /Historia
+        *Filosofía Occidental||evince "/home/deme/Documentos/Apuntes/filosofia/historia/FilosofiaOccidental.pdf"
+      <
+    <
+    /Física
+      /Feynman
+        *I||evince "/home/deme/Documentos/Apuntes/fisica/feynman/I.pdf"
+      <
+    <
+    /Psicología Social
+      *Psicología Social - Greenberg||evince /home/deme/Documentos/Apuntes/psicologiaSocial/PsicologiaSocial-Greenberg.pdf
+    <
+  <
+<
+/Música
+  *lmms||lmms
+  *MuseScore||MuseScore
+  *Audacity||audacity
+  -
+  *Audacious||audacious
+  *PureData||pd
+  -
+  *dmMusic||thunar /dm/dmMusic
+  -
+  /Jack
+    *Rosegarden||rosegarden
+    *Hydrogen||hydrogen
+    *Tuxguitar||tuxguitar
+    *Qtractor||qsynth & qtractor
+    *Qsynth||qsynth
+  <
+<
+/MultiMarket
+  *Inicio||firefox http://localhost/dmcgi/MultiMarket
+  -
+  *Contabilidad||firefox http://localhost/dmcgi/MultiMarket/?acc
+  *Datos del día||firefox http://localhost/dmcgi/MultiMarket/?daily
+  *Pulgas||firefox http://localhost/dmcgi/MultiMarket/?fleas
+  -
+  *Server start||MultiMarket start & zenity --info --window-icon=info --text="Mutimarket running"
+  *Server stop||MultiMarket stop;zenity --info --window-icon=info --text="Mutimarket detenido"
+<
+-
+/Utilidades
+  *root||gksu thunar /
+  *Collins-Google||firefox http://www.collinsdictionary.com/ http://translate.google.es/?hl=es&tab=wT
+  *Dictionary||firefox http://www.wordreference.com/es http://www.thefreedictionary.com http://dictionary.cambridge.org/dictionary/british http://www.collinsdictionary.com/ http://translate.google.es/?hl=es&tab=wT http://www.google.es
+  *Tor||thunar /dm/tor
+  *Google Chrome||chromium --ppapi-flash-path=/usr/lib/PepperFlash/libpepflashplayer.so --ppapi-flash-version=14.0.0.125
+  *Links2||links2 -g www.google.es
+  *Gimp||gimp
+  *Calibre||/dm/calibre-bin/calibre/calibre
+  *Audacity||audacity
+  *screenRecorder||simplescreenrecorder
+  *xkill||xkill
+  /Escritorio
+    *Editar menu||thunar /home/deme/menu
+  <
+<
+/Edition
+  *Lyx||lyx
+  *gedit||gedit
+  *OpenOffice - writer||/usr/bin/lowriter
+  *OpenOffice - calc ||/usr/bin/localc
+  /mkdocks
+    /design
+      *ctemplate doc||gnome-terminal --working-directory=/dm/dmC/app/clang/ctemplate/doc -e "mkdocs serve" & thunar /dm/dmC/app/clang/ctemplate/doc & firefox "localhost:8000"
+      *cnewfile doc||gnome-terminal --working-directory=/dm/dmC/app/clang/cnewfile/doc -e "mkdocs serve" & thunar /dm/dmC/app/clang/cnewfile/doc & firefox "localhost:8000"
+      *dmWeb/Dummy doc||gnome-terminal --working-directory=/dm/dmWeb/app/Dummy/doc -e "mkdocs serve" & thunar /dm/dmWeb/app/Dummy/doc & firefox "localhost:8000"
+      *Dmjs doc||gnome-terminal --working-directory=/dm/dmC/app/minijs/doc -e "mkdocs serve" & thunar /dm/dmC/app/minijs/doc & firefox "localhost:8000"
+    <
+    /reading
+      *ctemplate doc|| gnome-terminal --working-directory=/dm/dmC/app/clang/ctemplate/doc -e "mkdocs build -c -d /dm/www/mkdocs/ctemplateDoc"; firefox "localhost/mkdocs/ctemplateDoc"
+      *cnewfile doc|| gnome-terminal --working-directory=/dm/dmC/app/clang/cnewfile/doc -e "mkdocs build -c -d /dm/www/mkdocs/cnewfileDoc"; firefox "localhost/mkdocs/cnewfileDoc"
+      *dmWeb/Dummy doc|| gnome-terminal --working-directory=/dm/dmWeb/app/Dummy/doc -e "mkdocs build -c -d /dm/www/mkdocs/dmWebDummyDoc"; firefox "localhost/mkdocs/dmWebDummyDoc"
+      *Dmjs doc|| gnome-terminal --working-directory=/dm/dmC/app/minijs/doc -e "mkdocs build -c -d /dm/www/mkdocs/minijsDoc"; firefox "localhost/mkdocs/minijsDoc"
+    <
+  <
+<
+/Net
+  /server
+    *home||thunar smb://deme@server/home
+    *www||thunar smb://deme@server/home/www
+    *yellow||thunar smb://deme@server/yellow
+    *red||thunar smb://deme@server/red
+    *localhost||firefox http://server
+  <
+  /servicios
+    *bankia||firefox https://www.bankia.es/es/particulares
+    *R4||firefox https://www.r4.com/login
+    *Huawei||firefox https://cloud.huawei.com
+    *movistar||firefox https://www.movistar.es/mi-movistar/acceso-unico?GAURI=https://www.movistar.es/mimovistar-cliente/publico/acceso/privado/home
+  <
+  -
+  *evolution||evolution
+  -
+  *x10Hosting||thunar ftp://dedeme@dedeme.x10.mx@ftp.dedeme.x10.mx
+<
+/Mis Programas
+  *Conta||firefox http://localhost/dmcgi/Hconta
+  *Stocks||firefox http://localhost/dmcgi/Stocks
+  *Noticias||firefox http://localhost/dmcgi/News
+  /MrBackup
+    *Inicio||firefox http://localhost/dmcgi/MrBackup
+    -
+    *Server start||MrBackup start & zenity --info --window-icon=info --text="MrBackup started"
+    *Server stop||MrBackup stop;zenity --info --window-icon=info --text="MrBackup stopped"
+  <
+  /Kron
+    *Server start||kron start & zenity --info --window-icon=info --text="kron started"
+    *Server stop||kron stop & zenity --info --window-icon=info --text="kron stopped"
+  <
+  /Old
+    *UnicodeDm||firefox http://localhost/unicodedm
+    *Califica||firefox http://server/califica
+    *CalificaAl||firefox http://server:28438/CalificaAl
+    *DualAgenda||firefox http://server/dmcgi/DualAgenda/index.html
+    *Notes||firefox http://server/dmcgi/Notes/index.html
+    /Insti
+      *YNTestsEdit||firefox http://localhost/dmcgi/YNTests/index.html
+      *CalcEdit||java -jar /deme/dmJava7/app/insti/CalcEdit/0.1.0/CalcEdit/dist/CalcEdit.jar
+      *dedemeSurvey||firefox /deme/dmJs/app/moodle/dedemeSurvey/www/index.html
+    <
+  <
+  /Varios
+    *iceWallpapers||iceWallpapers
+    *EditDm||java "-jar" "/deme/dmJava5/aplicaciones/editDm/paquete/editDm.jar"
+    *Unicode||unicodejava
+    *VirusScreen||sh /deme/dmJava5/aplicaciones/virusScreen/paquete/VirusScreen
+    *Carreras||carreras
+    *Sudoku||java -jar /deme/dmJava5/aplicaciones/juegos/sudoku/paquete/sudoku.jar
+  <
+<
+/Dispositivos
+  *disks||gnome-disks
+  *VERBATIM||thunar /media/deme/VERBATIM
+  *Elements SE||thunar "/media/deme/Elements SE"
+  *Documentos||thunar /home/deme/Documentos
+  *Disk1||thunar /media/disk1
+  *Disk2||thunar /media/disk2
+<
+/Ayuda
+  *dm-Hx||firefox http://localhost/dmcgi/HxDoc
+  *dm-C||firefox http://localhost/dmcgi/CDoc
+  *dm-js||firefox http://localhost/dmcgi/JsDoc
+  /dmstack
+    *API||firefox http://localhost/dmcgi/DmsDoc
+    *Reference||firefox http://localhost/dmstack/reference/index.html
+  <
+  /Go
+    *dm-Go||firefox http://localhost/dmcgi/GoDoc
+    -
+    *dm Server :6060||kill `ps -x | grep godoc | grep 6060 | sed -r 's/[0-9]+:/:/g' | sed -r 's/:[0-9]+//g' | sed 's/[^0-9]//g'`;dm/dmGo/go/bin/godoc -http=:6060 -play -goroot /dm/dmGo/go
+    *standard Server :6061||kill `ps -x | grep godoc | grep 6061 | sed -r 's/[0-9]+:/:/g' | sed -r 's/:[0-9]+//g' | sed 's/[^0-9]//g'`;dm/dmGo/go/bin/godoc -http=:6061 -play
+  <
+  *dm-Yeti||firefox http://localhost/dmcgi/YetiDoc
+  *dm-H||firefox file:/dm/dmH/doc/index.html
+  *dm-Groovy||firefox file:/dm/dmGroovy/api/index.html
+  *dm-Java||firefox file:/dm/dmJava/api/index.html
+  *dm-Crystal||firefox file:/dm/dmCrystal/docs/index.html
+  *C||sh /deme/dmC15/doc/doc.sh
+  *manuales||thunar /home/deme/Documentos/manuales
+  *dm-Haxe||chromium --new-window http://localhost/dmcgi/HDoc
+  *Java8-Api||firefox /deme/dmJava8/doc/java8/docs/api/index.html
+  *Gvim ||firefox /home/deme/Documentos/manuales/vim/help.html
+  *gtk||firefox /home/deme/Documentos/manuales/gtk/gtk.html
+  *Html||firefox /home/deme/Documentos/manuales/html/index.html
+  *Css||firefox /home/deme/Documentos/manuales/css/referenciaCss.html
+<
+-
+*Salir||/usr/bin/jIceShutdown

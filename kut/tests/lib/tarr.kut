@@ -1,0 +1,164 @@
+// Copyright 11-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tarr ...");
+
+sys.rand();
+
+assert arr.empty([] + []);
+assert arr.toStr([] + [1, 2]) == "[1, 2]";
+assert arr.toStr([1, 2] + []) == "[1, 2]";
+assert arr.toStr([1, 2] + [3]) == "[1, 2, 3]";
+
+assert arr.toStr(arr.fromIter(iter.empty())) == "[]";
+assert arr.toStr(arr.fromIter([0::4])) == "[0, 1, 2, 3]";
+assert iter.toStr(arr.toIter([])) == "<iterator>[]";
+assert iter.toStr(arr.toIter([1, 2, 3, 4])) == "<iterator>[1, 2, 3, 4]";
+
+assert arr.toStr(arr.filter([], \i -> return i % 2 == 0;)) == "[]";
+assert arr.toStr(arr.filter([0, 1, 2, 3, 4], \i -> return i % 2 == 0;)) ==
+  "[0, 2, 4]";
+assert arr.toStr(arr.filter([0, 1, 2, 3, 4], \i -> return i % 2 != 0;)) ==
+  "[1, 3]";
+assert arr.toStr(arr.filter([0, 1, 2, 3, 4], \i -> return i > 1000;)) == "[]";
+
+A = [[]];
+arr.filterIn(A[0], \i -> return i % 2 == 0;);
+assert arr.toStr(A[0]) == "[]";
+A[0] = [0, 1, 2, 3, 4];
+arr.filterIn(A[0], \i -> return i % 2 == 0;);
+assert arr.toStr(A[0]) == "[0, 2, 4]";
+A[0] = [0, 1, 2, 3, 4];
+arr.filterIn(A[0], \i -> return i % 2 != 0;);
+assert arr.toStr(A[0]) == "[1, 3]";
+A[0] = [0, 1, 2, 3, 4];
+arr.filterIn(A[0], \i -> return i > 1000;);
+assert arr.toStr(A[0]) == "[]";
+
+assert arr.toStr(arr.find([], \i -> return i == 3;)) == "[]";
+assert arr.toStr(arr.find([0, 1, 2, 3, 4], \i -> return i == 3;)) == "[3]";
+assert arr.toStr(arr.find([0, 1, 2, 3, 4], \i -> return i == -100;)) == "[]";
+
+assert [0, 1, 2, 3, 4][2] == 2;
+
+assert arr.join([], "-") == "";
+assert arr.join(["a"], "-") == "a";
+assert arr.join(["a", "b", "c"], "-") == "a-b-c";
+
+A2 = [0, 1, 2, 3, 4];
+A2[1] = 101;
+assert arr.toStr(A2) == "[0, 101, 2, 3, 4]";
+arr.push(A2, 33);
+assert arr.toStr(A2) == "[0, 101, 2, 3, 4, 33]";
+arr.unshift(A2, -12);
+assert arr.toStr(A2) == "[-12, 0, 101, 2, 3, 4, 33]";
+assert arr.pop(A2) == 33;
+assert arr.toStr(A2) == "[-12, 0, 101, 2, 3, 4]";
+assert arr.shift(A2) == -12;
+assert arr.toStr(A2) == "[0, 101, 2, 3, 4]";
+assert arr.peek(A2) == 4;
+assert arr.peek(A2) == 4;
+A3 = arr.copy(A2);
+arr.clear(A2);
+assert arr.size(A2) == 0;
+assert arr.empty(A2);
+assert arr.toStr(A3) == "[0, 101, 2, 3, 4]";
+
+assert arr.size([]) == 0;
+assert arr.size([1, 2]) == 2;
+
+assert arr.toStr(arr.mp([], \i -> return i * 2;)) == "[]";
+assert arr.toStr(arr.mp([1, 2, 3], \i -> return i * 2;)) == "[2, 4, 6]";
+
+assert arr.all([], \i -> return i < 3;);
+assert arr.all([0, 1, 2], \i -> return i < 3;);
+assert !arr.all([0, 1, 2, 4, 5], \i -> return i < 3;);
+
+assert !arr.any([], \i -> return i < 3;);
+assert arr.any([0, 1, 2], \i -> return i < 3;);
+assert arr.any([0, 1, 2, 4, 5], \i -> return i == 4;);
+assert !arr.any([0, 1, 2, 4, 5], \i -> return i == 3;);
+
+assert arr.toStr(arr.take([], 2)) == "[]";
+assert arr.toStr(arr.take(["a"], 2)) == "[\"a\"]";
+assert arr.toStr(arr.take([0, 1, 2, 3, 4], 2)) == "[0, 1]";
+assert arr.toStr(arr.take([0, 1, 2, 3, 4], -2)) == "[]";
+
+assert arr.toStr(arr.drop([], 2)) == "[]";
+assert arr.toStr(arr.drop(["a"], 2)) == "[]";
+assert arr.toStr(arr.drop([0, 1, 2, 3, 4], 2)) == "[2, 3, 4]";
+assert arr.toStr(arr.drop([0, 1, 2, 3, 4], -2)) == "[0, 1, 2, 3, 4]";
+
+assert arr.toStr(arr.takeWhile([], \s -> return s == "a";)) == "[]";
+assert arr.toStr(arr.takeWhile(["a"], \s -> return s == "a";)) == "[\"a\"]";
+assert arr.toStr(arr.takeWhile([0, 1, 2, 3, 4], \i -> return i < 2;)) == "[0, 1]";
+assert arr.toStr(arr.takeWhile([0, 1, 2, 3, 4], \i -> return i > 2;)) == "[]";
+
+assert arr.toStr(arr.dropWhile([], \s -> return s == "a";)) == "[]";
+assert arr.toStr(arr.dropWhile(["a"], \s -> return s == "a";)) == "[]";
+assert arr.toStr(arr.dropWhile([0, 1, 2, 3, 4], \i -> return i < 2;)) ==
+  "[2, 3, 4]";
+assert arr.toStr(arr.dropWhile([0, 1, 2, 3, 4], \i -> return i > 2;)) ==
+  "[0, 1, 2, 3, 4]";
+
+AN0 = arr.new(0, "a");
+assert arr.empty(AN0);
+ANB = arr.new(2, true);
+assert ANB[0] & ANB[1];
+ANI = arr.new(2, 1);
+assert ANI[0] == 1 & ANI[1] == 1;
+ANI[1] = 76;
+assert ANI[0] == 1 & ANI[1] == 76;
+ANF = arr.new(2, 2.4);
+assert ANF[0] == 2.4 & ANF[1] == 2.4;
+ANS = arr.new(2, "a");
+assert ANS[0] == "a" & ANS[1] == "a";
+ANA = arr.new(2, [9]);
+assert ANA[0][0] == 9 & ANA[1][0] == 9;
+ANA[0][0] = 77;
+assert ANA[0][0] == 77 & ANA[1][0] == 9;
+
+D0 = arr.duplicates([], \i1, i2 -> return i1 == i2;);
+assert arr.empty(D0[0]) & arr.empty(D0[1]);
+D1 = arr.duplicates([1,2,3], \i1, i2 -> return i1 == i2;);
+assert arr.toStr(D1[0]) == "[1, 2, 3]" & arr.empty(D1[1]);
+D2 = arr.duplicates([1,2,1,3,2, 2, 1], \i1, i2 -> return i1 == i2;);
+assert arr.toStr(D2[0]) == "[1, 2, 3]" & arr.toStr(D2[1]) == "[1, 2]";
+
+A[0] = [2];
+arr.remove(A[0], 0);
+assert arr.empty(A[0]);
+
+A[0] = [1, 2, 3];
+arr.remove(A[0], 1);
+assert arr.toStr(A[0]) == "[1, 3]";
+
+A[0] = [1, 2, 3, 5];
+arr.removeRange(A[0], 1, 3);
+assert arr.toStr(A[0]) == "[1, 5]";
+
+A[0] = [];
+arr.reverse(A[0]);
+assert arr.empty(A[0]);
+
+A[0] = [2];
+arr.reverse(A[0]);
+assert arr.toStr(A[0]) == "[2]";
+
+A[0] = [1, 2, 3];
+arr.reverse(A[0]);
+assert arr.toStr(A[0]) == "[3, 2, 1]";
+
+//A[0] = [1, 2, 3];
+//arr.shuffle(A[0]);
+//sys.println(arr.toStr(A[0]));
+
+A[0] = [3, 1, 2];
+arr.sort(A[0], \n1, n2 -> return n1 < n2;);
+assert arr.toStr(A[0]) == "[1, 2, 3]";
+A[0] = [3, 1, 2];
+arr.sort(A[0], \n1, n2 -> return n1 > n2;);
+assert arr.toStr(A[0]) == "[3, 2, 1]";
+
+sys.println("  finished.");
+

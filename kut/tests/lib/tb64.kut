@@ -1,0 +1,16 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tb64 ...");
+
+assert b64.decode(b64.encode("")) == "";
+assert arr.size(
+  bytes.toArr(b64.decodeBytes(b64.encodeBytes(bytes.fromArr([]))))
+) == 0;
+
+assert b64.decode(b64.encode("¿Vió un cañón?")) == "¿Vió un cañón?";
+bs = bytes.fromArr([1, 255, 0, 11]);
+assert bytes.toStr(b64.decodeBytes(b64.encodeBytes(bs)))
+  == bytes.toStr(bs);
+
+sys.println("  finished.");

@@ -1,0 +1,100 @@
+// Copyright 07-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tstr ...");
+
+assert str.ends("abc", "c");
+assert str.ends("abc", "");
+assert str.ends("", "");
+assert !str.ends("abc", "zc");
+assert !str.ends("abc", "1abc");
+assert !str.ends("", "x");
+
+assert str.starts("abc", "a");
+assert str.starts("abc", "");
+assert str.starts("", "");
+assert !str.starts("abc", "ac");
+assert !str.starts("abc", "abc1");
+assert !str.starts("", "x");
+
+assert str.index("abcb", "b") == 1;
+assert str.index("abcb", "bc") == 1;
+assert str.index("abcb", "abcb") == 0;
+assert str.index("abcb", "abcbc") == -1;
+assert str.index("a", "") == 0;
+assert str.index("año", "o") == 3;
+
+assert str.lastIndex("abcb", "b") == 3;
+assert str.lastIndex("abcb", "bc") == 1;
+assert str.lastIndex("abcb", "abcb") == 0;
+assert str.lastIndex("abcb", "abcbc") == -1;
+assert str.lastIndex("a", "") == 1;
+assert str.lastIndex("año", "o") == 3;
+
+assert str.indexFrom("abcb", "b", 3) == 3;
+assert str.indexFrom("abcb", "bc", 3) == -1;
+assert str.indexFrom("abcb", "abcb", 0) == 0;
+assert str.indexFrom("abcb", "abcbc", 0) == -1;
+assert str.indexFrom("a", "", 1) == -1;
+assert str.indexFrom("año", "o", 1) == 3;
+
+assert str.fmt("%s, %d, %f", ["abc", 33, 12.5]) == "abc, 33, 12.500000";
+assert str.fmt("|%12f|%.3f|%5.1f|", [12.5, 12.5, 12.5]) == "|   12.500000|12.500| 12.5|";
+
+assert str.fromRunes(str.toRunes("")) == "";
+assert arr.size(str.toRunes("")) == 0;
+assert str.fromRunes(str.toRunes("añña世界")) == "añña世界";
+assert arr.size(str.toRunes("añña世界")) == 6;
+
+assert str.fromUtf16(str.toUtf16("")) == "";
+assert arr.size(str.toUtf16("")) == 0;
+assert str.fromUtf16(str.toUtf16("añña世界")) == "añña世界";
+assert arr.size(str.toUtf16("añña世界")) == 6;
+
+assert str.toUpper("") == "";
+assert str.toUpper("año") == "AÑO";
+assert str.toLower("") == "";
+assert str.toLower("AÑO") == "año";
+
+assert str.fromIso(bytes.toStr(bytes.fromArr([97, 241, 111]))) == "año";
+
+assert str.replace(str.replace("año", "a", "ca"), "ño", "ñón") == "cañón";
+
+assert arr.size(str.split("", "")) == 0;
+assert arr.join(str.split("", ""), "") == "";
+assert arr.size(str.split("a", "")) == 1;
+assert arr.join(str.split("a", ""), "") == "a";
+assert arr.size(str.split("añ", "")) == 2;
+assert arr.join(str.split("añ", ""), "") == "añ";
+assert arr.size(str.split("", ";")) == 1;
+assert arr.join(str.split("", ";"), ";") == "";
+assert arr.size(str.split("ab;cd;", ";")) == 3;
+assert arr.join(str.split("ab;cd;", ";"), ";") == "ab;cd;";
+assert arr.size(str.split("ab;cd", ";")) == 2;
+assert arr.join(str.split("ab;cd", ";"), ";") == "ab;cd";
+assert arr.size(str.split("ab;", ";")) == 2;
+assert arr.join(str.split("ab;", ";"), ";") == "ab;";
+assert arr.size(str.split("ab", ";")) == 1;
+assert arr.join(str.split("ab", ";"), ";") == "ab";
+assert arr.size(str.split("", "ñ")) == 1;
+assert arr.join(str.split("", "ñ"), "ñ") == "";
+assert arr.size(str.split("abñcdñ", "ñ")) == 3;
+assert arr.join(str.split("abñcdñ", "ñ"), "ñ") == "abñcdñ";
+assert arr.size(str.split("abñcd", "ñ")) == 2;
+assert arr.join(str.split("abñcd", "ñ"), "ñ") == "abñcd";
+assert arr.size(str.split("abñ", "ñ")) == 2;
+assert arr.join(str.split("abñ", "ñ"), "ñ") == "abñ";
+assert arr.size(str.split("ab", "ñ")) == 1;
+assert arr.join(str.split("ab", "ñ"), "ñ") == "ab";
+assert arr.size(str.split("", "--")) == 1;
+assert arr.join(str.split("", "--"), "--") == "";
+assert arr.size(str.split("ab--cd--", "--")) == 3;
+assert arr.join(str.split("ab--cd--", "--"), "--") == "ab--cd--";
+assert arr.size(str.split("ab--cd", "--")) == 2;
+assert arr.join(str.split("ab--cd", "--"), "--") == "ab--cd";
+assert arr.size(str.split("ab--", "--")) == 2;
+assert arr.join(str.split("ab--", "--"), "--") == "ab--";
+assert arr.size(str.split("ab", "--")) == 1;
+assert arr.join(str.split("ab", "--"), "--") == "ab";
+
+sys.println("  finished.");

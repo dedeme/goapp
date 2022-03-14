@@ -1,0 +1,81 @@
+// Copyright 08-Feb-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+n = 3 + 4;
+assert n == 7;
+a1 = ["a", "b"];
+a1[0] = 123;
+assert a1[0] == 123;
+assert a1[1] == "b";
+m1 = {"a": "a", b: "b"};
+m1.a = 210;
+assert m1.a == 210;
+m1["b"] = "newB";
+assert m1[a1[1]] == "newB";
+a1[0] += 2;
+assert a1[0] == 125;
+m1.a += -10;
+assert m1.a == 200;
+a1[1] += "**";
+assert a1[1] == "b**";
+
+{}
+
+{
+  n = "abc";
+  assert n == "abc";
+
+  a1[0] = 33;
+  m1.a = 22;
+}
+
+assert n == 7;
+assert a1[0] == 33;
+assert m1.a == 22;
+
+aa = [4];
+aa[0] += 2;
+assert aa[0] == 6;
+aa[0] -= 1;
+assert aa[0] == 5;
+aa[0] *= 2;
+assert aa[0] == 10;
+aa[0] /= 5;
+assert aa[0] == 2;
+
+aa[0] = true;
+aa[0] &= false;
+assert !aa[0];
+aa[0] |= true;
+assert aa[0];
+
+assert 5 == \-> {
+  return 3 + 2;
+}();
+assert 8 == \m-> {
+  n = n + m;
+  return n;
+}(1);
+assert 35 == \n, m-> {
+  m1.b = "zz";
+  return n + m + m1.a;
+}(10, 3);
+assert m1.b == "zz";
+
+f1 = \m-> {
+  n = math.toFloat(n) + m / 2.0;
+  return n;
+};
+assert f1(3.0) == 8.5;
+
+{
+  f0 = \->{};
+  math.toFloat(3.0);
+  //sys.println("here " + math.toStr(n));
+  f0();
+
+  f1 = math.toFloat;
+  assert f1("3.0") == 3.0;
+}
+
+sys.println("t2 test OK");

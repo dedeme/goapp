@@ -1,0 +1,26 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Cryptographic functions.
+
+/// Generates a b64 random key of a length 'lg'.
+/// \i -> s
+genK = \lg -> {};
+
+/// Encodes 'k' in irreversible way, using 'lg' b64 digits.
+///   k : String to codify.
+///   lg: Length of result.
+/// \s, i -> s
+key = \s, lg -> {};
+
+/// Encodes 's' with key 'k'.
+///   k: Key for encoding.
+///   s: Message to encode.
+/// \s, s -> s
+encode = \k, s -> {};
+
+/// Decodes 'b64' using key 'k'. 'b64' was codified with cryp().
+///   k    : Key for decoding.
+///   b64Tx: Text codified with 'encode()'.
+/// \s, s -> s
+decode = \k, b64Tx -> {};

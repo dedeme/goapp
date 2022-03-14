@@ -1,0 +1,41 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Array of byte functions.
+/// The type <bytes> is a compact representation of an array of byte.
+
+/// Creates a <bytes> of length 'len', intialized with 0's.
+/// \i -> <bytes>
+new = \len -> {};
+
+/// Returns the number of elements of 'bs'
+/// \<bytes> -> i;
+size = \bs -> {};
+
+/// Creates a <bytes> from an array of 'int's.
+/// \[i...] -> <bytes>
+fromArr = \A -> {};
+
+/// Creates a <bytes> from a normal string.
+/// \[i...] -> <bytes>
+fromStr = \s -> {};
+
+/// Returns true if 'v' is of type <bytes>.
+/// \<bytes> -> b
+checkType = \v -> {};
+
+/// Returns 'bs' as an array of 'int's.
+/// \<byte> -> [i...]
+toArr = \bs -> {};
+
+/// Returns 'bs' as a normal string.
+/// \<byte> -> s
+toStr = \bs -> {};
+
+/// Returns the value of 'bs' in position 'ix'.
+/// \<bytes>, i -> i
+get = \bs, ix -> {};
+
+/// Set the value of 'bs' in position 'ix' to 'b'.
+/// \<bytes>, i, i -> ()
+set = \bs, ix, v -> {};

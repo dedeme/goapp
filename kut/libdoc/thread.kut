@@ -1,0 +1,30 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Threads management.
+
+/// Returns 'true' if 'v' is a thread.
+/// \* -> b
+checkType = \v -> {};
+
+/// Stops program until the thread 'th' is finished.
+/// \<thread> -> ()
+join = \th -> {};
+
+/// Runs 'fn' in a detached thread.
+/// \\->() -> ()
+run = \fn -> {};
+
+/// Runs 'fn' in a thread which is returned and can be used with 'thread.join'
+/// to wait for its ending.
+/// \\->() -> <thread>
+start = \fn -> {};
+
+/// Runs the function 'fn' avoiding that another thread accesses it before
+/// its ending.
+///
+/// It is necessary prevent that 'fn' directly or indirectly call also
+/// 'thread.sync'. Otherwise the program will be blocked.
+///
+/// \\->() -> ()
+sync = \fn -> {};

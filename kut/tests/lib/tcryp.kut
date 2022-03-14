@@ -1,0 +1,17 @@
+// Copyright 08-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tcryp ...");
+
+assert str.len(cryp.genK(5)) == 5;
+
+k = cryp.key("abc", 8);
+assert k == "C8vYu4C/";
+code = cryp.encode(k, "El cañón disparó");
+assert code != "El cañón disparó";
+assert cryp.decode(k, code) == "El cañón disparó";
+
+assert cryp.encode(k, "") == "";
+assert cryp.decode(k, "") == "";
+
+sys.println("  finished.");

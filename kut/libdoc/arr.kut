@@ -1,0 +1,135 @@
+// Copyright 02-Feb-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+/// Array functions.
+
+/// Returns 'true' if fn returns true with every element of 'it'.
+/// (\a, \*->b) -> b
+all = \A, fn -> {};
+
+/// Returns 'true' if fn returns true with at leat one element of 'it'.
+/// (\a, \*->b) -> b
+any = \A, fn -> {};
+
+/// Removes every element of 'A'
+/// \a -> ()
+clear = \A -> {};
+
+/// Returns a shallow copy of 'A'
+/// \a -> a
+copy = \A -> {};
+
+/// Returns the remains elements of 'A' after make an 'arr.take' operation
+/// \a, i -> a
+drop = \A, n -> {};
+
+/// Returns the remains elements of 'A' after make an 'arr.takeWhile' operation
+/// (\a, \*->b) -> a
+dropWhile = \A, fn -> {};
+
+/// Returns two arrays:
+///   The first, wiht elements of 'A' witout duplicates.
+///   The second, with duplicates of 'A'. There is only one copy of each duplicate.
+/// \a -> [a, a]
+duplicates = \A -> {};
+
+/// Returns 'true' if 'A' has no element.
+/// \a -> b
+empty = \A -> {};
+
+/// Returns an array with elements of 'it' en the same order.
+/// <iterator> -> a
+fromIter = \it -> {};
+
+/// Returns an array with elements which produce 'true' with 'fn'.
+/// (\a, \*->b) -> a
+filter = \A -> {};
+
+/// Removes in place elements of 'A' which produce 'false' with 'fn'.
+/// (\a, \*->b) -> ()
+filterIn = \A -> {};
+
+/// Returns an array with the first element which produces 'true' with 'fn' or
+/// an empty list if there is not such element.
+/// (\a, \*->b) -> ([*] | [])
+find = \A, fn -> {};
+
+/// Returns a string with elements of s (which are strings) joined with 'sep'.
+/// \a, s -> s
+join = \A, sep -> {}
+
+/// Returns a new array, restult of applying 'fn' to each element of 'A'.
+/// (\a, \*->*) -> a
+mp = \A, fn -> {};
+
+/// Returns a new array with 'n' elements equals to 'e'.
+/// 'e' only can be of type "bool", "int", "float", "string" or "array".
+/// If 'e' is of type "array", each new element is a shalow copy of it.
+/// If 'n' < 0, it is set to '0'.
+/// \i, * -> a
+new = \n, e -> {};
+
+/// Returns the last element of 'A'.
+/// \a -> *
+peek = \A -> {};
+
+/// Removes and returns the last element of 'A'.
+/// \a -> *
+pop = \A -> {};
+
+/// Append an element at the end of 'A'.
+/// \a, * -> ()
+push = \A, element -> {};
+
+/// Removes and returns the first element of 'A'.
+/// \a -> *
+shift = \A -> {};
+
+/// Removes the element at index 'ix'.
+/// \a, i -> ()
+remove = \A, ix -> {};
+
+/// Removes elements from index 'begin' (inclusive) to index 'end' (exclusive).
+/// \a, i, i -> ()
+removeRange = \A, begin, index -> {};
+
+/// Reverses elements of 'A' in place.
+/// \a -> ()
+reverse = \A -> {};
+
+/// Returns the elements number of 'A'.
+/// \a -> i
+size = \A -> {};
+
+/// Reorders randomly elements of 'A' in place.
+/// Prevously to call this function, 'sys.rand' shuld be called.
+shuffle = \A  -> {};
+
+/// Sorts elements of 'A' from less to greater.
+/// 'less' is a function which returns 'true' if the first paramenter is
+/// less than the second one.
+/// NOTE: If 'less' returns 'true' if the first parameter is greater than the
+///       second one, then the order is from greater to less.
+/// (\a, \*,*->b) -> ()
+sort = \A, less -> {};
+
+/// Returns an array with the 'n' first elements of 'A'.
+/// \a, i -> a
+take = \A, n -> {};
+
+/// Returns the first elements of 'it' which produce 'true' with fn.
+/// (\a, \*->b) -> a
+takeWhile = \A, fn -> {};
+
+/// Returns an iterator with elements of 'A' in the same order.
+/// \a -> <iterator>
+toIter = \A -> {};
+
+/// Returns a representation of 'A'.
+/// \a -> s
+toStr = \A -> {};
+
+/// Preppend an element at the beginning of 'A'.
+/// \a, * -> ()
+unshift = \A, element -> {};
+
