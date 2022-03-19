@@ -3,6 +3,9 @@
 
 sys.println("tstr ...");
 
+assert "abc"[0] == "a";
+assert "abc"[2] == "c";
+
 assert str.ends("abc", "c");
 assert str.ends("abc", "");
 assert str.ends("", "");

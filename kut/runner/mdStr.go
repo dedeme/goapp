@@ -12,6 +12,23 @@ import (
 	"unicode/utf16"
 )
 
+/// Operates with bytes.
+/// \s, i -> s
+func strAt(args []*expression.T) (ex *expression.T, err error) {
+	switch s := (args[0].Value).(type) {
+	case string:
+		switch i := (args[1].Value).(type) {
+		case int64:
+			ex = expression.MkFinal(string(s[i]))
+		default:
+			err = bfail.Type(args[1], "int")
+		}
+	default:
+		err = bfail.Type(args[0], "string")
+	}
+	return
+}
+
 /// \s, s -> b
 func strEnds(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
@@ -177,7 +194,7 @@ func strLastIndex(args []*expression.T) (ex *expression.T, err error) {
 }
 
 /// Operates with bytes.
-/// \s -> i
+/// \s, i -> s
 func strLeft(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
@@ -238,7 +255,7 @@ func strReplace(args []*expression.T) (ex *expression.T, err error) {
 }
 
 /// Operates with bytes.
-/// \s -> i
+/// \s, i -> s
 func strRight(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
@@ -322,7 +339,7 @@ func strStarts(args []*expression.T) (ex *expression.T, err error) {
 }
 
 /// Operates with bytes.
-/// \s -> i
+/// \s, i, i -> s
 func strSub(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
@@ -444,7 +461,7 @@ func strGet(fname string) (fn *bfunction.T, ok bool) {
 	case "starts":
 		fn = bfunction.New(2, strStarts)
 	case "sub":
-		fn = bfunction.New(2, strSub)
+		fn = bfunction.New(3, strSub)
 	case "toLower":
 		fn = bfunction.New(1, strToLower)
 	case "toRunes":

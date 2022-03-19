@@ -17,6 +17,7 @@ import (
 	"github.com/dedeme/kut/runner/fail"
 	"github.com/dedeme/kut/statement"
 	"os"
+  "path"
 )
 
 func help() {
@@ -39,7 +40,9 @@ func main() {
     fmt.Println("Kut version v2022.03")
     return
   }
-	fix := fileix.Add(p)
+
+  fileix.Root = path.Dir(p)
+	fix := fileix.Add(path.Base(p))
 	var kutCode string
 	var err error
 	kutCode, err = fileix.Read(fix)

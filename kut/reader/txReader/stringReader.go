@@ -105,8 +105,11 @@ func (r *T) readSimpleString(close byte) (tk *token.T, err error) {
 func (r *T) readMultilineString() (tk *token.T, err error) {
 	format := func(s string) string {
 		ss := strings.Split(s, "\n")
-		max := 0
+		cut := -1
 		for _, e := range ss {
+      if strings.TrimSpace(e) == "" {
+        continue
+      }
 			n := 0
 			for i := 0; i < len(e); i++ {
 				if e[i] == ' ' {
@@ -115,14 +118,18 @@ func (r *T) readMultilineString() (tk *token.T, err error) {
 					break
 				}
 			}
-			if n > max {
-				max = n
+      if cut < 0 || n < cut {
+				cut = n
 			}
 		}
-		if max != 0 {
+		if cut > 0 {
 			var newSs []string
 			for _, e := range ss {
-				newSs = append(newSs, e[max:])
+        if strings.TrimSpace(e) == "" {
+          newSs = append(newSs, "")
+        } else {
+          newSs = append(newSs, e[cut:])
+        }
 			}
 			ss = newSs
 		}
@@ -140,7 +147,7 @@ func (r *T) readMultilineString() (tk *token.T, err error) {
 		err = r.FailLine("Unclosed quotes.", nline)
 	}
 	if b != '\n' {
-		err = r.FailLine("Unclosed quotes.", nline)
+		err = r.FailLine("Expected end of line after \"\"\".", nline)
 		return
 	}
 

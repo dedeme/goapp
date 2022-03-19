@@ -265,6 +265,12 @@ func Solve(
 					fn := bfunction.New(2, arrFget)
 					ex, err = fn.Run("get", []*expression.T{ex0, ex1}, stackT)
 				}
+      case string:
+				ex1, err = Solve(imports, hp0, hps, ps[1], stackT)
+				if err == nil {
+					fn := bfunction.New(2, strAt)
+					ex, err = fn.Run("at", []*expression.T{ex0, ex1}, stackT)
+				}
 			case map[string]*expression.T:
 				ex1, err = Solve(imports, hp0, hps, ps[1], stackT)
 				if err == nil {
@@ -272,7 +278,7 @@ func Solve(
 					ex, err = fn.Run("get", []*expression.T{ex0, ex1}, stackT)
 				}
 			default:
-				err = fail.Type(ex0, stackT, "array", "map")
+				err = fail.Type(ex0, stackT, "string", "array", "map")
 			}
 		}
 	case expression.ExPr:
@@ -352,6 +358,7 @@ func Solve(
 	case expression.Switch:
 		ps0 := e.Value.([]interface{})
 		ex0, err = Solve(imports, hp0, hps, ps0[0].(*expression.T), stackT)
+
 		if err == nil {
 			ps1 := ps0[1].([][]*expression.T)
 			var r *expression.T
@@ -371,7 +378,7 @@ func Solve(
 				switch v := (ex1.Value).(type) {
 				case bool:
 					if v {
-						caseEntry = (ps[0].Value).(string)
+						caseEntry = ps[0].String()
 						r, err = Solve(imports, hp0, hps, ps[1], stackT)
 					}
 				default:

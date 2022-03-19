@@ -3,6 +3,10 @@
 
 /// String functions.
 
+/// Returns the byte-character in position 'ix', counting in bytes.
+/// \s, i -> s
+at = \s, ix -> {};
+
 /// Returns 'true' if 's' ends with 'subs'.
 /// \s, s -> b
 ends = \s, subs -> {};
@@ -91,7 +95,7 @@ rtrim = \s -> {};
 ///   assert arr.size(str.split("ab;cd", ";")) == 2;
 ///   assert arr.join(str.split("ab;cd", ";"), ";") == "ab;cd";
 /// \s -> [s...]
-spit = \s, sep -> {};
+split = \s, sep -> {};
 
 /// Equals to split, triming each strings in the resulting array.
 /// \s -> [s...]

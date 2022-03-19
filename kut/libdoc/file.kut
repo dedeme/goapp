@@ -66,6 +66,7 @@ readBin = \f -> {};
 
 /// Returns an array with the next line of 'f'.
 /// If there is no more elements, it returns an empty array.
+/// Lines are read without carriage return.
 /// \f -> ([s] | [])
 readLine = \f -> {};
 

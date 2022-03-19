@@ -14,6 +14,7 @@ func readSwitchExpresion(tx *txReader.T) (ex *expression.T, err error) {
 	var tk *token.T
 	var eof bool
 	tk, eof, err = tx.ReadToken()
+
 	if err != nil {
 		return
 	}

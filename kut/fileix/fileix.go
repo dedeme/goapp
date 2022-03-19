@@ -8,19 +8,22 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dedeme/golib/file"
+  "path"
 )
 
+var Root = "./";
 var paths []string
+
 
 // Add path to code file paths and returns its index.
 // If path already has been added, it do nothing and also returns its index.
-func Add(path string) int {
+func Add(fpath string) int {
 	for ix, p := range paths {
-		if p == path {
+		if p == fpath {
 			return ix
 		}
 	}
-	paths = append(paths, path)
+	paths = append(paths, fpath)
 	return len(paths) - 1
 }
 
@@ -31,6 +34,9 @@ func Get(ix int) (s string) {
 		return
 	}
 	s = paths[ix]
+  if !path.IsAbs(s) {
+    s = path.Join(Root, s)
+  }
 	if len(s) > 50 {
 		s = "..." + s[len(s)-47:]
 	}
@@ -38,11 +44,15 @@ func Get(ix int) (s string) {
 }
 
 // Returns the complete path with index 'ix' or raise 'panic'.
-func GetComplete(ix int) string {
+func GetComplete(ix int) (s string) {
 	if ix < 0 {
 		return "Built-in"
 	}
-	return paths[ix]
+  s = paths[ix]
+  if !path.IsAbs(s) {
+    s = path.Join(Root, s)
+  }
+	return
 }
 
 // Read the file with index 'ix'
@@ -53,6 +63,6 @@ func Read(ix int) (code string, err error) {
 		}
 	}()
 
-	code = file.ReadAll(paths[ix] + ".kut")
+	code = file.ReadAll(GetComplete(ix) + ".kut")
 	return
 }
