@@ -100,7 +100,9 @@ func arrClear(args []*expression.T) (ex *expression.T, err error) {
 func arrCopy(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
-		ex = expression.MkFinal(append([]*expression.T{}, a...))
+    b := make([]*expression.T, len(a))
+    copy(b, a)
+		ex = expression.MkFinal(b)
 	default:
 		err = bfail.Type(args[0], "array")
 	}
@@ -377,6 +379,43 @@ func arrFget(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \a, \*->b -> i
+func arrIndex(args []*expression.T) (ex *expression.T, err error) {
+	switch a := (args[0].Value).(type) {
+	case []*expression.T:
+		switch fn := (args[1].Value).(type) {
+		case *function.T:
+			rst := int64(-1)
+			for ix, e := range a {
+				var r *expression.T
+				r, err = solveIsolateFunction(fn, []*expression.T{e}) // exSolver.go
+				if err != nil {
+					break
+				}
+				switch v := (r.Value).(type) {
+				case bool:
+					if v {
+						rst = int64(ix)
+					}
+				default:
+					err = bfail.Type(r, "bool")
+				}
+				if err != nil || rst != -1 {
+					break
+				}
+			}
+			if err == nil {
+				ex = expression.MkFinal(rst)
+			}
+		default:
+			err = bfail.Type(args[1], "function")
+		}
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
 // \a, s -> s
 func arrJoin(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
@@ -397,6 +436,28 @@ func arrJoin(args []*expression.T) (ex *expression.T, err error) {
 			}
 		default:
 			err = bfail.Type(args[1], "string")
+		}
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
+/// \a, i -> a
+func arrLeft(args []*expression.T) (ex *expression.T, err error) {
+	switch a := (args[0].Value).(type) {
+	case []*expression.T:
+		switch i := (args[1].Value).(type) {
+		case int64:
+			if i < 0 {
+				i = int64(len(a)) + i
+			}
+			a2 := a[:i]
+			b := make([]*expression.T, i)
+			copy(b, a2)
+			ex = expression.MkFinal(b)
+		default:
+			err = bfail.Type(args[1], "int")
 		}
 	default:
 		err = bfail.Type(args[0], "array")
@@ -546,13 +607,52 @@ func arrRemoveRange(args []*expression.T) (ex *expression.T, err error) {
 }
 
 // \a -> ()
-func arrReverse(args []*expression.T) (ex *expression.T, err error) {
+func arrReverseIn(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		right := len(a) - 1
 		for left := 0; left < right; left++ {
 			a[left], a[right] = a[right], a[left]
 			right--
+		}
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
+// \a -> ()
+func arrReverse(args []*expression.T) (ex *expression.T, err error) {
+	switch a := (args[0].Value).(type) {
+	case []*expression.T:
+    r := make([]*expression.T, len(a))
+    ir := 0
+    for ia := len(a) - 1; ia >= 0; ia-- {
+      r[ir] = a[ia]
+      ir++
+    }
+    ex = expression.MkFinal(r)
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
+/// \a, i -> a
+func arrRight(args []*expression.T) (ex *expression.T, err error) {
+	switch a := (args[0].Value).(type) {
+	case []*expression.T:
+		switch i := (args[1].Value).(type) {
+		case int64:
+			if i < 0 {
+				i = int64(len(a)) + i
+			}
+			a2 := a[i:]
+			b := make([]*expression.T, int64(len(a))-i)
+			copy(b, a2)
+			ex = expression.MkFinal(b)
+		default:
+			err = bfail.Type(args[1], "int")
 		}
 	default:
 		err = bfail.Type(args[0], "array")
@@ -639,6 +739,36 @@ func arrSort(args []*expression.T) (ex *expression.T, err error) {
 			})
 		default:
 			err = bfail.Type(args[1], "function")
+		}
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
+/// \a, i, i -> a
+func arrSub(args []*expression.T) (ex *expression.T, err error) {
+	switch s := (args[0].Value).(type) {
+	case []*expression.T:
+		switch start := (args[1].Value).(type) {
+		case int64:
+			switch end := (args[2].Value).(type) {
+			case int64:
+				if start < 0 {
+					start = int64(len(s)) + start
+				}
+				if end < 0 {
+					end = int64(len(s)) + end
+				}
+        a2 := s[start:end]
+        b := make([]*expression.T, end - start)
+        copy(b, a2)
+				ex = expression.MkFinal(b)
+			default:
+				err = bfail.Type(args[1], "int")
+			}
+		default:
+			err = bfail.Type(args[1], "int")
 		}
 	default:
 		err = bfail.Type(args[0], "array")
@@ -779,6 +909,8 @@ func arrGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(2, arrFind)
 	case "fromIter":
 		fn = bfunction.New(1, arrFromIter)
+	case "index":
+		fn = bfunction.New(2, arrIndex)
 	case "join":
 		fn = bfunction.New(2, arrJoin)
 	case "mp":
@@ -797,6 +929,8 @@ func arrGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(3, arrRemoveRange)
 	case "reverse":
 		fn = bfunction.New(1, arrReverse)
+	case "reverseIn":
+		fn = bfunction.New(1, arrReverseIn)
 	case "shift":
 		fn = bfunction.New(1, arrShift)
 	case "shuffle":

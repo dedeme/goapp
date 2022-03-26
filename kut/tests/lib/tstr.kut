@@ -100,4 +100,44 @@ assert arr.join(str.split("ab--", "--"), "--") == "ab--";
 assert arr.size(str.split("ab", "--")) == 1;
 assert arr.join(str.split("ab", "--"), "--") == "ab";
 
+assert ""[:0] == "";
+assert ""[0:] == "";
+assert ""[0:0] == "";
+assert ""[:] == "";
+assert "abc"[:0] == "";
+assert "abc"[:1] == "a";
+assert "abc"[:3] == "abc";
+assert "abc"[:-3] == "";
+assert "abc"[:-2] == "a";
+assert "abc"[:-1] == "ab";
+assert "abc"[0:] == "abc";
+assert "abc"[1:] == "bc";
+assert "abc"[3:] == "";
+assert "abc"[-1:] == "c";
+assert "abc"[-2:] == "bc";
+assert "abc"[-3:] == "abc";
+assert "abc"[0:2] == "ab";
+assert "abc"[1:2] == "b";
+assert "abc"[1:1] == "";
+assert "abc"[-3:-1] == "ab";
+assert "abc"[-2:-1] == "b";
+assert "abc"[-2:-2] == "";
+assert "abc"[:] == "abc";
+
+assert str.take("", 0) == "";
+assert str.take("", -1) == "";
+assert str.take("", 2000) == "";
+assert str.take("abc", 0) == "";
+assert str.take("abc", 2) == "ab";
+assert str.take("abc", -1) == "";
+assert str.take("abc", 2000) == "abc";
+
+assert str.drop("", 0) == "";
+assert str.drop("", -1) == "";
+assert str.drop("", 2000) == "";
+assert str.drop("abc", 0) == "abc";
+assert str.drop("abc", 2) == "c";
+assert str.drop("abc", -1) == "abc";
+assert str.drop("abc", 2000) == "";
+
 sys.println("  finished.");

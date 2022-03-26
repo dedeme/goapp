@@ -24,8 +24,7 @@ const (
 	Func
 	Sym
 
-	Range2
-	Range3
+	Range
 
 	ExPt
 	ExSq
@@ -193,12 +192,9 @@ func (e *T) String() (s string) {
 			s += "  " + conds[0].String() + ": " + conds[1].String() + ";\n"
 		}
 		s += "}"
-	case Range2:
+	case Range:
 		ps := e.Value.([]*T)
 		s = "[" + ps[0].String() + ":" + ps[1].String() + "]"
-	case Range3:
-		ps := e.Value.([]*T)
-		s = "[" + ps[0].String() + "::" + ps[1].String() + "]"
 	case Not:
 		s = "!" + e.Value.(*T).String()
 	case Minus:

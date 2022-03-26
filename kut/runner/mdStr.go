@@ -29,6 +29,29 @@ func strAt(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+/// Operates with bytes.
+/// \s, i -> s
+func strDrop(args []*expression.T) (ex *expression.T, err error) {
+	switch s := (args[0].Value).(type) {
+	case string:
+		switch i := (args[1].Value).(type) {
+		case int64:
+			if i <= 0 {
+				ex = expression.MkFinal(s)
+			} else if i >= int64(len(s)) {
+        ex = expression.MkFinal("")
+      } else {
+        ex = expression.MkFinal(s[i:])
+      }
+		default:
+			err = bfail.Type(args[1], "int")
+		}
+	default:
+		err = bfail.Type(args[0], "string")
+	}
+	return
+}
+
 /// \s, s -> b
 func strEnds(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
@@ -200,6 +223,9 @@ func strLeft(args []*expression.T) (ex *expression.T, err error) {
 	case string:
 		switch i := (args[1].Value).(type) {
 		case int64:
+			if i < 0 {
+				i = int64(len(s)) + i
+			}
 			ex = expression.MkFinal(s[:i])
 		default:
 			err = bfail.Type(args[1], "int")
@@ -261,6 +287,9 @@ func strRight(args []*expression.T) (ex *expression.T, err error) {
 	case string:
 		switch i := (args[1].Value).(type) {
 		case int64:
+			if i < 0 {
+				i = int64(len(s)) + i
+			}
 			ex = expression.MkFinal(s[i:])
 		default:
 			err = bfail.Type(args[1], "int")
@@ -347,10 +376,39 @@ func strSub(args []*expression.T) (ex *expression.T, err error) {
 		case int64:
 			switch end := (args[2].Value).(type) {
 			case int64:
+				if start < 0 {
+					start = int64(len(s)) + start
+				}
+				if end < 0 {
+					end = int64(len(s)) + end
+				}
 				ex = expression.MkFinal(s[start:end])
 			default:
 				err = bfail.Type(args[1], "int")
 			}
+		default:
+			err = bfail.Type(args[1], "int")
+		}
+	default:
+		err = bfail.Type(args[0], "string")
+	}
+	return
+}
+
+/// Operates with bytes.
+/// \s, i -> s
+func strTake(args []*expression.T) (ex *expression.T, err error) {
+	switch s := (args[0].Value).(type) {
+	case string:
+		switch i := (args[1].Value).(type) {
+		case int64:
+			if i <= 0 {
+				ex = expression.MkFinal("")
+			} else if i >= int64(len(s)) {
+        ex = expression.MkFinal(s)
+      } else {
+        ex = expression.MkFinal(s[:i])
+      }
 		default:
 			err = bfail.Type(args[1], "int")
 		}
@@ -426,6 +484,8 @@ func strTrim(args []*expression.T) (ex *expression.T, err error) {
 func strGet(fname string) (fn *bfunction.T, ok bool) {
 	ok = true
 	switch fname {
+	case "drop":
+		fn = bfunction.New(2, strDrop)
 	case "ends":
 		fn = bfunction.New(2, strEnds)
 	case "fmt":
@@ -442,16 +502,12 @@ func strGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(3, strIndexFrom)
 	case "lastIndex":
 		fn = bfunction.New(2, strLastIndex)
-	case "left":
-		fn = bfunction.New(2, strLeft)
 	case "len":
 		fn = bfunction.New(1, strLen)
 	case "ltrim":
 		fn = bfunction.New(1, strLtrim)
 	case "replace":
 		fn = bfunction.New(3, strReplace)
-	case "right":
-		fn = bfunction.New(2, strRight)
 	case "rtrim":
 		fn = bfunction.New(1, strRtrim)
 	case "split":
@@ -460,8 +516,8 @@ func strGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(2, strSplitTrim)
 	case "starts":
 		fn = bfunction.New(2, strStarts)
-	case "sub":
-		fn = bfunction.New(3, strSub)
+	case "take":
+		fn = bfunction.New(2, strTake)
 	case "toLower":
 		fn = bfunction.New(1, strToLower)
 	case "toRunes":

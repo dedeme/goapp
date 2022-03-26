@@ -2,6 +2,19 @@
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 /// Array functions.
+///
+/// Beside the functions described bellow, arrays also allow:
+///
+/// Subindex (A[ix])
+///   - Returns the element in position 'ix'.
+///   - If 'ix >= arr.len(A)' or 'ix < 0' a fail is raised.
+/// Subarrays at left (A[:ix]), at right (A[ix:]) and between limits (A[i:j]).
+/// These subarrays are shallow copies of the original.
+///   - If subindices are '< 0', they are converted en 'len(A) + i'.
+///   - If the final value is '< 0' or '>= len(A)', a fail is raised.
+///   - In case of 's[i, j]', if 'j < i', a fail is raised.
+///   - The expresion 'A[:]' returns a shallow copy of 'A' (althoug 'arr.copy'
+///   - is more efficient.
 
 /// Returns 'true' if fn returns true with every element of 'it'.
 /// (\a, \*->b) -> b
@@ -37,10 +50,6 @@ duplicates = \A -> {};
 /// \a -> b
 empty = \A -> {};
 
-/// Returns an array with elements of 'it' en the same order.
-/// <iterator> -> a
-fromIter = \it -> {};
-
 /// Returns an array with elements which produce 'true' with 'fn'.
 /// (\a, \*->b) -> a
 filter = \A -> {};
@@ -53,6 +62,20 @@ filterIn = \A -> {};
 /// an empty list if there is not such element.
 /// (\a, \*->b) -> ([*] | [])
 find = \A, fn -> {};
+
+/// Returns an array with elements of 'it' en the same order.
+/// <iterator> -> a
+fromIter = \it -> {};
+
+/// Returns the element at position 'ix'.
+/// Better use 'A[ix]' or 'A!' for 'A[0]'.
+/// \a, ix -> *
+get = \A, ix -> {}
+
+/// Returns the index of the first element which produce 'true' with 'fn',
+/// or -1 if such element does not exist.
+/// (\a, \*->b) -> i
+index = \A, fn -> {};
 
 /// Returns a string with elements of s (which are strings) joined with 'sep'.
 /// \a, s -> s
@@ -93,9 +116,13 @@ remove = \A, ix -> {};
 /// \a, i, i -> ()
 removeRange = \A, begin, index -> {};
 
+/// Returns elements of 'A' reversed.
+/// \a -> a
+reverse = \A -> {};
+
 /// Reverses elements of 'A' in place.
 /// \a -> ()
-reverse = \A -> {};
+reverseIn = \A -> {};
 
 /// Returns the elements number of 'A'.
 /// \a -> i
@@ -113,7 +140,9 @@ shuffle = \A  -> {};
 /// (\a, \*,*->b) -> ()
 sort = \A, less -> {};
 
-/// Returns an array with the 'n' first elements of 'A'.
+/// Returns a shallow copy of 'A' with its 'n' first elements.
+///   -If 'n <= 0' returns the complete array.
+///   -if 'n >= len(A)' returns an empty array.
 /// \a, i -> a
 take = \A, n -> {};
 

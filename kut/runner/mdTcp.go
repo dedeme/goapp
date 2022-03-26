@@ -105,23 +105,23 @@ func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 	case net.Conn:
 		switch lim := (args[1].Value).(type) {
 		case int64:
-      if lim < 1 {
-        err = bfail.Mk("Connection limit less than 1")
-        return
-      }
-      bs := make([]byte, lim + 1)
-      var n int
+			if lim < 1 {
+				err = bfail.Mk("Connection limit less than 1")
+				return
+			}
+			bs := make([]byte, lim+1)
+			var n int
 			n, err = cn.Read(bs)
-      n2 := int64(n)
-      if n2 > lim {
-        err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
-        return
-      }
-      bs2 := make([]byte, n)
-      for i := 0; i < n; i++ {
-        bs2[i] = bs[i]
-      }
-      ex = expression.MkFinal(string(bs2))
+			n2 := int64(n)
+			if n2 > lim {
+				err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
+				return
+			}
+			bs2 := make([]byte, n)
+			for i := 0; i < n; i++ {
+				bs2[i] = bs[i]
+			}
+			ex = expression.MkFinal(string(bs2))
 		default:
 			err = bfail.Type(args[0], "string")
 		}
@@ -137,23 +137,23 @@ func tcpReadBin(args []*expression.T) (ex *expression.T, err error) {
 	case net.Conn:
 		switch lim := (args[1].Value).(type) {
 		case int64:
-      if lim < 1 {
-        err = bfail.Mk("Connection limit less than 1")
-        return
-      }
-      bs := make([]byte, lim + 1)
-      var n int
+			if lim < 1 {
+				err = bfail.Mk("Connection limit less than 1")
+				return
+			}
+			bs := make([]byte, lim+1)
+			var n int
 			n, err = cn.Read(bs)
-      n2 := int64(n)
-      if n2 > lim {
-        err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
-        return
-      }
-      bs2 := make([]byte, n)
-      for i := 0; i < n; i++ {
-        bs2[i] = bs[i]
-      }
-      ex = expression.MkFinal(bs2)
+			n2 := int64(n)
+			if n2 > lim {
+				err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
+				return
+			}
+			bs2 := make([]byte, n)
+			for i := 0; i < n; i++ {
+				bs2[i] = bs[i]
+			}
+			ex = expression.MkFinal(bs2)
 		default:
 			err = bfail.Type(args[0], "string")
 		}

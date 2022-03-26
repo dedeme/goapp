@@ -13,8 +13,7 @@ import (
 )
 
 const (
-	op1Chs = ";=,.()+-*/!<>[]{}%&|?:\\"
-	op2Chs = ";=,.+-*/!<>%&|?:\\"
+	opChs = ";=,.()+-*/!<>[]{}%&|?:\\"
 )
 
 type T struct {
@@ -150,23 +149,32 @@ func (r *T) readSymbol(b byte) (tk *token.T, err error) {
 
 func (r *T) readOperator(b byte) (tk *token.T, err error) {
 	switch b {
-	case ';', ',', '.', '\\', '(', ')', '{', '}', '[', ']', '?':
-		tk = token.New(token.Operator, string(b))
-		return
-	}
-
-	var eof bool
-	var b2 byte
-	b2, eof, err = r.readByte()
-	if err == nil {
-		if eof {
-			tk = token.New(token.Operator, string(b))
-		} else if strings.IndexByte(op2Chs, b2) != -1 {
-			tk = token.New(token.Operator, string([]byte{b, b2}))
-		} else {
-			r.unreadByte(b2)
-			tk = token.New(token.Operator, string(b))
+	case '=', '!', '>', '<', '+', '*', '/', '%', '|', '&':
+		var eof bool
+		var b2 byte
+		b2, eof, err = r.readByte()
+		if err == nil {
+			if !eof && b2 == '=' {
+				tk = token.New(token.Operator, string([]byte{b, b2}))
+			} else {
+				r.unreadByte(b2)
+				tk = token.New(token.Operator, string(b))
+			}
 		}
+	case '-':
+		var eof bool
+		var b2 byte
+		b2, eof, err = r.readByte()
+		if err == nil {
+			if !eof && (b2 == '=' || b2 == '>') {
+				tk = token.New(token.Operator, string([]byte{b, b2}))
+			} else {
+				r.unreadByte(b2)
+				tk = token.New(token.Operator, string(b))
+			}
+		}
+	default:
+		tk = token.New(token.Operator, string(b))
 	}
 	return
 }
@@ -194,7 +202,7 @@ func (r *T) ReadToken() (tk *token.T, eof bool, err error) {
 		tk, err = r.readString(b) // stringReader.go
 	case (b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z'):
 		tk, err = r.readSymbol(b)
-	case strings.IndexByte(op1Chs, b) != -1:
+	case strings.IndexByte(opChs, b) != -1:
 		tk, err = r.readOperator(b)
 	case b >= '0' && b <= '9':
 		tk, err = r.readNumber(b) // in numberReader.go

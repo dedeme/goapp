@@ -46,33 +46,15 @@ func solveIterator(
 					var inc int64
 					if end > start {
 						inc = 1
-						if e.Type == expression.Range2 {
-							cmpType = expression.LessEq
-						} else {
-							cmpType = expression.Less
-						}
+						cmpType = expression.Less
 					} else {
 						inc = -1
-						if e.Type == expression.Range2 {
-							cmpType = expression.GreaterEq
-						} else {
-							cmpType = expression.Greater
-						}
+						cmpType = expression.Greater
 					}
 
 					fhasNext := func() bool {
 						if cmpType == expression.Less {
 							if start < end {
-								return true
-							}
-							return false
-						} else if cmpType == expression.LessEq {
-							if start <= end {
-								return true
-							}
-							return false
-						} else if cmpType == expression.GreaterEq {
-							if start >= end {
 								return true
 							}
 							return false
@@ -148,7 +130,7 @@ func Solve(
 		}
 	}()
 
-	var ex0, ex1 *expression.T
+	var ex0, ex1, ex2 *expression.T
 
 	switch e.Type {
 	case expression.Final:
@@ -187,10 +169,68 @@ func Solve(
 		ex = expression.MkFinal(fn)
 	case expression.Sym:
 		ex, err = solveSym(imports, hp0, hps, e.Value.(string), stackT)
-	case expression.Range2:
-		ex, err = solveIterator(imports, hp0, hps, e, stackT)
-	case expression.Range3:
-		ex, err = solveIterator(imports, hp0, hps, e, stackT)
+	case expression.Range:
+		ps := e.Value.([]*expression.T)
+		if len(ps) == 2 {
+			ex, err = solveIterator(imports, hp0, hps, e, stackT)
+		} else {
+			ex0, err = Solve(imports, hp0, hps, ps[0], stackT)
+			if err == nil {
+				ex1, err = Solve(imports, hp0, hps, ps[1], stackT)
+				if err == nil {
+					ex2, err = Solve(imports, hp0, hps, ps[2], stackT)
+					if err == nil {
+						if ex1.IsEmpty() {
+							if ex2.IsEmpty() {
+								switch s := (ex0.Value).(type) {
+								case string:
+									ex = expression.MkFinal(s)
+								case []*expression.T:
+									a := make([]*expression.T, len(s))
+									copy(a, s)
+									ex = expression.MkFinal(a)
+								default:
+									err = fail.Type(ex0, stackT, "string", "array")
+								}
+							} else {
+								switch (ex0.Value).(type) {
+								case string:
+									fn := bfunction.New(2, strLeft)
+									ex, err = fn.Run("left", []*expression.T{ex0, ex2}, stackT)
+								case []*expression.T:
+									fn := bfunction.New(2, arrLeft)
+									ex, err = fn.Run("left", []*expression.T{ex0, ex2}, stackT)
+								default:
+									err = fail.Type(ex0, stackT, "string", "array")
+								}
+							}
+						} else if ex2.IsEmpty() {
+							switch (ex0.Value).(type) {
+							case string:
+								fn := bfunction.New(2, strRight)
+								ex, err = fn.Run("right", []*expression.T{ex0, ex1}, stackT)
+							case []*expression.T:
+								fn := bfunction.New(2, arrRight)
+								ex, err = fn.Run("right", []*expression.T{ex0, ex1}, stackT)
+							default:
+								err = fail.Type(ex0, stackT, "string", "array")
+							}
+						} else {
+							switch (ex0.Value).(type) {
+							case string:
+                fn := bfunction.New(3, strSub)
+                ex, err = fn.Run("sub", []*expression.T{ex0, ex1, ex2}, stackT)
+							case []*expression.T:
+								fn := bfunction.New(3, arrSub)
+								ex, err = fn.Run("sub", []*expression.T{ex0, ex1, ex2}, stackT)
+							default:
+								err = fail.Type(ex0, stackT, "string", "array")
+							}
+						}
+					}
+				}
+			}
+		}
 	case expression.ExPt:
 		ps := e.Value.([]*expression.T)
 		ex0, err = Solve(imports, hp0, hps, ps[0], stackT)
@@ -265,7 +305,7 @@ func Solve(
 					fn := bfunction.New(2, arrFget)
 					ex, err = fn.Run("get", []*expression.T{ex0, ex1}, stackT)
 				}
-      case string:
+			case string:
 				ex1, err = Solve(imports, hp0, hps, ps[1], stackT)
 				if err == nil {
 					fn := bfunction.New(2, strAt)

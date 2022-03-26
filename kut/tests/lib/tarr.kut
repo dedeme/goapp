@@ -11,7 +11,7 @@ assert arr.toStr([1, 2] + []) == "[1, 2]";
 assert arr.toStr([1, 2] + [3]) == "[1, 2, 3]";
 
 assert arr.toStr(arr.fromIter(iter.empty())) == "[]";
-assert arr.toStr(arr.fromIter([0::4])) == "[0, 1, 2, 3]";
+assert arr.toStr(arr.fromIter([0:4])) == "[0, 1, 2, 3]";
 assert iter.toStr(arr.toIter([])) == "<iterator>[]";
 assert iter.toStr(arr.toIter([1, 2, 3, 4])) == "<iterator>[1, 2, 3, 4]";
 
@@ -22,18 +22,42 @@ assert arr.toStr(arr.filter([0, 1, 2, 3, 4], \i -> return i % 2 != 0;)) ==
   "[1, 3]";
 assert arr.toStr(arr.filter([0, 1, 2, 3, 4], \i -> return i > 1000;)) == "[]";
 
+assert arr.toStr([][:0]) == "[]";
+assert ""[0:] == "";
+assert ""[0:0] == "";
+assert ""[:] == "";
+assert arr.toStr([1, 2, 3][:0]) == "[]";
+assert arr.toStr([1, 2, 3][:1]) == "[1]";
+assert arr.toStr([1, 2, 3][:3]) == "[1, 2, 3]";
+assert arr.toStr([1, 2, 3][:-3]) == "[]";
+assert arr.toStr([1, 2, 3][:-2]) == "[1]";
+assert arr.toStr([1, 2, 3][:-1]) == "[1, 2]";
+assert arr.toStr([1, 2, 3][0:]) == "[1, 2, 3]";
+assert arr.toStr([1, 2, 3][1:]) == "[2, 3]";
+assert arr.toStr([1, 2, 3][3:]) == "[]";
+assert arr.toStr([1, 2, 3][-3:]) == "[1, 2, 3]";
+assert arr.toStr([1, 2, 3][-2:]) == "[2, 3]";
+assert arr.toStr([1, 2, 3][-1:]) == "[3]";
+assert arr.toStr([1, 2, 3][0:2]) == "[1, 2]";
+assert arr.toStr([1, 2, 3][1:2]) == "[2]";
+assert arr.toStr([1, 2, 3][1:1]) == "[]";
+assert arr.toStr([1, 2, 3][-3:-1]) == "[1, 2]";
+assert arr.toStr([1, 2, 3][-2:-1]) == "[2]";
+assert arr.toStr([1, 2, 3][-2:-2]) == "[]";
+assert arr.toStr([1, 2, 3][:]) == "[1, 2, 3]";
+
 A = [[]];
-arr.filterIn(A[0], \i -> return i % 2 == 0;);
-assert arr.toStr(A[0]) == "[]";
-A[0] = [0, 1, 2, 3, 4];
-arr.filterIn(A[0], \i -> return i % 2 == 0;);
-assert arr.toStr(A[0]) == "[0, 2, 4]";
-A[0] = [0, 1, 2, 3, 4];
+arr.filterIn(A!, \i -> return i % 2 == 0;);
+assert arr.toStr(A!) == "[]";
+A! = [0, 1, 2, 3, 4];
+arr.filterIn(A!, \i -> return i % 2 == 0;);
+assert arr.toStr(A!) == "[0, 2, 4]";
+A! = [0, 1, 2, 3, 4];
 arr.filterIn(A[0], \i -> return i % 2 != 0;);
 assert arr.toStr(A[0]) == "[1, 3]";
-A[0] = [0, 1, 2, 3, 4];
-arr.filterIn(A[0], \i -> return i > 1000;);
-assert arr.toStr(A[0]) == "[]";
+A! = [0, 1, 2, 3, 4];
+arr.filterIn(A!, \i -> return i > 1000;);
+assert arr.toStr(A!) == "[]";
 
 assert arr.toStr(arr.find([], \i -> return i == 3;)) == "[]";
 assert arr.toStr(arr.find([0, 1, 2, 3, 4], \i -> return i == 3;)) == "[3]";
@@ -78,6 +102,11 @@ assert !arr.any([], \i -> return i < 3;);
 assert arr.any([0, 1, 2], \i -> return i < 3;);
 assert arr.any([0, 1, 2, 4, 5], \i -> return i == 4;);
 assert !arr.any([0, 1, 2, 4, 5], \i -> return i == 3;);
+
+assert arr.index([], \i -> return i < 3;) == -1;
+assert arr.index([0, 1, 2], \i -> return i < 3;) == 0;
+assert arr.index([0, 1, 2, 4, 5], \i -> return i == 4;) == 3;
+assert arr.index([0, 1, 2, 4, 5], \i -> return i == 3;) == -1;
 
 assert arr.toStr(arr.take([], 2)) == "[]";
 assert arr.toStr(arr.take(["a"], 2)) == "[\"a\"]";
@@ -125,40 +154,43 @@ assert arr.toStr(D1[0]) == "[1, 2, 3]" & arr.empty(D1[1]);
 D2 = arr.duplicates([1,2,1,3,2, 2, 1], \i1, i2 -> return i1 == i2;);
 assert arr.toStr(D2[0]) == "[1, 2, 3]" & arr.toStr(D2[1]) == "[1, 2]";
 
-A[0] = [2];
-arr.remove(A[0], 0);
-assert arr.empty(A[0]);
+A! = [2];
+arr.remove(A!, 0);
+assert arr.empty(A!);
 
-A[0] = [1, 2, 3];
-arr.remove(A[0], 1);
-assert arr.toStr(A[0]) == "[1, 3]";
+A! = [1, 2, 3];
+arr.remove(A!, 1);
+assert arr.toStr(A!) == "[1, 3]";
 
-A[0] = [1, 2, 3, 5];
-arr.removeRange(A[0], 1, 3);
-assert arr.toStr(A[0]) == "[1, 5]";
+A! = [1, 2, 3, 5];
+arr.removeRange(A!, 1, 3);
+assert arr.toStr(A!) == "[1, 5]";
 
-A[0] = [];
-arr.reverse(A[0]);
-assert arr.empty(A[0]);
+A! = [];
+assert arr.empty(arr.reverse(A!));
+arr.reverseIn(A!);
+assert arr.empty(A!);
 
-A[0] = [2];
-arr.reverse(A[0]);
-assert arr.toStr(A[0]) == "[2]";
+A! = [2];
+assert arr.toStr(arr.reverse(A!)) == "[2]";
+arr.reverseIn(A!);
+assert arr.toStr(A!) == "[2]";
 
-A[0] = [1, 2, 3];
-arr.reverse(A[0]);
-assert arr.toStr(A[0]) == "[3, 2, 1]";
+A! = [1, 2, 3];
+assert arr.toStr(arr.reverse(A!)) == "[3, 2, 1]";
+arr.reverseIn(A!);
+assert arr.toStr(A!) == "[3, 2, 1]";
 
-//A[0] = [1, 2, 3];
-//arr.shuffle(A[0]);
-//sys.println(arr.toStr(A[0]));
+//A! = [1, 2, 3];
+//arr.shuffle(A!);
+//sys.println(arr.toStr(A!));
 
-A[0] = [3, 1, 2];
-arr.sort(A[0], \n1, n2 -> return n1 < n2;);
-assert arr.toStr(A[0]) == "[1, 2, 3]";
-A[0] = [3, 1, 2];
-arr.sort(A[0], \n1, n2 -> return n1 > n2;);
-assert arr.toStr(A[0]) == "[3, 2, 1]";
+A! = [3, 1, 2];
+arr.sort(A!, \n1, n2 -> return n1 < n2;);
+assert arr.toStr(A!) == "[1, 2, 3]";
+A! = [3, 1, 2];
+arr.sort(A!, \n1, n2 -> return n1 > n2;);
+assert arr.toStr(A!) == "[3, 2, 1]";
 
 sys.println("  finished.");
 

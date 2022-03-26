@@ -8,6 +8,7 @@ kut tcryp
 kut tjs
 kut tpath
 kut tstr
+kut tregex
 kut tmath
 kut ttime
 kut titer

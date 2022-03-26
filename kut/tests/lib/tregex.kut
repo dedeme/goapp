@@ -1,0 +1,19 @@
+// Copyright 26-Mar-2022 ºDeme
+// GNU General Public License - V3 <http://www.gnu.org/licenses/>
+
+sys.println("tregex ...");
+
+assert regex.replace("-ab-axxb-", "a(x*)b", "T") == "-T-T-";
+assert regex.replace("paranormal", "(a)(.)", "$1") == "paaorma";
+assert regex.replace("paranormal", "(a)(.)", "$2") == "prnorml";
+assert regex.replace("paranormal", "(a)(.)", "$3") == "porm";
+assert regex.replace("paranormal", "(a)(.)", "$1x") == "porm";
+assert regex.replace("paranormal", "(a)(.)", "${1}x") == "paxaxormax";
+assert regex.replace("paranormal", "(?P<one>a)(.)", "$one") == "paaorma";
+assert regex.replace("-ab-axxb-", "a(x*)b", "$1AB") == "---";
+assert regex.replace("-ab-axxb-", "a(x*)b", "${1}AB") == "-AB-xxAB-";
+
+assert arr.toStr(regex.matches("paranormal", "a.")) == '["ar", "an", "al"]';
+assert arr.toStr(regex.matches("paranormal", "xx")) == "[]";
+
+sys.println("  finished.");

@@ -15,6 +15,11 @@ fromArr = \A -> {};
 /// \<iterator>[[s,*]...] -> m
 fromArr = \it -> {};
 
+/// Returns the value with key 'k'.
+/// Better use 'M[k]' or 'M.k' if 'k' can be used as symbol.
+/// \a, s -> *
+get = \M, k -> {}
+
 /// Returns keys of 'M'.
 /// \m -> [s...]
 keys = \M -> {};

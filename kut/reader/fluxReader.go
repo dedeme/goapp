@@ -201,17 +201,12 @@ func readFor(nline int, tx *txReader.T) (
 		err = tx.FailExpect("Expression", tk.String(), tx.Nline)
 		return
 	}
-	if tk.Type == token.Operator &&
-		(tk.Value.(string) == ":" || tk.Value.(string) == "::") {
+	if tk.Type == token.Operator && tk.Value.(string) == ":" {
 		if stType == statement.ForIx {
 			err = tx.Fail("Ranges are not allowed in 'for (i, e : ...)'")
 			return
 		}
-		if tk.Value.(string) == ":" {
-			stType = statement.ForRI
-		} else {
-			stType = statement.ForR
-		}
+		stType = statement.ForR
 		empty, ex2, tk, err = readExpression(tx) // exReader.go
 		if err != nil {
 			return

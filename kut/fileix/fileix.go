@@ -8,12 +8,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dedeme/golib/file"
-  "path"
+	"path"
 )
 
-var Root = "./";
+var Root = "./"
 var paths []string
-
 
 // Add path to code file paths and returns its index.
 // If path already has been added, it do nothing and also returns its index.
@@ -34,9 +33,9 @@ func Get(ix int) (s string) {
 		return
 	}
 	s = paths[ix]
-  if !path.IsAbs(s) {
-    s = path.Join(Root, s)
-  }
+	if !path.IsAbs(s) {
+		s = path.Join(Root, s)
+	}
 	if len(s) > 50 {
 		s = "..." + s[len(s)-47:]
 	}
@@ -48,10 +47,10 @@ func GetComplete(ix int) (s string) {
 	if ix < 0 {
 		return "Built-in"
 	}
-  s = paths[ix]
-  if !path.IsAbs(s) {
-    s = path.Join(Root, s)
-  }
+	s = paths[ix]
+	if !path.IsAbs(s) {
+		s = path.Join(Root, s)
+	}
 	return
 }
 

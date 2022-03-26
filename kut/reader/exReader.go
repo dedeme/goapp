@@ -232,13 +232,8 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 
 		exType := expression.Arr
 		if !empty {
-			if tk.Type == token.Operator &&
-				(tk.Value.(string) == ":" || tk.Value.(string) == "::") {
-				exType = expression.Range3
-				if tk.Value.(string) == ":" {
-					exType = expression.Range2
-				}
-
+			if tk.Type == token.Operator && tk.Value.(string) == ":" {
+				exType = expression.Range
 				vs = append(vs, ex)
 
 				empty, ex, tk, err = readExpression(tx)

@@ -36,7 +36,6 @@ const (
 	For
 	ForIx
 	ForR
-	ForRI
 	Switch
 
 	Import
@@ -132,12 +131,6 @@ func (st *T) String() (s string) {
 			(ps[2].(*expression.T)).String() + ") " +
 			(ps[3].(*T)).String()
 	case ForR:
-		ps := st.Value.([]interface{})
-		s = "for (" + ps[0].(string) + " : " +
-			(ps[1].(*expression.T)).String() + "::" +
-			(ps[2].(*expression.T)).String() + ") " +
-			(ps[3].(*T)).String()
-	case ForRI:
 		ps := st.Value.([]interface{})
 		s = "for (" + ps[0].(string) + " : " +
 			(ps[1].(*expression.T)).String() + ":" +

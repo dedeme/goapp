@@ -8,7 +8,7 @@ A = [];
 badFn = \A -> sys.println(A[125]);;
 
 populate = \A -> {
-  for (i : 1::10) {
+  for (i : 1:10) {
     arr.push(A, i);
     sys.sleep(10);
   }
@@ -17,7 +17,7 @@ populate = \A -> {
 thread.run(\-> populate(A););
 sys.sleep(5);
 thread.run(\-> {
-  for (i : 1::10) {
+  for (i : 1:10) {
     arr.push(A, i);
     sys.sleep(10);
   }

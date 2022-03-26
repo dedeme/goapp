@@ -23,13 +23,8 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=2
-FILE_NAME_0=2271;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Freader%2FtxReader%2FstringReader.go;0;2
-FILE_NAME_1=9785;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdStr.go;0;2
-FILE_NAME_2=138;Kut;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Ftests%2Flib%2Ftstr.kut;0;2
-FILE_NAME_3=223;Kut;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Flibdoc%2Fstr.kut;0;2
-FILE_NAME_4=6493;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FexSolver.go;0;2
-FILE_NAME_5=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Freader%2FptSqPrReader.go;0;2
+current_page=0
+FILE_NAME_0=646;Kut;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Flibdoc%2Fregex.kut;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

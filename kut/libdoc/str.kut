@@ -2,10 +2,22 @@
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 /// String functions.
+///
+/// Beside the functions described bellow, strings also allow:
+///
+/// Subindex (s[ix])
+///   - Returns a string with the byte in position 'ix'.
+///   - If 'ix >= str.len(s)' or 'ix < 0' a fail is raised.
+/// Substrings at left (s[:ix]), at right (s[ix:]) and between limits (s[i:j]).
+///   - If subindices are '< 0', they are converted en 'len(s) + i'.
+///   - If the final value is '< 0' or '>= len(s)', a fail is raised.
+///   - In case of 's[i, j]', if 'j < i', a fail is raised.
+///   - The expresion 's[:]' returns a copy of 's'.
 
-/// Returns the byte-character in position 'ix', counting in bytes.
+
+/// Returns the remains elements of 's' after make an 'str.take' operation
 /// \s, i -> s
-at = \s, ix -> {};
+drop = \s, n -> {};
 
 /// Returns 'true' if 's' ends with 'subs'.
 /// \s, s -> b
@@ -54,11 +66,6 @@ indexFrom = \s, subs, ix -> {};
 /// \s, s -> i
 lastIndex = \s, subs -> {};
 
-/// Returns substring between '0' (inclusive) and 'ix' (exclusive), counting
-/// by bytes.
-/// \s, i -> s
-left = \s, ix -> {};
-
 /// Returns length of 's'.
 /// \s -> i
 len = \s -> {};
@@ -70,11 +77,6 @@ ltrim = \s -> {};
 /// Returns 's' replacing all ocurreces of 'old' by 'new'.
 /// \s, s, s -> s
 replace = \s, old, new -> {};
-
-/// Returns substring between 'ix' (inclusive) and 'str.len(s)' (exclusive),
-/// counting by bytes.
-/// \s, i -> s
-right = \s, ix -> {};
 
 /// Returns 's' removing trailing spaces.
 /// \s -> s
@@ -105,10 +107,11 @@ spitTrim = \s, sep -> {};
 /// \s, s -> b
 starts = \s, subs -> {};
 
-/// Returns substring between 'begin' (inclusive) and 'end' (exclusive),
-/// counting by bytes.
-/// \s, i, i -> s
-sub = \s, begin, end -> {};
+/// Returns an array with the 'n' first bytes of 's'.
+///   -If 'n <= 0' returns the complete string.
+///   -if 'n >= len(s)' returns an empty string.
+/// \s, i -> s
+take = \s, n -> {};
 
 /// Returns 's' with all runes in lowercase.
 /// \s -> s

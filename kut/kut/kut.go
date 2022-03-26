@@ -17,16 +17,16 @@ import (
 	"github.com/dedeme/kut/runner/fail"
 	"github.com/dedeme/kut/statement"
 	"os"
-  "path"
+	"path"
 )
 
 func help() {
 	fmt.Println(
-    "Usage: kut -v" +
-    "\n     kut <file> [args]" +
-		"\n       p.ej. kut -v" +
-		"\n       p.ej. kut myprg" +
-		"\n       p.ej. kut myprg arg1 arg2")
+		"Usage: kut -v" +
+			"\n     kut <file> [args]" +
+			"\n       p.ej. kut -v" +
+			"\n       p.ej. kut myprg" +
+			"\n       p.ej. kut myprg arg1 arg2")
 }
 
 func main() {
@@ -36,12 +36,12 @@ func main() {
 	}
 
 	p := os.Args[1]
-  if p == "-v" {
-    fmt.Println("Kut version v2022.03")
-    return
-  }
+	if p == "-v" {
+		fmt.Println("Kut version v2022.03")
+		return
+	}
 
-  fileix.Root = path.Dir(p)
+	fileix.Root = path.Dir(p)
 	fix := fileix.Add(path.Base(p))
 	var kutCode string
 	var err error

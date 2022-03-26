@@ -107,9 +107,9 @@ func (r *T) readMultilineString() (tk *token.T, err error) {
 		ss := strings.Split(s, "\n")
 		cut := -1
 		for _, e := range ss {
-      if strings.TrimSpace(e) == "" {
-        continue
-      }
+			if strings.TrimSpace(e) == "" {
+				continue
+			}
 			n := 0
 			for i := 0; i < len(e); i++ {
 				if e[i] == ' ' {
@@ -118,18 +118,18 @@ func (r *T) readMultilineString() (tk *token.T, err error) {
 					break
 				}
 			}
-      if cut < 0 || n < cut {
+			if cut < 0 || n < cut {
 				cut = n
 			}
 		}
 		if cut > 0 {
 			var newSs []string
 			for _, e := range ss {
-        if strings.TrimSpace(e) == "" {
-          newSs = append(newSs, "")
-        } else {
-          newSs = append(newSs, e[cut:])
-        }
+				if strings.TrimSpace(e) == "" {
+					newSs = append(newSs, "")
+				} else {
+					newSs = append(newSs, e[cut:])
+				}
 			}
 			ss = newSs
 		}

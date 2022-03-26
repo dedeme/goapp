@@ -14,7 +14,7 @@ type BModuleT struct {
 func getModule(mod string) (md *BModuleT, ok bool) {
 	switch mod {
 	case "arr", "b64", "bytes", "cryp", "iter", "js", "file", "map",
-		"math", "path", "str", "tcp", "thread", "time", "sys":
+		"math", "path", "regex", "str", "tcp", "thread", "time", "sys":
 		md = &BModuleT{mod}
 		ok = true
 	}
@@ -46,6 +46,8 @@ func getFunction(mod *BModuleT, fname string) (f *bfunction.T, ok bool) {
 		f, ok = mathGet(fname)
 	case "path":
 		f, ok = pathGet(fname)
+	case "regex":
+		f, ok = regexGet(fname)
 	case "str":
 		f, ok = strGet(fname)
 	case "tcp":
