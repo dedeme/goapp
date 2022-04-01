@@ -11,7 +11,7 @@ import (
 )
 
 func readWhile(nline int, tx *txReader.T) (
-	st *statement.T, err error,
+	st *statement.T, nextTk *token.T, err error,
 ) {
 	var tk *token.T
 	var eof bool
@@ -44,7 +44,7 @@ func readWhile(nline int, tx *txReader.T) (
 		ex = nil
 	}
 
-	st, _, eof, err = readStatement(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
@@ -56,7 +56,7 @@ func readWhile(nline int, tx *txReader.T) (
 }
 
 func readIf(nline int, tx *txReader.T) (
-	st *statement.T, err error,
+	st *statement.T, nextTk *token.T, err error,
 ) {
 	var tk *token.T
 	var eof bool
@@ -90,7 +90,7 @@ func readIf(nline int, tx *txReader.T) (
 		return
 	}
 
-	st, _, eof, err = readStatement(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
@@ -102,10 +102,10 @@ func readIf(nline int, tx *txReader.T) (
 }
 
 func readElse(nline int, tx *txReader.T) (
-	st *statement.T, err error,
+	st *statement.T, nextTk *token.T, err error,
 ) {
 	var eof bool
-	st, _, eof, err = readStatement(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
@@ -117,7 +117,7 @@ func readElse(nline int, tx *txReader.T) (
 }
 
 func readFor(nline int, tx *txReader.T) (
-	st *statement.T, err error,
+	st *statement.T, nextTk *token.T, err error,
 ) {
 	var tk *token.T
 	var eof bool
@@ -187,8 +187,8 @@ func readFor(nline int, tx *txReader.T) (
 		}
 	}
 
-	if !tk.IsColon() {
-		err = tx.FailExpect("':'", tk.String(), tx.Nline)
+	if !tk.IsEquals() {
+		err = tx.FailExpect("'='", tk.String(), tx.Nline)
 		return
 	}
 
@@ -226,7 +226,7 @@ func readFor(nline int, tx *txReader.T) (
 		return
 	}
 
-	st, tk, eof, err = readStatement(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")

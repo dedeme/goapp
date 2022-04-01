@@ -161,7 +161,7 @@ func readSwitchStatement(nline int, tx *txReader.T) (
 		}
 
 		var stin *statement.T
-		stin, nextTk, eof, err = readStatement(nil, tx) // stReader.go
+		stin, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
 		if err != nil {
 			return
 		}

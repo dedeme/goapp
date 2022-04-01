@@ -58,11 +58,13 @@ func Type(expr *expression.T, stackTrace []*statement.T, expected ...string) err
 					strings.ReplaceAll(
 						strings.ReplaceAll(
 							strings.ReplaceAll(
-								strings.ReplaceAll(msg, "map[string]*expression.T", "map"),
-								"[]*expression.T", "array"),
-							"*expression.emptyT", "()"),
-						"*runner.BModuleT", "module"),
-					"*bfunction.T", "buit-in function"),
+								strings.ReplaceAll(
+									strings.ReplaceAll(msg, "map[string]*expression.T", "map"),
+									"[]*expression.T", "array"),
+								"*expression.emptyT", "()"),
+							"*runner.BModuleT", "module"),
+						"*module.T", "module"),
+					"*bfunction.T", "bfunction"),
 				"*function.T", "function"),
 			"float64", "float"),
 		"int64", "int"), stackTrace)

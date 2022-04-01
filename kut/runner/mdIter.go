@@ -191,10 +191,13 @@ func iterEach(args []*expression.T) (ex *expression.T, err error) {
 		switch fn := (args[1].Value).(type) {
 		case *function.T:
 			for it.HasNext() {
-				_, er := solveIsolateFunction(fn, []*expression.T{it.Next()})
-				if er != nil {
-					panic(er.Error())
+				_, err = solveIsolateFunction(fn, []*expression.T{it.Next()})
+				if err != nil {
+					break
 				}
+			}
+			if err == nil {
+				ex = expression.MkEmpty()
 			}
 		default:
 			err = bfail.Type(args[1], "function")

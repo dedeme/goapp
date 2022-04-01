@@ -111,7 +111,7 @@ func solveSym(
 	}
 
 	var md *BModuleT
-	if md, ok = getModule(sym); ok { // mdIndex.go
+	if md, ok = GetModule(sym); ok { // mdIndex.go
 		ex = expression.MkFinal(md)
 		return
 	}
@@ -218,8 +218,8 @@ func Solve(
 						} else {
 							switch (ex0.Value).(type) {
 							case string:
-                fn := bfunction.New(3, strSub)
-                ex, err = fn.Run("sub", []*expression.T{ex0, ex1, ex2}, stackT)
+								fn := bfunction.New(3, strSub)
+								ex, err = fn.Run("sub", []*expression.T{ex0, ex1, ex2}, stackT)
 							case []*expression.T:
 								fn := bfunction.New(3, arrSub)
 								ex, err = fn.Run("sub", []*expression.T{ex0, ex1, ex2}, stackT)
@@ -242,7 +242,7 @@ func Solve(
 				ex1 = ps[1]
 				if ex1.Type == expression.Sym {
 					fname := (ex1.Value).(string)
-					if fn, ok := getFunction(v, fname); ok { //mdIndex.go
+					if fn, ok := GetFunction(v, fname); ok { //mdIndex.go
 						ex = expression.MkFinal(fn)
 					} else {
 						err = fail.Mk("Function '"+v.Name+"."+fname+"' not found.", stackT)
@@ -272,7 +272,7 @@ func Solve(
 					}
 				}
 				if err == nil {
-					if fn, ok := getFunction(v, fname); ok { // mdIndex.go
+					if fn, ok := GetFunction(v, fname); ok { // mdIndex.go
 						ex, err = fn.Run(fname, exs, stackT)
 						if err == nil && ex == nil {
 							err = fail.Mk(

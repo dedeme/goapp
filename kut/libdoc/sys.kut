@@ -21,7 +21,11 @@ args = \-> {};
 ///   - First : Reponse on stdout.
 ///   - Second: Response on stderror.
 /// \s, [s...] -> [s, s]
-cmd = \c, pars -> {}
+cmd = \c, pars -> {};
+
+/// Returns a map with environment pairs 'key-value'.
+/// \->m[s]
+environ = \-> {};
 
 /// Set a function which will be called when 'sys.fail' is called and just
 /// before of ending the current thread or program.
@@ -49,3 +53,9 @@ rand = \-> {};
 /// Stop the current thread 'millis' milliseconds.
 /// \i -> ()
 sleep = \millis -> {};
+
+/// Returns type of 'o'.
+/// The type can be: "bool", "int", "float", "string", "array", "map",
+/// "function", "module" or "object".
+/// \* -> s
+type = \o -> {};

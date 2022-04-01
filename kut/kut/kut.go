@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/dedeme/kut/checker"
 	"github.com/dedeme/kut/expression"
 	"github.com/dedeme/kut/fileix"
 	"github.com/dedeme/kut/heap"
@@ -35,10 +36,14 @@ func main() {
 		return
 	}
 
+	check := false
 	p := os.Args[1]
 	if p == "-v" {
 		fmt.Println("Kut version v2022.03")
 		return
+	} else if len(os.Args) == 3 && p == "-c" {
+		check = true
+		p = os.Args[2]
 	}
 
 	fileix.Root = path.Dir(p)
@@ -52,15 +57,19 @@ func main() {
 		mod, err = reader.ReadMainBlock(txReader.New(fix, kutCode))
 		if err == nil {
 			modules.Set(fix, mod)
-			var bk, cont bool
-			var stackTrace []*statement.T
-			_, bk, cont, _, err, stackTrace = runner.Run(
-				[]*statement.T{}, mod.Imports, mod.Heap0, []heap.T{mod.Heap}, mod.Code)
-			if err == nil {
-				if bk {
-					err = fail.Mk("break' without 'while' or 'for'", stackTrace)
-				} else if cont {
-					err = fail.Mk("'continue' without 'while' or 'for'", stackTrace)
+			if check {
+				checker.Run()
+			} else {
+				var bk, cont bool
+				var stackTrace []*statement.T
+				_, bk, cont, _, err, stackTrace = runner.Run(
+					[]*statement.T{}, mod.Imports, mod.Heap0, []heap.T{mod.Heap}, mod.Code)
+				if err == nil {
+					if bk {
+						err = fail.Mk("break' without 'while' or 'for'", stackTrace)
+					} else if cont {
+						err = fail.Mk("'continue' without 'while' or 'for'", stackTrace)
+					}
 				}
 			}
 		}

@@ -8,6 +8,11 @@ assert 0.23e-2 == 0.0023;
 assert "a" == ["a", 1, {}][0];
 assert {"a-g": 1, a: -23.5}.a == -23.5;
 assert {"a-g": 1, a: -23.5}["a-g"] == 1;
+va = "a";
+vb = "b";
+assert {va}.va == "a";
+assert {va, vb}["vb"] == "b";
+assert map.size({}) == 0;
 // -------------
 
 assert !false;
@@ -108,9 +113,10 @@ assert switch (3 + 1) {
 } == 4000;
 // -------------
 
+val = 3;
 assert 5 == \-> return 3 + 2;();
 assert 3 == \n-> return n + 2;(1);
-assert 13 == \n, m-> return n + m;(10, 3);
+assert 16 == \n, m-> return n + m + val;(10, 3);
 
 sys.println("t1 test OK");
 

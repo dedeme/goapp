@@ -1,9 +1,13 @@
 // Copyright 01-Mar-2022 ºDeme
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
+//im1 = "new"; // Makes fail 'import "im1";'
+
 import "im1";
 
 assert im1.v == 3;
+
+// im1 = "new"; // <- fail
 
 assert im1.fn1() == 1;
 im1.a[0] = 33;
@@ -22,5 +26,11 @@ vv[0] = "b";
 assert im1.im.fn(3) == "3: b";
 
 assert im1.fn3() == "b";
+
+{
+  f2 = "new value";
+  assert f2 == "new value";
+  // im1 = "new value"; // <- fail
+}
 
 sys.println("t4 test OK");

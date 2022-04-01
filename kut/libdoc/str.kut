@@ -3,7 +3,7 @@
 
 /// String functions.
 ///
-/// Beside the functions described bellow, strings also allow:
+/// Beside the functions described below, string also allows:
 ///
 /// Subindex (s[ix])
 ///   - Returns a string with the byte in position 'ix'.

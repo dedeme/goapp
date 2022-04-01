@@ -3,7 +3,7 @@
 
 /// Array functions.
 ///
-/// Beside the functions described bellow, arrays also allow:
+/// Beside the functions described below, array also allows:
 ///
 /// Subindex (A[ix])
 ///   - Returns the element in position 'ix'.
@@ -46,6 +46,11 @@ dropWhile = \A, fn -> {};
 /// \a -> [a, a]
 duplicates = \A -> {};
 
+/// Executes 'fn' with each element of 'A'.
+/// Values returned by 'fn' are discarded.
+/// (\a, \*->()) -> ()
+each = \A, fn -> {};
+
 /// Returns 'true' if 'A' has no element.
 /// \a -> b
 empty = \A -> {};
@@ -66,11 +71,6 @@ find = \A, fn -> {};
 /// Returns an array with elements of 'it' en the same order.
 /// <iterator> -> a
 fromIter = \it -> {};
-
-/// Returns the element at position 'ix'.
-/// Better use 'A[ix]' or 'A!' for 'A[0]'.
-/// \a, ix -> *
-get = \A, ix -> {}
 
 /// Returns the index of the first element which produce 'true' with 'fn',
 /// or -1 if such element does not exist.
@@ -100,13 +100,22 @@ peek = \A -> {};
 /// \a -> *
 pop = \A -> {};
 
-/// Append an element at the end of 'A'.
+/// Append2 an element at the end of 'A'.
 /// \a, * -> ()
 push = \A, element -> {};
 
 /// Removes and returns the first element of 'A'.
 /// \a -> *
 shift = \A -> {};
+
+/// Returns the result of calculate 'seed = fn(seed, e)' with every element
+/// of 'A'.
+/// For example:
+///   assert arr.reduce([1, 2, 3], 0, \seed, e -> return seed + e;) == 6;
+///
+/// \(arr, seed, \seed,elem -> newSeed) -> finalSeed
+/// \(a, *, \*,*->*) -> *
+reduce = \A, seed, fn -> {};
 
 /// Removes the element at index 'ix'.
 /// \a, i -> ()

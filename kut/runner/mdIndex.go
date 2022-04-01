@@ -11,7 +11,7 @@ type BModuleT struct {
 	Name string
 }
 
-func getModule(mod string) (md *BModuleT, ok bool) {
+func GetModule(mod string) (md *BModuleT, ok bool) {
 	switch mod {
 	case "arr", "b64", "bytes", "cryp", "iter", "js", "file", "map",
 		"math", "path", "regex", "str", "tcp", "thread", "time", "sys":
@@ -24,7 +24,7 @@ func getModule(mod string) (md *BModuleT, ok bool) {
 // Returns the built-in function 'fname' of module 'mod'.
 //    mod  : Built-in module.
 //    fname: Function name.
-func getFunction(mod *BModuleT, fname string) (f *bfunction.T, ok bool) {
+func GetFunction(mod *BModuleT, fname string) (f *bfunction.T, ok bool) {
 	switch mod.Name {
 	case "arr":
 		f, ok = arrGet(fname)

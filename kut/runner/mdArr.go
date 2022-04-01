@@ -100,8 +100,8 @@ func arrClear(args []*expression.T) (ex *expression.T, err error) {
 func arrCopy(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
-    b := make([]*expression.T, len(a))
-    copy(b, a)
+		b := make([]*expression.T, len(a))
+		copy(b, a)
 		ex = expression.MkFinal(b)
 	default:
 		err = bfail.Type(args[0], "array")
@@ -215,6 +215,30 @@ func arrDuplicates(args []*expression.T) (ex *expression.T, err error) {
 			})
 		default:
 			err = bfail.Type(args[0], "function")
+		}
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
+// \a, \*->() -> ()
+func arrEach(args []*expression.T) (ex *expression.T, err error) {
+	switch a := (args[0].Value).(type) {
+	case []*expression.T:
+		switch fn := (args[1].Value).(type) {
+		case *function.T:
+			for _, e := range a {
+				_, err = solveIsolateFunction(fn, []*expression.T{e}) // exSolver.go
+				if err != nil {
+					break
+				}
+			}
+			if err == nil {
+				ex = expression.MkEmpty()
+			}
+		default:
+			err = bfail.Type(args[1], "function")
 		}
 	default:
 		err = bfail.Type(args[0], "array")
@@ -569,6 +593,28 @@ func arrPush(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \a, \*->* -> a
+func arrReduce(args []*expression.T) (ex *expression.T, err error) {
+	switch a := (args[0].Value).(type) {
+	case []*expression.T:
+		ex = args[1]
+		switch fn := (args[2].Value).(type) {
+		case *function.T:
+			for _, e := range a {
+				ex, err = solveIsolateFunction(fn, []*expression.T{ex, e}) // exSolver.go
+				if err != nil {
+					break
+				}
+			}
+		default:
+			err = bfail.Type(args[2], "function")
+		}
+	default:
+		err = bfail.Type(args[0], "array")
+	}
+	return
+}
+
 // \a, i -> ()
 func arrRemove(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
@@ -625,13 +671,13 @@ func arrReverseIn(args []*expression.T) (ex *expression.T, err error) {
 func arrReverse(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
-    r := make([]*expression.T, len(a))
-    ir := 0
-    for ia := len(a) - 1; ia >= 0; ia-- {
-      r[ir] = a[ia]
-      ir++
-    }
-    ex = expression.MkFinal(r)
+		r := make([]*expression.T, len(a))
+		ir := 0
+		for ia := len(a) - 1; ia >= 0; ia-- {
+			r[ir] = a[ia]
+			ir++
+		}
+		ex = expression.MkFinal(r)
 	default:
 		err = bfail.Type(args[0], "array")
 	}
@@ -760,9 +806,9 @@ func arrSub(args []*expression.T) (ex *expression.T, err error) {
 				if end < 0 {
 					end = int64(len(s)) + end
 				}
-        a2 := s[start:end]
-        b := make([]*expression.T, end - start)
-        copy(b, a2)
+				a2 := s[start:end]
+				b := make([]*expression.T, end-start)
+				copy(b, a2)
 				ex = expression.MkFinal(b)
 			default:
 				err = bfail.Type(args[1], "int")
@@ -899,6 +945,8 @@ func arrGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(2, arrDropWhile)
 	case "duplicates":
 		fn = bfunction.New(2, arrDuplicates)
+	case "each":
+		fn = bfunction.New(2, arrEach)
 	case "empty":
 		fn = bfunction.New(1, arrEmpty)
 	case "filter":
@@ -923,6 +971,8 @@ func arrGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, arrPop)
 	case "push":
 		fn = bfunction.New(2, arrPush)
+	case "reduce":
+		fn = bfunction.New(3, arrReduce)
 	case "remove":
 		fn = bfunction.New(2, arrRemove)
 	case "removeRange":

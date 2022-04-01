@@ -39,10 +39,10 @@ func strDrop(args []*expression.T) (ex *expression.T, err error) {
 			if i <= 0 {
 				ex = expression.MkFinal(s)
 			} else if i >= int64(len(s)) {
-        ex = expression.MkFinal("")
-      } else {
-        ex = expression.MkFinal(s[i:])
-      }
+				ex = expression.MkFinal("")
+			} else {
+				ex = expression.MkFinal(s[i:])
+			}
 		default:
 			err = bfail.Type(args[1], "int")
 		}
@@ -405,10 +405,10 @@ func strTake(args []*expression.T) (ex *expression.T, err error) {
 			if i <= 0 {
 				ex = expression.MkFinal("")
 			} else if i >= int64(len(s)) {
-        ex = expression.MkFinal(s)
-      } else {
-        ex = expression.MkFinal(s[:i])
-      }
+				ex = expression.MkFinal(s)
+			} else {
+				ex = expression.MkFinal(s[:i])
+			}
 		default:
 			err = bfail.Type(args[1], "int")
 		}

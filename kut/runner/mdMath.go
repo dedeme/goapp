@@ -206,15 +206,16 @@ func mathFloor(exs []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \s -> f
+// \s -> [f] | []
 func mathFromEn(exs []*expression.T) (ex *expression.T, err error) {
 	switch s := (exs[0].Value).(type) {
 	case string:
 		s = strings.ReplaceAll(s, ",", "")
-		var f float64
-		f, err = strconv.ParseFloat(s, 64)
-		if err == nil {
-			ex = expression.MkFinal(f)
+		f, er := strconv.ParseFloat(s, 64)
+		if er == nil {
+			ex = expression.MkFinal([]*expression.T{expression.MkFinal(f)})
+		} else {
+			ex = expression.MkFinal([]*expression.T{})
 		}
 	default:
 		err = bfail.Type(exs[0], "string")
@@ -222,15 +223,32 @@ func mathFromEn(exs []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \s -> f
+// \s -> [f] | []
 func mathFromIso(exs []*expression.T) (ex *expression.T, err error) {
 	switch s := (exs[0].Value).(type) {
 	case string:
 		s = strings.ReplaceAll(strings.ReplaceAll(s, ".", ""), ",", ".")
-		var f float64
-		f, err = strconv.ParseFloat(s, 64)
-		if err == nil {
-			ex = expression.MkFinal(f)
+		f, er := strconv.ParseFloat(s, 64)
+		if er == nil {
+			ex = expression.MkFinal([]*expression.T{expression.MkFinal(f)})
+		} else {
+			ex = expression.MkFinal([]*expression.T{})
+		}
+	default:
+		err = bfail.Type(exs[0], "string")
+	}
+	return
+}
+
+// \s -> [f] | []
+func mathFromStr(exs []*expression.T) (ex *expression.T, err error) {
+	switch s := (exs[0].Value).(type) {
+	case string:
+		f, er := strconv.ParseFloat(s, 64)
+		if er == nil {
+			ex = expression.MkFinal([]*expression.T{expression.MkFinal(f)})
+		} else {
+			ex = expression.MkFinal([]*expression.T{})
 		}
 	default:
 		err = bfail.Type(exs[0], "string")
@@ -518,6 +536,8 @@ func mathGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mathFromEn)
 	case "fromIso":
 		fn = bfunction.New(1, mathFromIso)
+	case "fromStr":
+		fn = bfunction.New(1, mathFromStr)
 	case "log":
 		fn = bfunction.New(1, mathLog)
 	case "log10":

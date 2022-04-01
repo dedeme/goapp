@@ -4,10 +4,10 @@
 package runner
 
 import (
-	"regexp"
 	"github.com/dedeme/kut/builtin/bfail"
 	"github.com/dedeme/kut/builtin/bfunction"
 	"github.com/dedeme/kut/expression"
+	"regexp"
 )
 
 // \s, s -> [s...]
@@ -16,14 +16,14 @@ func regexMatches(args []*expression.T) (ex *expression.T, err error) {
 	case string:
 		switch rg := (args[1].Value).(type) {
 		case string:
-      re := regexp.MustCompile(rg)
-      rs := re.FindAllString(s, -1)
-      var a []*expression.T
-      if rs != nil {
-        for _, e := range rs {
-          a = append(a, expression.MkFinal(e))
-        }
-      }
+			re := regexp.MustCompile(rg)
+			rs := re.FindAllString(s, -1)
+			var a []*expression.T
+			if rs != nil {
+				for _, e := range rs {
+					a = append(a, expression.MkFinal(e))
+				}
+			}
 			ex = expression.MkFinal(a)
 		default:
 			err = bfail.Type(args[1], "string")
@@ -40,13 +40,13 @@ func regexReplace(args []*expression.T) (ex *expression.T, err error) {
 	case string:
 		switch rg := (args[1].Value).(type) {
 		case string:
-      switch sub := (args[2].Value).(type) {
-      case string:
-        re := regexp.MustCompile(rg)
-        ex = expression.MkFinal(re.ReplaceAllString(s, sub))
-      default:
-        err = bfail.Type(args[2], "string")
-      }
+			switch sub := (args[2].Value).(type) {
+			case string:
+				re := regexp.MustCompile(rg)
+				ex = expression.MkFinal(re.ReplaceAllString(s, sub))
+			default:
+				err = bfail.Type(args[2], "string")
+			}
 		default:
 			err = bfail.Type(args[1], "string")
 		}

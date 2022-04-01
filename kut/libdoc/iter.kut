@@ -28,7 +28,7 @@ drop = \it, n -> {};
 dropWhile = \it, fn -> {};
 
 /// Applies 'fn' to each element of 'it'.
-/// If 'it' returns some value, it is descarded.
+/// Values returned by 'fn' are discarded.
 /// (\<iterator>, \*->()) -> ()
 each = \it, fn -> {};
 

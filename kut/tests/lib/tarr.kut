@@ -94,6 +94,12 @@ assert arr.size([1, 2]) == 2;
 assert arr.toStr(arr.mp([], \i -> return i * 2;)) == "[]";
 assert arr.toStr(arr.mp([1, 2, 3], \i -> return i * 2;)) == "[2, 4, 6]";
 
+Sum = [0];
+arr.each([], \i -> Sum! += i;);
+assert Sum! == 0;
+arr.each([1, 2, 3], \i -> Sum! += i;);
+assert Sum! == 6;
+
 assert arr.all([], \i -> return i < 3;);
 assert arr.all([0, 1, 2], \i -> return i < 3;);
 assert !arr.all([0, 1, 2, 4, 5], \i -> return i < 3;);
@@ -129,6 +135,10 @@ assert arr.toStr(arr.dropWhile([0, 1, 2, 3, 4], \i -> return i < 2;)) ==
   "[2, 3, 4]";
 assert arr.toStr(arr.dropWhile([0, 1, 2, 3, 4], \i -> return i > 2;)) ==
   "[0, 1, 2, 3, 4]";
+
+assert arr.reduce([], 0, \s, e -> return s + e;) == 0;
+assert arr.reduce([0, 1, 2, 3, 4], 0, \s, e -> return s + e;) == 10;
+assert arr.reduce([1, 2, 3], 0, \seed, e -> return seed + e;) == 6;
 
 AN0 = arr.new(0, "a");
 assert arr.empty(AN0);

@@ -9,11 +9,13 @@ import (
 	"github.com/dedeme/kut/builtin/bfunction"
 	"github.com/dedeme/kut/expression"
 	"github.com/dedeme/kut/function"
+	"github.com/dedeme/kut/module"
 	"github.com/dedeme/kut/runner/fail"
 	"io/ioutil"
 	"math/rand"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -95,6 +97,17 @@ func sysCmd(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \-> m[s]
+func sysEnviron(args []*expression.T) (ex *expression.T, err error) {
+	env := map[string]*expression.T{}
+	for _, e := range os.Environ() {
+		ix := strings.IndexByte(e, '=')
+		env[e[:ix]] = expression.MkFinal(e[ix+1:])
+	}
+	ex = expression.MkFinal(env)
+	return
+}
+
 // \function -> ()
 func sysFfail(args []*expression.T) (ex *expression.T, err error) {
 	switch f := (args[0].Value).(type) {
@@ -161,6 +174,33 @@ func sysSleep(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \* -> s
+func sysType(args []*expression.T) (ex *expression.T, err error) {
+	var t string
+	switch (args[0].Value).(type) {
+	case bool:
+		t = "bool"
+	case int64:
+		t = "int"
+	case float64:
+		t = "float"
+	case string:
+		t = "string"
+	case []*expression.T:
+		t = "array"
+	case map[string]*expression.T:
+		t = "map"
+	case *function.T, *bfunction.T:
+		t = "function"
+	case *module.T, *BModuleT:
+		t = "module"
+	default:
+		t = "object"
+	}
+	ex = expression.MkFinal(t)
+	return
+}
+
 func sysGet(fname string) (fn *bfunction.T, ok bool) {
 	ok = true
 	switch fname {
@@ -168,6 +208,8 @@ func sysGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(0, sysArgs)
 	case "cmd":
 		fn = bfunction.New(2, sysCmd)
+	case "environ":
+		fn = bfunction.New(0, sysEnviron)
 	case "fail":
 		fn = bfunction.New(1, sysFail)
 	case "ffail":
@@ -180,6 +222,8 @@ func sysGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(0, sysRand)
 	case "sleep":
 		fn = bfunction.New(1, sysSleep)
+	case "type":
+		fn = bfunction.New(1, sysType)
 	default:
 		ok = false
 	}

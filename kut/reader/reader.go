@@ -27,7 +27,7 @@ func ReadMainBlock(tx *txReader.T) (
 	for {
 		var st *statement.T
 		var eof bool
-		st, tk, eof, err = readStatement(tk, tx) // in stReader.go
+		st, tk, eof, err = readStatementx(tk, tx) // in stReader.go
 		if err != nil {
 			break
 		}
@@ -44,6 +44,11 @@ func ReadMainBlock(tx *txReader.T) (
 				_, ok := imports[id]
 				if ok {
 					err = tx.FailLine("Import '"+id+"' already exists", st.Nline)
+					break
+				}
+				_, ok = heap[id]
+				if ok {
+					err = tx.FailLine("Import symbol '"+id+"' already exists", st.Nline)
 					break
 				}
 				imports[id] = fix
@@ -77,9 +82,16 @@ func ReadMainBlock(tx *txReader.T) (
 				ps := st.Value.([]*expression.T)
 				ex := ps[0]
 				if ex.Type == expression.Sym {
-					if ok := heap.Add(ex.Value.(string), st.Nline, ps[1]); !ok {
+					id := ex.Value.(string)
+					_, ok := imports[id]
+					if ok {
+						err = tx.FailLine("Symbol '"+id+"' already defined in imports",
+							st.Nline)
+						break
+					}
+					if ok := heap.Add(id, st.Nline, ps[1]); !ok {
 						err = tx.FailLine(
-							"Duplicate assignation to symbol '"+ex.Value.(string)+"'",
+							"Duplicate assignation to symbol '"+id+"'",
 							st.Nline)
 						break
 					}
@@ -105,7 +117,7 @@ func ReadBlock(tx *txReader.T) (
 	for {
 		var st *statement.T
 		var eof bool
-		st, tk, eof, err = readStatement(tk, tx) // in stReader.go
+		st, tk, eof, err = readStatementx(tk, tx) // in stReader.go
 		if err != nil {
 			break
 		}

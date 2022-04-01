@@ -87,32 +87,37 @@ func readSymbol(sym string, tx *txReader.T) (
 		}
 		return
 	case "while":
-		st, err = readWhile(nline, tx) // fluxReader.go
+		st, nextTk, err = readWhile(nline, tx) // fluxReader.go
 		return
 	case "if":
-		st, err = readIf(nline, tx) // fluxReader.go
+		st, nextTk, err = readIf(nline, tx) // fluxReader.go
 		if err == nil {
-			nextTk, eof, err = tx.ReadToken()
-			if err == nil {
-				if eof {
-					nextTk = nil
-				}
-				var st2 *statement.T
-				if nextTk != nil && nextTk.IsElse() {
-					st2, err = readElse(nline, tx) // fluxReader.go
-				}
-				if err == nil && st2 != nil {
-					(st.Value.([]interface{}))[2] = st2.Value
-					nextTk = nil
-				}
-			}
+      if nextTk == nil {
+        nextTk, eof, err = tx.ReadToken()
+        if err != nil {
+          return
+        }
+        if eof {
+          nextTk = nil
+          return
+        }
+      }
+
+      var st2 *statement.T
+      if nextTk.IsElse() {
+        st2, nextTk, err = readElse(nline, tx) // fluxReader.go
+        if err == nil {
+          (st.Value.([]interface{}))[2] = st2.Value
+        }
+      }
 		}
 		return
 	case "else":
-		st, err = readElse(nline, tx) // fluxReader.go
+		// st, nextTk, err = readElse(nline, tx) // fluxReader.go
+    err = tx.Fail("'else' without 'if'")
 		return
 	case "for":
-		st, err = readFor(nline, tx) // fluxReader.go
+		st, nextTk, err = readFor(nline, tx) // fluxReader.go
 		return
 	case "switch":
 		st, err = readSwitchStatement(nline, tx) // switchReader.go
@@ -226,7 +231,7 @@ func readSymbol(sym string, tx *txReader.T) (
 	return
 }
 
-func readStatement(tk *token.T, tx *txReader.T) (
+func readStatementx(tk *token.T, tx *txReader.T) (
 	st *statement.T, nextTk *token.T, eof bool, err error,
 ) {
 	if tk == nil {
@@ -238,7 +243,7 @@ func readStatement(tk *token.T, tx *txReader.T) (
 
 	switch tk.Type {
 	case token.LineComment, token.Comment:
-		st, _, eof, err = readStatement(nil, tx)
+		st, nextTk, eof, err = readStatementx(nil, tx)
 	case token.Symbol:
 		st, nextTk, err = readSymbol(tk.Value.(string), tx)
 	case token.Operator:

@@ -2,6 +2,11 @@
 // GNU General Public License - V3 <http://www.gnu.org/licenses/>
 
 /// Map functions.
+///
+/// Beside the functions described below, map also allows:
+///
+/// M[k]: Returns the value of key 'k'.
+///   - If M does not have such key, a fail is raised.
 
 /// Returns a shallow copy of 'm'.
 /// \m -> m
@@ -15,10 +20,9 @@ fromArr = \A -> {};
 /// \<iterator>[[s,*]...] -> m
 fromArr = \it -> {};
 
-/// Returns the value with key 'k'.
-/// Better use 'M[k]' or 'M.k' if 'k' can be used as symbol.
-/// \a, s -> *
-get = \M, k -> {}
+/// Returns 'true' if 'M' has the key 'k'.
+/// \m, s -> b
+hasKey = \M, k -> {};
 
 /// Returns keys of 'M'.
 /// \m -> [s...]

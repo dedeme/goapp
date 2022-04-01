@@ -293,26 +293,31 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 
 		if !empty {
 			for {
+        ex = kex
 				if kex.Type == expression.Sym {
 					kex = expression.New(expression.Final, kex.Value)
-				}
+				} else {
+          ex = nil
+        }
 				if !kex.IsString() {
 					err = tx.FailExpect("Object key", kex.String(), tx.Nline)
 					return
 				}
 				if !tk.IsColon() {
-					err = tx.FailExpect("':'", tk.String(), tx.Nline)
-					return
-				}
-
-				empty, ex, tk, err = readExpression(tx)
-				if err != nil {
-					return
-				}
-				if empty {
-					err = tx.FailExpect("Expresion", tk.String(), tx.Nline)
-					return
-				}
+          if ex == nil {
+            err = tx.FailExpect("':'", tk.String(), tx.Nline)
+            return
+          }
+				} else {
+          empty, ex, tk, err = readExpression(tx)
+          if err != nil {
+            return
+          }
+          if empty {
+            err = tx.FailExpect("Expresion", tk.String(), tx.Nline)
+            return
+          }
+        }
 
 				if !tk.IsComma() {
 					break
@@ -397,7 +402,7 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 		}
 
 		var st *statement.T
-		st, _, eof, err = readStatement(nil, tx)
+		st, nextTk, eof, err = readStatementx(nil, tx)
 		if err != nil {
 			return
 		}
@@ -408,10 +413,12 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 
 		empty = false
 		ex = expression.New(expression.Func, function.New(vars, st))
-		nextTk, eof, err = tx.ReadToken()
-		if err == nil && eof {
-			err = tx.Fail("Unexpected end of file")
-		}
+    if nextTk == nil {
+      nextTk, eof, err = tx.ReadToken()
+      if err == nil && eof {
+        err = tx.Fail("Unexpected end of file")
+      }
+    }
 
 		return
 	}

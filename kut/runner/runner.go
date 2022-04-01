@@ -67,12 +67,18 @@ func assign(
 	ps := st.Value.([]*expression.T)
 	switch ps[0].Type {
 	case expression.Sym:
+		id := ps[0].Value.(string)
+		if _, ok := imports[id]; ok {
+			err = fail.Mk(
+				"Reassignation of import symbol '"+id+"'", stackT)
+			break
+		}
 		var ex *expression.T
 		ex, err = Solve(imports, hp0, hps, ps[1], stackT)
 		if err == nil {
-			if !hps[0].Add(ps[0].Value.(string), ex) {
+			if !hps[0].Add(id, ex) {
 				err = fail.Mk(
-					"Reassignation of variable '"+ps[0].Value.(string)+"'", stackT)
+					"Reassignation of symbol '"+id+"'", stackT)
 			}
 			if ex.IsEmpty() {
 				err = fail.Type(ex, stackT, "expression")

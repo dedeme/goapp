@@ -7,8 +7,12 @@ sys.rand();
 
 eq = \f1, f2 -> return math.eq(f1, f2, 0.0000001);;
 
-assert eq(math.fromEn("12,520.11"), 12520.11);
-assert eq(math.fromIso("-12.520,11"), -12520.11);
+assert eq(math.fromEn("12,520.11")!, 12520.11);
+assert eq(math.fromIso("-12.520,11")!, -12520.11);
+assert eq(math.fromStr("-12520.11")!, -12520.11);
+assert arr.size(math.fromEn("12,5f20.11")) == 0;
+assert arr.size(math.fromIso("-12.f520,11")) == 0;
+assert arr.size(math.fromStr("-1252f0.11")) == 0;
 
 assert math.toInt(12) == 12;
 assert math.toInt(-12.99) == -12;
