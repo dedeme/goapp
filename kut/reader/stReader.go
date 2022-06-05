@@ -92,29 +92,29 @@ func readSymbol(sym string, tx *txReader.T) (
 	case "if":
 		st, nextTk, err = readIf(nline, tx) // fluxReader.go
 		if err == nil {
-      if nextTk == nil {
-        nextTk, eof, err = tx.ReadToken()
-        if err != nil {
-          return
-        }
-        if eof {
-          nextTk = nil
-          return
-        }
-      }
+			if nextTk == nil {
+				nextTk, eof, err = tx.ReadToken()
+				if err != nil {
+					return
+				}
+				if eof {
+					nextTk = nil
+					return
+				}
+			}
 
-      var st2 *statement.T
-      if nextTk.IsElse() {
-        st2, nextTk, err = readElse(nline, tx) // fluxReader.go
-        if err == nil {
-          (st.Value.([]interface{}))[2] = st2.Value
-        }
-      }
+			var st2 *statement.T
+			if nextTk.IsElse() {
+				st2, nextTk, err = readElse(nline, tx) // fluxReader.go
+				if err == nil {
+					(st.Value.([]interface{}))[2] = st2.Value
+				}
+			}
 		}
 		return
 	case "else":
 		// st, nextTk, err = readElse(nline, tx) // fluxReader.go
-    err = tx.Fail("'else' without 'if'")
+		err = tx.Fail("'else' without 'if'")
 		return
 	case "for":
 		st, nextTk, err = readFor(nline, tx) // fluxReader.go
@@ -144,7 +144,7 @@ func readSymbol(sym string, tx *txReader.T) (
 						err = tx.Fail("Unexpected end of file.")
 					} else if tk.IsSemicolon() {
 						st = statement.New(tx.File, nline, statement.Import,
-							[]interface{}{fileix.Add(fpath), path.Base(fpath)})
+							[]interface{}{fileix.Add(tx.File, fpath), path.Base(fpath)})
 					} else if !tk.IsColon() {
 						err = tx.FailExpect("':' or ';'", tk.String(), tx.Nline)
 					} else {
@@ -164,7 +164,7 @@ func readSymbol(sym string, tx *txReader.T) (
 										err = tx.FailExpect(";", tk.String(), tx.Nline)
 									} else {
 										st = statement.New(tx.File, nline, statement.Import,
-											[]interface{}{fileix.Add(fpath), id})
+											[]interface{}{fileix.Add(tx.File, fpath), id})
 									}
 								}
 							}

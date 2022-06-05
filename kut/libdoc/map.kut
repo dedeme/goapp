@@ -10,7 +10,7 @@
 
 /// Returns a shallow copy of 'm'.
 /// \m -> m
-copy = \m -> {};
+copy = \M -> {};
 
 /// Creates a map from one array with pairs [key, value].
 /// \[[s,*]...] -> m
@@ -18,7 +18,7 @@ fromArr = \A -> {};
 
 /// Creates a map from one iterator with pairs [key, value].
 /// \<iterator>[[s,*]...] -> m
-fromArr = \it -> {};
+fromIter = \it -> {};
 
 /// Returns 'true' if 'M' has the key 'k'.
 /// \m, s -> b
@@ -28,13 +28,13 @@ hasKey = \M, k -> {};
 /// \m -> [s...]
 keys = \M -> {};
 
+/// Removes key 'k' from 'm' if it exists. Oterwise this function does nothing.
+/// \m, s -> ()
+remove = \M, k -> {};
+
 /// Returns the entries number of 'M'.
 /// \m -> i
 size = \M -> {};
-
-/// Returns values of 'M'.
-/// \m -> a
-values = \M -> {};
 
 /// Returns an array with the pairs [key, value] of 'M'
 /// |m -> [[s,*]...]
@@ -43,3 +43,7 @@ toArr = \M -> {};
 /// Returns an iterator with the pairs [key, value] of 'M'
 /// |m -> <iterator>[[s,*]...]
 toIter = \M -> {};
+
+/// Returns values of 'M'.
+/// \m -> a
+values = \M -> {};

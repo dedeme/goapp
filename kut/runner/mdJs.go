@@ -144,6 +144,7 @@ func jsRs(args []*expression.T) (ex *expression.T, err error) {
 func jsRa(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
+		s = strings.TrimSpace(s)
 		var rs []*expression.T
 		if !strings.HasPrefix(s, "[") {
 			err = bfail.Mk(fmt.Sprintf("Array does not start with '[' in\n'%v'", s))
@@ -193,6 +194,7 @@ func jsRa(args []*expression.T) (ex *expression.T, err error) {
 func jsRo(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
+		s = strings.TrimSpace(s)
 		v := make(map[string]*expression.T)
 		if !strings.HasPrefix(s, "{") {
 			err = bfail.Mk(fmt.Sprintf("Object does not start with '{' in\n'%v'", s))

@@ -16,11 +16,11 @@
 ///   - The expresion 'A[:]' returns a shallow copy of 'A' (althoug 'arr.copy'
 ///   - is more efficient.
 
-/// Returns 'true' if fn returns true with every element of 'it'.
+/// Returns 'true' if 'fn' returns true with every element of 'A'.
 /// (\a, \*->b) -> b
 all = \A, fn -> {};
 
-/// Returns 'true' if fn returns true with at leat one element of 'it'.
+/// Returns 'true' if 'fn' returns true with at least one element of 'A'.
 /// (\a, \*->b) -> b
 any = \A, fn -> {};
 
@@ -155,7 +155,7 @@ sort = \A, less -> {};
 /// \a, i -> a
 take = \A, n -> {};
 
-/// Returns the first elements of 'it' which produce 'true' with fn.
+/// Returns the first elements of 'A' which produce 'true' with fn.
 /// (\a, \*->b) -> a
 takeWhile = \A, fn -> {};
 

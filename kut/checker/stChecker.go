@@ -58,17 +58,18 @@ func checkMainSymbol(
 		// read ')'
 		_, nextTk, ers = checkStatement(false, false, nil, layers, tx)
 		errs = append(errs, ers...)
-    if nextTk == nil {
-      var eof bool
-      nextTk, eof, _ = tx.ReadToken()
-      if eof {
-        nextTk = nil
-        return
-      }
-    }
-    if nextTk.IsElse() {
-      _, nextTk, errs = checkStatement(false, false, nil, layers, tx)
-    }
+		if nextTk == nil {
+			var eof bool
+			nextTk, eof, _ = tx.ReadToken()
+			if eof {
+				nextTk = nil
+				return
+			}
+		}
+		if nextTk.IsElse() {
+			_, nextTk, ers = checkStatement(false, false, nil, layers, tx)
+			errs = append(errs, ers...)
+		}
 		return
 	case "for":
 		var forLayer []*cksym.T
@@ -77,16 +78,16 @@ func checkMainSymbol(
 
 		tk := readToken(tx)
 		// tk is Symbol
-    sym := cksym.New(tk.Value.(string), tx.File, tx.Nline)
-    sym.Used = true
+		sym := cksym.New(tk.Value.(string), tx.File, tx.Nline)
+		sym.Used = true
 		forLayer = append(forLayer, sym)
 
 		tk = readToken(tx)
 		if tk.IsComma() {
 			tk = readToken(tx)
 			// tk is Symbol
-      sym = cksym.New(tk.Value.(string), tx.File, tx.Nline)
-      sym.Used = true
+			sym = cksym.New(tk.Value.(string), tx.File, tx.Nline)
+			sym.Used = true
 			forLayer = append(forLayer, sym)
 
 			tk = readToken(tx)
@@ -108,20 +109,20 @@ func checkMainSymbol(
 		return
 	case "import":
 		tk := readToken(tx)
-    //tk is string
+		//tk is string
 		tk = readToken(tx)
-    if !tk.IsSemicolon() {
-      readToken(tx)
-      // Read Symbol
-      readToken(tx)
-      // Read ';'
-    }
+		if !tk.IsSemicolon() {
+			readToken(tx)
+			// Read Symbol
+			readToken(tx)
+			// Read ';'
+		}
 		return
 	}
 
 	// No resereved symbol
 
-  nline := tx.Nline
+	nline := tx.Nline
 	sym := cksym.New(symName, tx.File, tx.Nline)
 	var tk *token.T
 	sym, tk, ers = checkPtSqPr(sym, nil, layers, tx) // ptSqPrChecker.go
@@ -129,13 +130,13 @@ func checkMainSymbol(
 	switch tk.Value.(string) {
 	case "=":
 		if sym != nil {
-      if isTop {
-        for _, s := range layers[0] {
-          if s.Name == sym.Name {
-            s.Nline = nline
-            s.Used = true
-          }
-        }
+			if isTop {
+				for _, s := range layers[0] {
+					if s.Name == sym.Name {
+						s.Nline = nline
+						s.Used = true
+					}
+				}
 			} else {
 				e := cksym.ErrIfFound(layers, sym)
 				if e == nil {
@@ -159,18 +160,18 @@ func checkMainSymbol(
 func checkStatement(
 	isTop, isFor bool, tk *token.T, layers [][]*cksym.T, tx *txReader.T,
 ) (end bool, nextTk *token.T, errs []error) {
-  if tk == nil {
-    if isTop {
-      var eof bool
-      tk, eof, _ = tx.ReadToken()
-      if eof {
-        end = true
-        return
-      }
-    } else {
-      tk = readToken(tx)
-    }
-  }
+	if tk == nil {
+		if isTop {
+			var eof bool
+			tk, eof, _ = tx.ReadToken()
+			if eof {
+				end = true
+				return
+			}
+		} else {
+			tk = readToken(tx)
+		}
+	}
 
 	switch tk.Type {
 	case token.LineComment, token.Comment:

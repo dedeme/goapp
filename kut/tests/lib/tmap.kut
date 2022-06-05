@@ -12,6 +12,10 @@ assert !iter.hasNext(map.toIter(M0));
 M1 = {"one": 1, "two": 2, "three": 3};
 assert map.hasKey(M1, "one");
 assert !map.hasKey(M1, "onex");
+map.remove(M1, "one");
+assert !map.hasKey(M1, "one");
+M1["one"] = 1;
+
 A = [""];
 B = [""];
 A[0] = map.keys(M1);

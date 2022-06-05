@@ -17,7 +17,7 @@ func iterAll(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			for it.HasNext() {
 				r, er := solveIsolateFunction(fn, []*expression.T{it.Next()})
 				if er != nil {
@@ -48,7 +48,7 @@ func iterAny(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			for it.HasNext() {
 				r, er := solveIsolateFunction(fn, []*expression.T{it.Next()})
 				if er != nil {
@@ -142,7 +142,7 @@ func iterDropWhile(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var nx *expression.T
 			for it.HasNext() {
 				nx = it.Next()
@@ -189,7 +189,7 @@ func iterEach(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			for it.HasNext() {
 				_, err = solveIsolateFunction(fn, []*expression.T{it.Next()})
 				if err != nil {
@@ -225,7 +225,7 @@ func iterFilter(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var nx *expression.T
 			for it.HasNext() {
 				nx = it.Next()
@@ -288,7 +288,7 @@ func iterFind(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var rt *expression.T
 			for it.HasNext() {
 				nx := it.Next()
@@ -328,7 +328,7 @@ func iterIndex(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			n := int64(-1)
 			c := int64(0)
 			for it.HasNext() {
@@ -378,7 +378,7 @@ func iterMp(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			next := func() *expression.T {
 				r, er := solveIsolateFunction(fn, []*expression.T{it.Next()})
 				if er == nil {
@@ -465,7 +465,7 @@ func iterReduce(args []*expression.T) (ex *expression.T, err error) {
 	case *iterator.T:
 		seed := args[1]
 		switch fn := (args[2].Value).(type) {
-		case *function.T:
+		case function.I:
 			for it.HasNext() {
 				var r *expression.T
 				r, err = solveIsolateFunction(fn, []*expression.T{seed, it.Next()})
@@ -513,7 +513,7 @@ func iterTakeWhile(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			more := false
 			var nx *expression.T
 			if it.HasNext() {

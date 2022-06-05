@@ -23,13 +23,30 @@ now = \-> {};
 /// \s, s -> i
 fromEn = \s, sep -> {};
 
+/// Returns a time opton from a string type: MM*DD*YYYY, where '*' is the
+/// separator 'sep'.
+/// If the function fails, it returns [].
+/// \s, s -> [i] | []
+fromEnOp = \s, sep -> {};
+
 /// Returns a time from a string type: DD*MM*YYYY, where '*' is the separator 'sep'.
 /// \s, s -> i
 fromIso = \s, sep -> {};
 
+/// Returns a time option from a string type: DD*MM*YYYY, where '*' is the
+/// separator 'sep'.
+/// If the function fails, it returns [].
+/// \s, s -> [i] | []
+fromIsoOp = \s, sep -> {};
+
 /// Returns a time from a string type: YYYYMMDD.
 /// \s -> i
 fromStr = \s -> {};
+
+/// Returns a time option from a string type: YYYYMMDD.
+/// If the function fails, it returns [].
+/// \s -> [i] | []
+fromStrOp = \s -> {};
 
 /// Returns a new time equals to 'tm', but setting hour, minute and second
 /// matching a string type: "HH:MM:SS", and milliseconds to 0.
@@ -94,10 +111,6 @@ eqDay = \tm1, tm2 -> {};
 /// \s, i -> s
 format = \template, tm -> {};
 
-/// Equals to 'time.format("%Y%M%D", tm)'. (e.g.; "20220130")
-/// \i -> s
-toStr = \tm -> {};
-
 /// Equals to 'time.format("%M-%D-%Y", tm)'. (e.g.; "02-30-2022")
 /// \i -> s
 toEn = \tm -> {};
@@ -105,5 +118,10 @@ toEn = \tm -> {};
 /// Equals to 'time.format("%D/%M/%Y", tm)'. (e.g.; "30/01/2022")
 /// \i -> s
 toIso = \tm -> {};
+
+/// Equals to 'time.format("%Y%M%D", tm)'. (e.g.; "20220130")
+/// \i -> s
+toStr = \tm -> {};
+
 
 

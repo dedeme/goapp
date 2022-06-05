@@ -13,7 +13,7 @@
 matches = \s, rg -> {}
 
 /// Returns the result of replace "rg" by "repl" in "s".
-/// 'sub' allows to use templates with '$'.
+/// 'repl' allows to use templates with '$'.
 ///   s   : Original string.
 ///   rg  : Regular expression.
 ///   repl: Replacement.

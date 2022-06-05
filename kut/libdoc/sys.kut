@@ -27,9 +27,12 @@ cmd = \c, pars -> {};
 /// \->m[s]
 environ = \-> {};
 
-/// Set a function which will be called when 'sys.fail' is called and just
+/// Set a function which will be called after 'sys.fail' and just
 /// before of ending the current thread or program.
-/// \\->() -> ()
+///   fn: A function which receives a string wose first line is the
+///       message of 'sys.fail' and the others are the stack trace.
+///       NOTE: This function replaces the default function.
+/// \(\s->()) -> ()
 ffail = \fn -> {};
 
 /// Prints messages and ends the current thread or the total program if is
@@ -49,6 +52,11 @@ println = \text -> {};
 /// This functions must be called previously to use random functions.
 /// \-> ()
 rand = \-> {};
+
+/// Reads a line on Console.
+/// The '\n' byte is not read.
+/// \-> s
+readLine = \-> {};
 
 /// Stop the current thread 'millis' milliseconds.
 /// \i -> ()

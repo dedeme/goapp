@@ -26,11 +26,11 @@ func checkSwitch(
 	// tk IsOpenBracket
 
 	var ers []error
-  tk = nil
+	tk = nil
 	for {
-    if tk == nil {
-      tk = readToken(tx) // stChecker.go
-    }
+		if tk == nil {
+			tk = readToken(tx) // stChecker.go
+		}
 
 		if tk.IsCloseBracket() {
 			break
@@ -47,8 +47,8 @@ func checkSwitch(
 
 		if isExpression {
 			tk, ers = checkExpression(layers, tx) // exChecker.go
-      // tk IsSemicolon
-      tk = nil
+			// tk IsSemicolon
+			tk = nil
 		} else {
 			_, tk, ers = checkStatement(false, false, nil, layers, tx) // stChecker.go
 		}

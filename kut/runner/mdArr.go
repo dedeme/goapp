@@ -20,7 +20,7 @@ func arrAll(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			rt := true
 			for _, e := range a {
 				var r *expression.T
@@ -55,7 +55,7 @@ func arrAny(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			rt := false
 			for _, e := range a {
 				var r *expression.T
@@ -138,7 +138,7 @@ func arrDropWhile(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			begin := 0
 			for _, e := range a {
 				var r *expression.T
@@ -181,7 +181,7 @@ func arrDuplicates(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			contains := func(es []*expression.T, e *expression.T) bool {
 				for _, ees := range es {
 					r, er := solveIsolateFunction(fn, []*expression.T{e, ees}) // exSolver.go
@@ -227,7 +227,7 @@ func arrEach(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			for _, e := range a {
 				_, err = solveIsolateFunction(fn, []*expression.T{e}) // exSolver.go
 				if err != nil {
@@ -277,7 +277,7 @@ func arrFilter(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var exs []*expression.T
 			for _, e := range a {
 				var r *expression.T
@@ -314,7 +314,7 @@ func arrFilterIn(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var exs []*expression.T
 			for _, e := range a {
 				var r *expression.T
@@ -351,7 +351,7 @@ func arrFind(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var exfund *expression.T
 			for _, e := range a {
 				var r *expression.T
@@ -408,7 +408,7 @@ func arrIndex(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			rst := int64(-1)
 			for ix, e := range a {
 				var r *expression.T
@@ -494,7 +494,7 @@ func arrMp(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var exs []*expression.T
 			for _, e := range a {
 				var r *expression.T
@@ -599,7 +599,7 @@ func arrReduce(args []*expression.T) (ex *expression.T, err error) {
 	case []*expression.T:
 		ex = args[1]
 		switch fn := (args[2].Value).(type) {
-		case *function.T:
+		case function.I:
 			for _, e := range a {
 				ex, err = solveIsolateFunction(fn, []*expression.T{ex, e}) // exSolver.go
 				if err != nil {
@@ -770,7 +770,7 @@ func arrSort(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fnLess := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			sort.Slice(a, func(i, j int) bool {
 				r, er := solveIsolateFunction(fnLess, []*expression.T{a[i], a[j]}) // exSolver.go
 				if er != nil {
@@ -850,7 +850,7 @@ func arrTakeWhile(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
 	case []*expression.T:
 		switch fn := (args[1].Value).(type) {
-		case *function.T:
+		case function.I:
 			var exs []*expression.T
 			for _, e := range a {
 				var r *expression.T

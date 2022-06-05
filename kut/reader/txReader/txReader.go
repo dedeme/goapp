@@ -29,18 +29,18 @@ func New(file int, tx string) *T {
 
 func (r *T) Fail(msg string) error {
 	return errors.New(fmt.Sprintf(
-		"%v\n  %v:%v", msg, fileix.Get(r.File), r.Nline))
+		"%v\n  %v:%v:", msg, fileix.GetFail(r.File), r.Nline))
 }
 
 func (r *T) FailLine(msg string, nline int) error {
 	return errors.New(fmt.Sprintf(
-		"%v\n  %v:%v", msg, fileix.Get(r.File), nline))
+		"%v\n  %v:%v:", msg, fileix.GetFail(r.File), nline))
 }
 
 func (r *T) FailExpect(expected string, found string, nline int) error {
 	return errors.New(fmt.Sprintf(
-		"Expected: %v\nFound: %v\n  %v:%v",
-		expected, found, fileix.Get(r.File), nline))
+		"Expected: %v\nFound: %v\n  %v:%v:",
+		expected, found, fileix.GetFail(r.File), nline))
 }
 
 func (r *T) readByte() (b byte, eof bool, err error) {

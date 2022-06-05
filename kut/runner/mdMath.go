@@ -490,6 +490,68 @@ func mathTo(tpTo token.Type) func([]*expression.T) (*expression.T, error) {
 	}
 }
 
+// \i | f | s -> [i | f | s] | []
+func mathToOp(tpTo token.Type) func([]*expression.T) (
+	*expression.T, error,
+) {
+	return func(exs []*expression.T) (ex *expression.T, err error) {
+		e := exs[0]
+		switch v := (e.Value).(type) {
+		case int64:
+			switch tpTo {
+			case token.Int:
+				ex = expression.MkFinal([]*expression.T{e})
+			case token.Float:
+				ex = expression.MkFinal([]*expression.T{
+					expression.MkFinal(float64(v))})
+			case token.String:
+				ex = expression.MkFinal([]*expression.T{
+					expression.MkFinal(strconv.FormatInt(v, 10))})
+			}
+		case float64:
+			switch tpTo {
+			case token.Int:
+				ex = expression.MkFinal([]*expression.T{
+          expression.MkFinal(int64(v))})
+			case token.Float:
+				ex = expression.MkFinal([]*expression.T{e})
+			case token.String:
+				ex = expression.MkFinal([]*expression.T{
+          expression.MkFinal(strconv.FormatFloat(v, 'g', -1, 64))})
+			}
+		case string:
+			var er error
+			switch tpTo {
+			case token.Int:
+				var i int64
+				i, er = strconv.ParseInt(v, 10, 64)
+				if er == nil {
+					ex = expression.MkFinal(i)
+				}
+			case token.Float:
+				var f float64
+				f, er = strconv.ParseFloat(v, 64)
+				if er == nil {
+					ex = expression.MkFinal(f)
+				}
+			case token.String:
+				_, err = strconv.ParseFloat(v, 64)
+				if err == nil {
+					ex = e
+				}
+			}
+			if er != nil {
+				ex = expression.MkFinal([]*expression.T{})
+			} else {
+        ex = expression.MkFinal([]*expression.T{ex})
+      }
+		default:
+			err = bfail.Type(e, "int", "float", "string")
+		}
+		return
+	}
+}
+
 // \f -> f
 func mathTrunc(exs []*expression.T) (ex *expression.T, err error) {
 	switch n := (exs[0].Value).(type) {
@@ -570,10 +632,16 @@ func mathGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mathTanh)
 	case "toFloat":
 		fn = bfunction.New(1, mathTo(token.Float))
+	case "toFloatOp":
+		fn = bfunction.New(1, mathToOp(token.Float))
 	case "toInt":
 		fn = bfunction.New(1, mathTo(token.Int))
+	case "toIntOp":
+		fn = bfunction.New(1, mathToOp(token.Int))
 	case "toStr":
 		fn = bfunction.New(1, mathTo(token.String))
+	case "toStrOp":
+		fn = bfunction.New(1, mathToOp(token.String))
 	case "trunc":
 		fn = bfunction.New(1, mathTrunc)
 	default:

@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <title>fcrypt</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="lang" content="es" />
+    <meta name="author" content="ºDeme." />
+    <style>
+BODY {
+  font-family: sans;font-size: 14px;
+  margin-right: 10px; margin-left: 10px;
+  margin-top: 5px; background-color: #f0f1f2
+}
+.title {
+  font-size: 24px; text-align: center;
+}
+    </style>
+  </head>
+  <body>
+  </body>
+  <script type="text/javascript">var e;function g(a,b){this.a=a;this.b=b}g.prototype.next=function(){return this.b()};g.prototype.add=function(a,b){var c=this,d=0;return b?new g(function(){return c.a()||d<b},function(){if(d<=b){if(c.a()&&d<b)return++d,c.b();d=b+1;return a}return c.b()}):new g(function(){return 0===d},function(){if(c.a())return c.b();++d;return a})};function h(a,b){for(;a.a();)b(a.b())}g.prototype.reverse=function(){return k(l(this).reverse())};function l(a){var b=[];h(a,function(a){b.push(a)});return b}
+g.prototype.toString=function(){return"["+r(this)+"]"};function k(a){var b=a.length,c=0;return new g(function(){return c<b},function(){return a[c++]})}function r(a){var b=", ";if(!a.a())return"";b=b||"";var c=a.next();h(a,function(a){c+=b+a});return c};function t(a){return btoa(encodeURIComponent(a).replace(/%([0-9A-F]{2})/g,function(a,c){return String.fromCharCode(parseInt("0x"+c,16))}))}function v(a){return decodeURIComponent(atob(a).split("").map(function(a){return"%"+("00"+a.charCodeAt(0).toString(16)).slice(-2)}).join(""))}function w(a){return new Uint8Array(atob(a).split("").map(function(a){return a.charCodeAt(0)}))};function x(a,b){for(var c=w(t(a+"codified in irreversibleDeme is good, very good!\n\r8@@")),d=c.length,f=a=0;f<d;++f)a+=c[f];f=b+d;for(var m=new Uint8Array(f),A=new Uint8Array(f),n=new Uint8Array(f),u=0,q=0;q<f;++q){var p=c[u];p+=c[p%d];p+=c[p%d];a=(a+q+(p+c[p%d]))%256;A[q]=a;n[q]=a;++u;u===d&&(u=0)}for(c=0;c<f;++c)d=n[c],d+=n[d%f],d+=n[d%f],a=(a+(d+n[d%f]))%256,n[c]=a,m[c]=(a+A[c])%256;return btoa(String.fromCharCode.apply(null,m)).substring(0,b)}
+function y(a,b){b=t(b);var c=b.length;a=x(a,c);for(var d=new Uint8Array(c),f=0;f<c;++f)d[f]=b.charCodeAt(f)+a.charCodeAt(f);return btoa(String.fromCharCode.apply(null,d))}function z(a,b){b=w(b);var c=b.length;a=x(a,c);for(var d="",f=0;f<c;++f)d+=String.fromCharCode(b[f]-a.charCodeAt(f));return v(d)};function B(a){this.a=a}e=B.prototype;e.e=function(){return this.a};function C(a,b){if(void 0===b)return a.a.innerHTML;a.a.innerHTML=b;return a}e.text=function(a){if(void 0===a)return this.a.textContent;this.a.textContent=a;return this};function D(){var a=E("div");a.a.className="title";return a}e.style=function(a){if(void 0===a)return this.a.getAttribute("style");this.a.setAttribute("style",a);return this};function F(a,b,c){if(void 0===c)return a.a.getAttribute(b);a.a.setAttribute(b,c);return a}
+e.disabled=function(a){if(void 0===a)return this.a.disabled;this.a.disabled=a;return this};e.checked=function(a){if(void 0===a)return this.a.checked;this.a.checked=a;return this};e.value=function(a){if(void 0===a)return this.a.value;this.a.value=a;return this};e.add=function(a){this.a.appendChild(a.a);return this};function G(a){a.a.innerHTML="";return a}function H(a,b,c){a.a.addEventListener(b,c,!1);return a};function E(a){if(""===a)throw"'s' is empty";return"#"===a.charAt(0)?new B(document.getElementById(a.substring(1))):"@"===a.charAt(0)?new B(document.querySelector(a.substring(1))):new B(document.createElement(a))}function I(){return function(a){var b=0,c=a.length;return new g(function(){return b<c},function(){return new B(a[b++])})}(document.getElementsByTagName("body"))}
+function J(a){var b=new XMLHttpRequest;b.onreadystatechange=function(){4===b.readyState&&a(b.responseText)};b.open("GET","data",!0);b.send()}function K(){return H(F(E("input"),"type","text"),"keydown",function(a){13===a.keyCode&&(a.preventDefault(),E("#pass").e().focus())})}function L(){return H(F(E("input"),"type","password"),"keydown",function(a){13===a.keyCode&&(a.preventDefault(),E("#accept").e().focus())})};var M=E("div");
+function N(a,b){var c="";try{c=F(F(E("textarea"),"rows",30),"cols",100).text(z(a,b))}catch(m){c=F(F(E("textarea"),"rows",30),"cols",100).text(y(a,b))}var d=F(F(E("input"),"type","button").style("width:90px;"),"id","close");d.value("Close");H(d,"click",function(){b="";location.assign("")});var f=F(F(E("input"),"type","button").style("width:90px;"),"id","save");f.value("Save");H(f,"click",function(){var b=y(a,c.value());b=F(F(E("a"),"href","data:text/plain;plain,"+b),"download","data");var d=document.body;
+d.appendChild(b.e());b.e().click();d.removeChild(b.e())});G(M).add(C(D(),"&nbsp;<br>fcrypt<br>&nbsp;")).add(E("div").add(F(E("table"),"align","center").style("border-collapse: collapse;padding: 10px;border: 1px solid rgb(110,130,150);").add(E("tr").add(E("td").add(c))).add(E("tr").add(E("td").style("text-align:right;").add(d).add(C(E("span"),"&nbsp;&nbsp;")).add(f)))))}
+(function(){var a=K(),b=F(L(),"id","pass"),c=F(F(E("input"),"type","button").style("width:90px;"),"id","accept");c.value("Accept");J(function(d){H(c,"click",function(){var c=a.value().trim(),m=b.value().trim();""===c?alert("User is missing"):""===m?alert("password is missing"):N(x(c+m,2500),"r59uq7jJca/CrribtorTx7uwbcGx2tWkhZ1+4L+vhdOmoYm4esKtz7a4hcGSupmtmcXkn8Oqt7Sb3peks8yhtLqoxs+SpKfinI5/0MK/nsvCyXF+oXnI7NVp8uZ7yuO7gNGZgsrYg1+sv9HJt4m0ycuvq9SKw3GyrJ2KypuEn+iiYoq7gWF8x796or63mqDVfIinvKqUoMWiqofLpbSpwd+7joGTdq3LqeWf5JKKq8yMh27FsqOdfZKos7OqzHG0maC0lbzH8M2n3cmjxoCewLHCqc6hp8t3pYuxxrHBbZ27osm8mbS02qNy2sqWhZCtk4SyvbqLtdi6mI/oupac25eo6IY=")});G(I().next()).add(M);M.add(C(D(),"&nbsp;<br>fcrypt<br>&nbsp;")).add(C(E("div").style("text-align:center"),"General-special-bank-phone")).add(E("div").add(F(E("table"),"align","center").style("background-color: #f8f8f8;border-collapse: collapse;padding: 10px;border: 1px solid rgb(110,130,150);").add(E("tr").add(C(F(E("td"),
+"colspan",2).style("background-color:#e8e8e8;border-bottom:1px solid #c9c9c9;padding: 10px;color:#505050;"),"<big><big><b>Login</big></big></b>"))).add(E("tr").add(C(E("td").style("padding: 10px 0px 0px 10px;text-align:right;"),"User")).add(E("td").style("padding: 10px 10px 0px 10px;").add(a))).add(E("tr").add(C(E("td").style("padding: 10px 0px 0px 10px;text-align:right;"),"Password")).add(E("td").style("padding: 10px 10px 5px 10px;").add(b))).add(E("tr").add(E("td")).add(F(E("td"),"align","right").add(c)))));
+a.e().focus()})})();  </script>
+</html>

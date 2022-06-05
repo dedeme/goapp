@@ -232,8 +232,26 @@ func (e *T) String() (s string) {
 		panic("Unknown expresion type")
 	}
 
-	if len(s) > 70 {
-		s = s[:67] + "..."
-	}
 	return
+}
+
+// Replace 'go' name of a type for its 'kut' one.
+func ReplaceGoName(tx string) string {
+	return strings.ReplaceAll(
+		strings.ReplaceAll(
+			strings.ReplaceAll(
+				strings.ReplaceAll(
+					strings.ReplaceAll(
+						strings.ReplaceAll(
+							strings.ReplaceAll(
+								strings.ReplaceAll(
+									strings.ReplaceAll(tx, "map[string]*expression.T", "map"),
+									"[]*expression.T", "array"),
+								"*expression.emptyT", "()"),
+							"*runner.BModuleT", "module"),
+						"*module.T", "module"),
+					"*bfunction.T", "bfunction"),
+				"*function.T", "function"),
+			"float64", "float"),
+		"int64", "int")
 }

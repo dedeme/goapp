@@ -36,7 +36,7 @@ func Mk(msg string, stackTrace []*statement.T) error {
 		}
 		st := stackTrace[ix]
 		ix--
-		msg += "\n  " + fileix.Get(st.File) + ":" + strconv.Itoa(st.Nline)
+		msg += "\n  " + fileix.GetFail(st.File) + ":" + strconv.Itoa(st.Nline) + ":"
 	}
 	return errors.New(msg)
 }
@@ -51,21 +51,5 @@ func Type(expr *expression.T, stackTrace []*statement.T, expected ...string) err
 			"\n    Expected: %v\n    Found   : %T (%v)",
 			strings.Join(expected, ", "), expr.Value, expr)
 	}
-	return Mk(strings.ReplaceAll(
-		strings.ReplaceAll(
-			strings.ReplaceAll(
-				strings.ReplaceAll(
-					strings.ReplaceAll(
-						strings.ReplaceAll(
-							strings.ReplaceAll(
-								strings.ReplaceAll(
-									strings.ReplaceAll(msg, "map[string]*expression.T", "map"),
-									"[]*expression.T", "array"),
-								"*expression.emptyT", "()"),
-							"*runner.BModuleT", "module"),
-						"*module.T", "module"),
-					"*bfunction.T", "bfunction"),
-				"*function.T", "function"),
-			"float64", "float"),
-		"int64", "int"), stackTrace)
+	return Mk(expression.ReplaceGoName(msg), stackTrace)
 }

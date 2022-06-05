@@ -4,6 +4,7 @@
 package runner
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/dedeme/kut/builtin/bfail"
 	"github.com/dedeme/kut/builtin/bfunction"
@@ -11,6 +12,7 @@ import (
 	"github.com/dedeme/kut/function"
 	"github.com/dedeme/kut/module"
 	"github.com/dedeme/kut/runner/fail"
+	"io"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -19,7 +21,7 @@ import (
 	"time"
 )
 
-var sysFffail *function.T
+var SysFffail *function.T
 var rndV int64
 
 // \-> [s...]
@@ -67,23 +69,25 @@ func sysCmd(args []*expression.T) (ex *expression.T, err error) {
 				return
 			}
 
+			rpOutS := ""
 			rpOut, er := ioutil.ReadAll(stdout)
 			if er != nil {
 				err = er
 				return
 			}
-			rpOutS := string(rpOut)
+			rpOutS = string(rpOut)
 
+			rpErrorS := ""
 			rpError, er := ioutil.ReadAll(stderr)
 			if er != nil {
 				err = er
 				return
 			}
-			rpErrorS := string(rpError)
+			rpErrorS = string(rpError)
 
 			er = cmd.Wait()
-			if er != nil && len(rpError) == 0 {
-				rpErrorS = err.Error()
+			if er != nil && len(rpErrorS) == 0 {
+				rpErrorS = er.Error()
 			}
 			ex = expression.MkFinal([]*expression.T{
 				expression.MkFinal(rpOutS),
@@ -108,28 +112,28 @@ func sysEnviron(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \function -> ()
-func sysFfail(args []*expression.T) (ex *expression.T, err error) {
-	switch f := (args[0].Value).(type) {
-	case *function.T:
-		sysFffail = f
-	default:
-		err = bfail.Type(args[0], "function")
-	}
-	return
-}
-
 // \s->()
 func sysFail(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
-		if sysFffail == nil {
+		if SysFffail == nil {
 			err = bfail.Mk(s)
 		} else {
-			err = fail.MkSysError(s, sysFffail)
+			err = fail.MkSysError(s, SysFffail)
 		}
 	default:
 		err = bfail.Type(args[0], "string")
+	}
+	return
+}
+
+// \function -> ()
+func sysFfail(args []*expression.T) (ex *expression.T, err error) {
+	switch f := (args[0].Value).(type) {
+	case *function.T:
+		SysFffail = f
+	default:
+		err = bfail.Type(args[0], "function")
 	}
 	return
 }
@@ -160,6 +164,18 @@ func sysPrintln(args []*expression.T) (ex *expression.T, err error) {
 func sysRand(args []*expression.T) (ex *expression.T, err error) {
 	rndV += time.Now().UnixMilli()
 	rand.Seed(rndV)
+	return
+}
+
+// \-> s
+func sysReadLine(args []*expression.T) (ex *expression.T, err error) {
+	rd := bufio.NewReader(os.Stdin)
+	s, er := rd.ReadString('\n')
+	if er != nil && er != io.EOF {
+		err = er
+		return
+	}
+	ex = expression.MkFinal(s[:len(s)-1])
 	return
 }
 
@@ -220,6 +236,8 @@ func sysGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, sysPrintln)
 	case "rand":
 		fn = bfunction.New(0, sysRand)
+	case "readLine":
+		fn = bfunction.New(0, sysReadLine)
 	case "sleep":
 		fn = bfunction.New(1, sysSleep)
 	case "type":

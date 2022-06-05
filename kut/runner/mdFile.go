@@ -186,7 +186,7 @@ func fileRead(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<file> -> [s]|[]
+// \<file>, i -> [s]|[]
 func fileReadBin(args []*expression.T) (ex *expression.T, err error) {
 	switch f := (args[0].Value).(type) {
 	case *fileT:

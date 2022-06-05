@@ -56,7 +56,7 @@ func checkExpression1(tk *token.T, layers [][]*cksym.T, tx *txReader.T) (
 	if tk.IsOpenBracket() {
 		// Skip key
 		tkKey := readToken(tx) //stChecker.go
-    nline := tx.Nline;
+		nline := tx.Nline
 
 		if tkKey.IsCloseBracket() {
 			nextTk = readToken(tx) // stChecker.go
@@ -67,17 +67,17 @@ func checkExpression1(tk *token.T, layers [][]*cksym.T, tx *txReader.T) (
 		tk = readToken(tx) //stChecker.go
 
 		for {
-      if !tk.IsColon() {
-        sym := cksym.New(tkKey.Value.(string), tx.File, nline)
-        if e := cksym.ErrIfNotFound(layers, sym); e != nil {
-          errs = append(errs, e)
-        }
-      } else {
-        // tk IsColon
+			if !tk.IsColon() {
+				sym := cksym.New(tkKey.Value.(string), tx.File, nline)
+				if e := cksym.ErrIfNotFound(layers, sym); e != nil {
+					errs = append(errs, e)
+				}
+			} else {
+				// tk IsColon
 
-        tk, ers = checkExpression(layers, tx)
-        errs = append(errs, ers...)
-      }
+				tk, ers = checkExpression(layers, tx)
+				errs = append(errs, ers...)
+			}
 
 			if !tk.IsComma() {
 				break
@@ -85,7 +85,7 @@ func checkExpression1(tk *token.T, layers [][]*cksym.T, tx *txReader.T) (
 
 			// Skip key
 			tkKey = readToken(tx) //stChecker.go
-      nline = tx.Nline;
+			nline = tx.Nline
 			// Read colon
 			tk = readToken(tx) //stChecker.go
 		}
@@ -121,9 +121,9 @@ func checkExpression1(tk *token.T, layers [][]*cksym.T, tx *txReader.T) (
 		_, nextTk, ers = checkStatement(false, false, nil, layers, tx)
 		errs = append(errs, ers...)
 
-    if nextTk == nil {
-      nextTk = readToken(tx) // stChecker.go
-    }
+		if nextTk == nil {
+			nextTk = readToken(tx) // stChecker.go
+		}
 
 		return
 	}

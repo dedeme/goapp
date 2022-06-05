@@ -7,6 +7,8 @@ package bfunction
 import (
 	"fmt"
 	"github.com/dedeme/kut/expression"
+	"github.com/dedeme/kut/heap"
+	"github.com/dedeme/kut/heap0"
 	"github.com/dedeme/kut/runner/fail"
 	"github.com/dedeme/kut/statement"
 )
@@ -55,5 +57,17 @@ func (bf *T) Run(name string, vars []*expression.T, stackT []*statement.T) (
 	if ex == nil {
 		ex = expression.MkEmpty()
 	}
+	return
+}
+
+// Implements 'function.I' interface.
+// Implements 'I' interface.
+func (f *T) MkExPr(pars []*expression.T) (
+	ex *expression.T, imports map[string]int, hp0 heap0.T, hps []heap.T,
+) {
+	ex = expression.New(expression.ExPr, []interface{}{
+		expression.MkFinal(f), pars})
+	imports = map[string]int{}
+	hp0 = heap0.New()
 	return
 }

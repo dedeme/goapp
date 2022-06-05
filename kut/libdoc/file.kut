@@ -61,8 +61,8 @@ read = \fpath -> {};
 
 /// Read 'buf' bytes of 'f'.
 /// When 'f' is at end, returns a bytes with no element.
-/// \<file -> <bytes>
-readBin = \f -> {};
+/// \<file>, i -> <bytes>
+readBin = \f, buf -> {};
 
 /// Returns an array with the next line of 'f'.
 /// If there is no more elements, it returns an empty array.

@@ -9,28 +9,28 @@ import (
 	"fmt"
 	"github.com/dedeme/kut/checker/cksym"
 	"github.com/dedeme/kut/fileix"
-	"github.com/dedeme/kut/reader/token"
 	"github.com/dedeme/kut/modules"
+	"github.com/dedeme/kut/reader/token"
 	"github.com/dedeme/kut/reader/txReader"
 )
 
 func checkCode(isTop bool, isFor bool, layers [][]*cksym.T, tx *txReader.T) (
 	errs []error,
 ) {
-  if !isFor {
-    lastLayer := []*cksym.T{}
-    if isTop {
-      md := modules.GetOk(tx.File)
-      for k, v := range md.Heap0 {
-        lastLayer = append(lastLayer, cksym.New(k, tx.File, v.Nline))
-      }
-    }
-    layers = append(layers, lastLayer)
-  }
-  var nextTk *token.T
+	if !isFor {
+		lastLayer := []*cksym.T{}
+		if isTop {
+			md := modules.GetOk(tx.File)
+			for k, v := range md.Heap0 {
+				lastLayer = append(lastLayer, cksym.New(k, tx.File, v.Nline))
+			}
+		}
+		layers = append(layers, lastLayer)
+	}
+	var nextTk *token.T
 	for {
-    var end bool
-    var ers []error
+		var end bool
+		var ers []error
 		end, nextTk, ers = checkStatement(isTop, false, nextTk, layers, tx) // stChecker.go
 		errs = append(errs, ers...)
 		if end {

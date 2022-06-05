@@ -23,10 +23,11 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=2
-FILE_NAME_0=6615;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Freader%2FexReader.go;0;2
-FILE_NAME_1=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fexpression%2Fexpression.go;0;2
-FILE_NAME_2=1555;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fchecker%2FexChecker.go;0;2
+current_page=3
+FILE_NAME_0=2867;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdSys.go;0;2
+FILE_NAME_1=19189;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdArr.go;0;2
+FILE_NAME_2=4019;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fexpression%2Fexpression.go;0;2
+FILE_NAME_3=977;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2Frunner.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

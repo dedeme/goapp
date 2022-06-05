@@ -151,15 +151,16 @@ func mapSize(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \m -> a
-func mapValues(args []*expression.T) (ex *expression.T, err error) {
+// \m, s -> ()
+func mapRemove(args []*expression.T) (ex *expression.T, err error) {
 	switch m := (args[0].Value).(type) {
 	case map[string]*expression.T:
-		var exs []*expression.T
-		for _, v := range m {
-			exs = append(exs, v)
+		switch s := (args[1].Value).(type) {
+		case string:
+			delete(m, s)
+		default:
+			err = bfail.Type(args[1], "string")
 		}
-		ex = expression.MkFinal(exs)
 	default:
 		err = bfail.Type(args[0], "map")
 	}
@@ -210,6 +211,21 @@ func mapToIter(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \m -> a
+func mapValues(args []*expression.T) (ex *expression.T, err error) {
+	switch m := (args[0].Value).(type) {
+	case map[string]*expression.T:
+		var exs []*expression.T
+		for _, v := range m {
+			exs = append(exs, v)
+		}
+		ex = expression.MkFinal(exs)
+	default:
+		err = bfail.Type(args[0], "map")
+	}
+	return
+}
+
 func mapGet(fname string) (fn *bfunction.T, ok bool) {
 	ok = true
 	switch fname {
@@ -225,12 +241,14 @@ func mapGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mapKeys)
 	case "size":
 		fn = bfunction.New(1, mapSize)
-	case "values":
-		fn = bfunction.New(1, mapValues)
+	case "remove":
+		fn = bfunction.New(2, mapRemove)
 	case "toArr":
 		fn = bfunction.New(1, mapToArr)
 	case "toIter":
 		fn = bfunction.New(1, mapToIter)
+	case "values":
+		fn = bfunction.New(1, mapValues)
 	default:
 		ok = false
 	}

@@ -69,7 +69,20 @@ func threadRun(args []*expression.T) (ex *expression.T, err error) {
 			}
 
 			if er != nil {
-				fmt.Println("[THREAD]:", er)
+				if SysFffail != nil {
+					e2 := fail.MkSysError(er.Error(), SysFffail)
+					fn := e2.Fn
+					ex := expression.New(expression.ExPr, []interface{}{
+						expression.MkFinal(fn),
+						[]*expression.T{expression.MkFinal(e2.Msg)}})
+					_, er3 := Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{})
+					if er3 != nil {
+						fmt.Printf("Error in custom function sys.fail:\n%v\n%v\n",
+							expression.MkFinal(fn), er3)
+					}
+				} else {
+					fmt.Println("[THREAD]:", er)
+				}
 			}
 		}()
 	default:

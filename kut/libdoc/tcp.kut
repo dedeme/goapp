@@ -24,9 +24,9 @@
 ///   sv = tcp.server(23344);
 ///
 ///   while () {
-///     Rq = tcp.accept(sv, 0);
-///     if (Rq[1] != "") sys.fail(Rq[1]);
-///     if (process(Rq[0])) break;
+///     ConnErr = tcp.accept(sv, 0);
+///     if (ConnErr[1] != "") sys.fail(ConnErr[1]);
+///     if (process(ConnErr[0])) break;
 ///   }
 ///
 ///   tcp.closeServer(sv);
@@ -53,8 +53,8 @@
 /// thread.join(th1);
 
 /// Waits for a new connection on server 'sv'.
-/// The connection will have got a maximum 'tm' milliseconds to send a
-/// response. If 'tm' <= 0 there will not have limit for waiting.
+/// The connection will have got a maximum 'tm' milliseconds to finish any
+/// I/O operation. If 'tm' <= 0 there will not have limit for waiting.
 ///
 /// tcp.accept returns an array with the following two elements:
 ///   -First: A new tcp connection to use with tcp.read, tcp.readBin, tcp.Write
@@ -87,11 +87,11 @@ closeServer = \sv -> {};
 dial = \server, tm -> {};
 
 /// Reads a string from connection 'conn' with a maximum bytes length of 'lim'
-/// \<tcpConnection> -> s
+/// \<tcpConnection>, i -> s
 read = \conn, lim -> {};
 
 /// Reads a <bytes> from connection 'conn' with a maximum length of 'lim'.
-/// \<tcpConnection> -> <bytes>
+/// \<tcpConnection>, i -> <bytes>
 readBin = \conn, lim -> {};
 
 /// Returns a tcp server to use with 'tcp.accept'.
@@ -101,11 +101,11 @@ server = \port -> {};
 
 /// Writes a string through connection 'conn'.
 /// \<tcpConnection>, s -> ()
-write = \conn, s -> {}
+write = \conn, s -> {};
 
 /// Writes a bytes through connection 'conn'.
 /// \<tcpConnection>, <bytes> -> ()
-writeBin = \conn, bs -> {}
+writeBin = \conn, bs -> {};
 
 
 

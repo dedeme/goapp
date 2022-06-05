@@ -19,12 +19,11 @@ import (
 	"strings"
 )
 
-func solveIsolateFunction(f *function.T, pars []*expression.T) (
+func solveIsolateFunction(f function.I, pars []*expression.T) (
 	ex *expression.T, err error,
 ) {
-	fex := expression.New(expression.ExPr, []interface{}{
-		expression.MkFinal(f), pars})
-	ex, err = Solve(f.Imports, f.Hp0, f.Hps, fex, []*statement.T{})
+	fex, imports, hp0, hps := f.MkExPr(pars)
+	ex, err = Solve(imports, hp0, hps, fex, []*statement.T{})
 	return
 }
 
@@ -165,7 +164,7 @@ func Solve(
 		}
 	case expression.Func:
 		fn := e.Value.(*function.T)
-		fn.SetContext(imports, hp0, hps)
+		fn = fn.SetContext(imports, hp0, hps)
 		ex = expression.MkFinal(fn)
 	case expression.Sym:
 		ex, err = solveSym(imports, hp0, hps, e.Value.(string), stackT)
@@ -703,7 +702,7 @@ func Solve(
 					ex = ex1
 				}
 			default:
-				err = fail.Type(ex1, stackT, "bool")
+				err = fail.Type(ex0, stackT, "bool")
 			}
 		}
 	default:

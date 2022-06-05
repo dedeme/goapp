@@ -40,7 +40,7 @@ func ErrIfNotFound(layers [][]*T, sym *T) error {
 	}
 	return errors.New(fmt.Sprintf(
 		"%v:%v: Symbol not declared (%v)",
-		fileix.Get(sym.File), sym.Nline, sym.Name,
+		fileix.GetFail(sym.File), sym.Nline, sym.Name,
 	))
 }
 
@@ -51,7 +51,7 @@ func ErrIfFound(layers [][]*T, sym *T) error {
 		if s.Name == sym.Name {
 			return errors.New(fmt.Sprintf(
 				"%v:%v: Symbol '%v' already declared in line %v",
-				fileix.Get(sym.File), sym.Nline, sym.Name, s.Nline,
+				fileix.GetFail(sym.File), sym.Nline, sym.Name, s.Nline,
 			))
 		}
 	}

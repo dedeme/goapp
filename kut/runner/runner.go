@@ -36,7 +36,11 @@ func trace(
 	var exp *expression.T
 	exp, err = Solve(imports, hp0, hps, st.Value.(*expression.T), stackT)
 	if err == nil {
-		fmt.Printf("%v:%v: %v\n", fileix.Get(st.File), st.Nline, exp)
+    tx := fmt.Sprint(exp)
+    if len(tx) > 70 {
+      tx = tx[:67] + "..."
+    }
+		fmt.Printf("%v:%v: %v\n", fileix.Get(st.File), st.Nline, tx)
 	}
 	return
 }
@@ -324,7 +328,7 @@ func RunStat(
 		withReturn, withBreak, withContinue, ret, err, stackT =
 			Run(stackT, imports, hp0, hps, st.Value.([]*statement.T))
 	case statement.FunctionCalling:
-		ret, err = Solve(imports, hp0, hps, st.Value.(*expression.T), stackT)
+		_, err = Solve(imports, hp0, hps, st.Value.(*expression.T), stackT)
 	case statement.If:
 		withReturn, withBreak, withContinue, ret, err, stackT =
 			runIf(stackT, imports, hp0, hps, st) // fluxRunner.go

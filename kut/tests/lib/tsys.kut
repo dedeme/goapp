@@ -23,5 +23,13 @@ assert sys.type(ttarr) == "module";
 
 assert arr.any(map.keys(sys.environ()), \k -> return k == "USER";);
 
+// sys.println(sys.readLine() + "---");
+
+//sys.ffail(\m-> {
+//  sys.println("abc\n" + m);
+//});
+//sys.println(3);
+//sys.fail("An error");
+
 sys.println("  finished.");
 

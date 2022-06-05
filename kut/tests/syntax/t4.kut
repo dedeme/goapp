@@ -4,6 +4,7 @@
 //im1 = "new"; // Makes fail 'import "im1";'
 
 import "im1";
+import "dir/im1" : im1b;
 
 assert im1.v == 3;
 
@@ -27,10 +28,19 @@ assert im1.im.fn(3) == "3: b";
 
 assert im1.fn3() == "b";
 
+assert im1b.vv == 3;
+assert im1b.vvb[0] == "b";
+
 {
   f2 = "new value";
   assert f2 == "new value";
   // im1 = "new value"; // <- fail
 }
+
+higFn = \v -> return \-> return v;;;
+fn1 = higFn("a");
+fn2 = higFn("b");
+assert fn1() == "a";
+assert fn2() == "b";
 
 sys.println("t4 test OK");

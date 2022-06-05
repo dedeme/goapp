@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dedeme/golib/file"
+	"os"
 	"path"
 )
 
@@ -16,13 +17,25 @@ var paths []string
 
 // Add path to code file paths and returns its index.
 // If path already has been added, it do nothing and also returns its index.
-func Add(fpath string) int {
+//    fix: Index of file which imports 'ipath' or -1 if 'ipath' is the main file.
+//    ipath: Import file path. It can be:
+//             -Absolute          : In any case.
+//             -Relative to 'fix' : fix must be != -1 and 'path.parent(fix)/ipath'
+//                                  must be found in the file system.
+//             -Relative to 'Root': In any case.
+func Add(fix int, ipath string) int {
+	if fix != -1 && !path.IsAbs(ipath) {
+		newPath := path.Join(path.Dir(paths[fix]), ipath)
+		if file.Exists(path.Join(Root, newPath+".kut")) {
+			ipath = newPath
+		}
+	}
 	for ix, p := range paths {
-		if p == fpath {
+		if p == ipath {
 			return ix
 		}
 	}
-	paths = append(paths, fpath)
+	paths = append(paths, ipath)
 	return len(paths) - 1
 }
 
@@ -42,14 +55,18 @@ func Get(ix int) (s string) {
 	return
 }
 
-// Returns the complete path with index 'ix' or raise 'panic'.
-func GetComplete(ix int) (s string) {
+func GetFail(ix int) (s string) {
 	if ix < 0 {
 		return "Built-in"
 	}
-	s = paths[ix]
 	if !path.IsAbs(s) {
-		s = path.Join(Root, s)
+		s = path.Clean(path.Join(Root, paths[ix]+".kut"))
+	}
+	if !path.IsAbs(s) {
+		dir, err := os.Getwd()
+		if err == nil {
+			s = path.Clean(path.Join(dir, s))
+		}
 	}
 	return
 }
@@ -62,6 +79,11 @@ func Read(ix int) (code string, err error) {
 		}
 	}()
 
-	code = file.ReadAll(GetComplete(ix) + ".kut")
+	p := paths[ix]
+	if !path.IsAbs(p) {
+		p = path.Join(Root, p)
+	}
+
+	code = file.ReadAll(p + ".kut")
 	return
 }

@@ -47,7 +47,7 @@ func main() {
 	}
 
 	fileix.Root = path.Dir(p)
-	fix := fileix.Add(path.Base(p))
+	fix := fileix.Add(-1, path.Base(p))
 	var kutCode string
 	var err error
 	kutCode, err = fileix.Read(fix)
@@ -88,7 +88,20 @@ func main() {
 					expression.MkFinal(fn), err)
 			}
 		default:
-			fmt.Println(err)
+			if runner.SysFffail != nil {
+				e2 := fail.MkSysError(e.Error(), runner.SysFffail)
+				fn := e2.Fn
+				ex := expression.New(expression.ExPr, []interface{}{
+					expression.MkFinal(fn),
+					[]*expression.T{expression.MkFinal(e2.Msg)}})
+				_, err = runner.Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{})
+				if err != nil {
+					fmt.Printf("Error in custom function sys.fail:\n%v\n%v\n",
+						expression.MkFinal(fn), err)
+				}
+			} else {
+				fmt.Println(err)
+			}
 		}
 		return
 	}

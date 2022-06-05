@@ -31,7 +31,7 @@ atan = \n -> {};
 /// \f -> f
 atanh = \n -> {};
 
-/// Returns the next less integer of n.
+/// Returns the next greater integer of n.
 /// \f -> f
 ceil = \n -> {};
 
@@ -55,7 +55,7 @@ exp = \n -> {};
 /// \f -> f
 exp2 = \n -> {};
 
-/// Returns the next greater integer of n.
+/// Returns the next less integer of n.
 /// \f -> f
 floor = \n -> {};
 
@@ -95,6 +95,14 @@ pow10 = \ex -> {};
 /// \f, f -> f
 pow = \base, ex -> {};
 
+/// Returns a random number between 0 (inclusive) and 1 (exclusive).
+/// \ -> f
+rnd = \ -> {};
+
+/// Returns a random integer between 0 (inclusive) and top (exclusive).
+/// \i -> i
+rndi = \top -> {};
+
 /// Rounds 'n' with 'dec' decimals.
 /// \f, i -> f
 round = \n, dec -> {};
@@ -126,6 +134,14 @@ tanh = \n -> {};
 /// \s -> i
 toInt = \v -> {};
 
+/// Returns an 'int' option matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is not a string is in format 'integer', returns [].
+/// \i -> [i]
+/// \f -> [i]
+/// \s -> [i]|[]
+toIntOp = \v -> {};
+
 /// Returns the 'float' matching 'v'.
 /// 'v' admits several types.
 /// If 'v' is a string is in format 'integer.decimals'.
@@ -133,6 +149,14 @@ toInt = \v -> {};
 /// \f -> f
 /// \s -> f
 toFloat = \v -> {};
+
+/// Returns a 'float' option matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is a not a string in format 'integer.decimals', returns [].
+/// \i -> [f]
+/// \f -> [f]
+/// \s -> [f]|[]
+toFloatOp = \v -> {};
 
 /// Returns the 'string' matching 'v'.
 /// 'v' admits several types.
@@ -142,6 +166,15 @@ toFloat = \v -> {};
 /// \f -> s
 /// \s -> s
 toStr = \v -> {};
+
+/// Returns a 'string' optoin matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is a string containing a number, returns the same string as an option.
+/// In other case retuns [].
+/// \i -> [s]
+/// \f -> [s]
+/// \s -> [s]
+toStrOp = \v -> {};
 
 /// Returns the integer part of n.
 /// \f -> f

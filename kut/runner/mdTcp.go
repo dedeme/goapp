@@ -9,6 +9,7 @@ import (
 	"github.com/dedeme/kut/builtin/bfail"
 	"github.com/dedeme/kut/builtin/bfunction"
 	"github.com/dedeme/kut/expression"
+	"io"
 	"net"
 	"strconv"
 	"time"
@@ -35,7 +36,7 @@ func tcpAccept(args []*expression.T) (ex *expression.T, err error) {
 				errs = "tcp.Accept ERROR:\n" + er.Error()
 				conEx = expression.MkEmpty()
 			} else if tm > 0 {
-				err = conn.SetWriteDeadline(time.UnixMilli(tm))
+				err = conn.SetDeadline(time.Now().Add(time.Duration(tm) * time.Millisecond))
 			}
 			errEx := expression.MkFinal(errs)
 			ex = expression.MkFinal([]*expression.T{conEx, errEx})
@@ -86,12 +87,12 @@ func tcpDial(args []*expression.T) (ex *expression.T, err error) {
 				errs = "tcp.Accept ERROR:\n" + er.Error()
 				conEx = expression.MkEmpty()
 			} else if tm > 0 {
-				err = conn.SetReadDeadline(time.UnixMilli(tm))
+				err = conn.SetDeadline(time.Now().Add(time.Duration(tm) * time.Millisecond))
 			}
 			errEx := expression.MkFinal(errs)
 			ex = expression.MkFinal([]*expression.T{conEx, errEx})
 		default:
-			err = bfail.Type(args[0], "int")
+			err = bfail.Type(args[1], "int")
 		}
 	default:
 		err = bfail.Type(args[0], "string")
@@ -112,6 +113,13 @@ func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 			bs := make([]byte, lim+1)
 			var n int
 			n, err = cn.Read(bs)
+			if err != nil {
+				if err == io.EOF {
+					ex = expression.MkFinal("")
+					err = nil
+				}
+				return
+			}
 			n2 := int64(n)
 			if n2 > lim {
 				err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
@@ -123,7 +131,7 @@ func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 			}
 			ex = expression.MkFinal(string(bs2))
 		default:
-			err = bfail.Type(args[0], "string")
+			err = bfail.Type(args[1], "int")
 		}
 	default:
 		err = bfail.Type(args[0], "<tcpConnection>")
@@ -144,6 +152,13 @@ func tcpReadBin(args []*expression.T) (ex *expression.T, err error) {
 			bs := make([]byte, lim+1)
 			var n int
 			n, err = cn.Read(bs)
+			if err != nil {
+				if err == io.EOF {
+					ex = expression.MkFinal([]byte{})
+					err = nil
+				}
+				return
+			}
 			n2 := int64(n)
 			if n2 > lim {
 				err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
@@ -155,7 +170,7 @@ func tcpReadBin(args []*expression.T) (ex *expression.T, err error) {
 			}
 			ex = expression.MkFinal(bs2)
 		default:
-			err = bfail.Type(args[0], "string")
+			err = bfail.Type(args[1], "int")
 		}
 	default:
 		err = bfail.Type(args[0], "<tcpConnection>")
@@ -187,7 +202,7 @@ func tcpWrite(args []*expression.T) (ex *expression.T, err error) {
 		case string:
 			fmt.Fprintf(cn, s)
 		default:
-			err = bfail.Type(args[0], "string")
+			err = bfail.Type(args[1], "string")
 		}
 	default:
 		err = bfail.Type(args[0], "<tcpConnection>")
@@ -203,7 +218,7 @@ func tcpWriteBin(args []*expression.T) (ex *expression.T, err error) {
 		case []byte:
 			_, err = cn.Write(bs)
 		default:
-			err = bfail.Type(args[0], "string")
+			err = bfail.Type(args[1], "<byte>")
 		}
 	default:
 		err = bfail.Type(args[0], "<tcpConnection>")
@@ -231,7 +246,7 @@ func tcpGet(fname string) (fn *bfunction.T, ok bool) {
 	case "write":
 		fn = bfunction.New(2, tcpWrite)
 	case "writeBin":
-		fn = bfunction.New(2, tcpWrite)
+		fn = bfunction.New(2, tcpWriteBin)
 	default:
 		ok = false
 	}
