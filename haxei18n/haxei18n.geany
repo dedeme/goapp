@@ -24,8 +24,8 @@ long_line_column=80
 
 [files]
 current_page=0
-FILE_NAME_0=5235;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fhaxei18n%2Fhaxei18n.go;0;2
-FILE_NAME_1=84;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fgo.mod;0;2
+FILE_NAME_0=286;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fhaxei18n%2Fhaxei18n.go;0;2
+FILE_NAME_1=96;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fhaxei18n%2Fgo.mod;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -52,3 +52,12 @@ filetypes=Go;
 line_wrapping=false
 line_break_column=80
 auto_continue_multiline=false
+
+[prjorg]
+source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
+header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
+ignored_dirs_patterns=.*;CVS;
+ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.pyc;*.mo;*.gmo;
+generate_tag_prefs=0
+show_empty_dirs=true
+external_dirs=

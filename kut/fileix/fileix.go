@@ -7,7 +7,7 @@ package fileix
 import (
 	"errors"
 	"fmt"
-	"github.com/dedeme/golib/file"
+	"github.com/dedeme/ktlib/file"
 	"os"
 	"path"
 )
@@ -84,6 +84,6 @@ func Read(ix int) (code string, err error) {
 		p = path.Join(Root, p)
 	}
 
-	code = file.ReadAll(p + ".kut")
+	code = file.Read(p + ".kut")
 	return
 }

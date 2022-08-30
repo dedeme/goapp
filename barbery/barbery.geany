@@ -23,10 +23,9 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=2
-FILE_NAME_0=1031;Go;0;EUTF-8;1;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fbarbery%2Fbarber.go;0;2
-FILE_NAME_1=256;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fbarbery%2Fbarbery.go;0;2
-FILE_NAME_2=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fbarbery%2Fclient.go;0;2
+current_page=0
+FILE_NAME_0=508;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fmain.go;0;2
+FILE_NAME_1=95;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fgo.mod;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
@@ -37,16 +36,16 @@ NF_00_CM=
 NF_00_WD=
 EX_00_LB=Run
 EX_00_CM=/dm/dmGo/go/bin/barbery
-EX_00_WD=%p/barbery
+EX_00_WD=%p
 GoFT_01_LB=Format
-GoFT_01_CM=go fmt %d/*
-GoFT_01_WD=
+GoFT_01_CM=gofmt -l -s -w .
+GoFT_01_WD=%p
 GoFT_02_LB=
 GoFT_02_CM=
 GoFT_02_WD=
 GoFT_00_LB=_Build
 GoFT_00_CM=go install
-GoFT_00_WD=%p/barbery
+GoFT_00_WD=%p
 filetypes=Go;
 
 [editor]

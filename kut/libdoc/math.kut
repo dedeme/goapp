@@ -59,12 +59,14 @@ exp2 = \n -> {};
 /// \f -> f
 floor = \n -> {};
 
-/// Returns the float value of 's', which contains a number in english format.
-/// \s -> f
+/// Returns the float value of 's' (option), which contains a number in english
+/// format.
+/// \s -> [f]|[]
 fromEn = \s -> {};
 
-/// Returns the float value of 's', which contains a number in ISO format.
-/// \s -> f
+/// Returns the float value of 's' (option), which contains a number in ISO
+/// format.
+/// \s -> [f]|[]
 fromIso = \s -> {};
 
 /// Returns the greater of n1 and n2.
