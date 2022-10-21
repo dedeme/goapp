@@ -53,6 +53,12 @@ fromStrOp = \s -> {};
 /// \i, s -> i
 fromClock = \tm, s -> {};
 
+/// Returns a time option equals to 'tm', but setting hour, minute and second
+/// matching a string type: "HH:MM:SS", and milliseconds to 0.
+/// If the function fails, it returns [].
+/// \i, s -> [i] | []
+fromClockOp = \tm, s -> {};
+
 /// Returns the day of 'tm', between 1 and 31, both inclusive.
 /// \i -> i
 day = \tm -> {};

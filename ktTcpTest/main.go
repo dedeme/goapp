@@ -12,7 +12,7 @@ import (
 
 // Process to run in server
 func process(conn tcp.ConnT) bool {
-	tx := tcp.Read(conn, 10000)
+	tx, _ := tcp.Read(conn, 10000)
 	if tx == "end" {
 		tcp.Write(conn, "Closing server")
 		tcp.CloseConnection(conn)
@@ -50,7 +50,8 @@ func main() {
 		}
 		sys.Println(str.Fmt("Sending 'abc%d'", i))
 		tcp.Write(conn, str.Fmt("abc%d", i))
-		sys.Println(tcp.Read(conn, 10000))
+    bs, _ := tcp.Read(conn, 10000)
+		sys.Println(bs)
 		tcp.CloseConnection(conn)
 	}
 
@@ -60,7 +61,8 @@ func main() {
 		panic(err)
 	}
 	tcp.Write(conn, "end")
-	sys.Println(tcp.Read(conn, 10000))
+  bs, _ := tcp.Read(conn, 10000)
+	sys.Println(bs)
 	tcp.CloseConnection(conn)
 
 	// Wait until server is ended.

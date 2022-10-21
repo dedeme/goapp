@@ -161,10 +161,10 @@ func timeFromEnOp(args []*expression.T) (ex *expression.T, err error) {
 					ex = expression.MkFinal(
 						time.Date(timeToInt(ps[2]), time.Month(timeToInt(ps[0])),
 							timeToInt(ps[1]), 12, 0, 0, 0, lc).UnixMilli())
-          ex = expression.MkFinal([]*expression.T{ex})
+					ex = expression.MkFinal([]*expression.T{ex})
 				} else {
-          ex = expression.MkFinal([]*expression.T{})
-        }
+					ex = expression.MkFinal([]*expression.T{})
+				}
 			}
 		default:
 			err = bfail.Type(args[1], "string")
@@ -220,10 +220,10 @@ func timeFromIsoOp(args []*expression.T) (ex *expression.T, err error) {
 					ex = expression.MkFinal(
 						time.Date(timeToInt(ps[2]), time.Month(timeToInt(ps[1])),
 							timeToInt(ps[0]), 12, 0, 0, 0, lc).UnixMilli())
-          ex = expression.MkFinal([]*expression.T{ex})
+					ex = expression.MkFinal([]*expression.T{ex})
 				} else {
-          ex = expression.MkFinal([]*expression.T{})
-        }
+					ex = expression.MkFinal([]*expression.T{})
+				}
 			}
 		default:
 			err = bfail.Type(args[1], "string")
@@ -255,7 +255,7 @@ func timeFromStr(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \s -> i
+// \s -> [i]|[]
 func timeFromStrOp(args []*expression.T) (ex *expression.T, err error) {
 	switch d := (args[0].Value).(type) {
 	case string:
@@ -268,10 +268,10 @@ func timeFromStrOp(args []*expression.T) (ex *expression.T, err error) {
 				ex = expression.MkFinal(
 					time.Date(timeToInt(d[:4]), time.Month(timeToInt(d[4:6])),
 						timeToInt(d[6:]), 12, 0, 0, 0, lc).UnixMilli())
-        ex = expression.MkFinal([]*expression.T{ex})
+				ex = expression.MkFinal([]*expression.T{ex})
 			} else {
-        ex = expression.MkFinal([]*expression.T{})
-      }
+				ex = expression.MkFinal([]*expression.T{})
+			}
 		}
 	default:
 		err = bfail.Type(args[0], "string")
@@ -302,6 +302,43 @@ func timeFromClock(args []*expression.T) (ex *expression.T, err error) {
 						time.Date(tm.Year(), tm.Month(), tm.Day(),
 							timeToInt(ps[0]), timeToInt(ps[1]), timeToInt(ps[2]),
 							0, lc).UnixMilli())
+				}
+			}
+		default:
+			err = bfail.Type(args[1], "string")
+		}
+	default:
+		err = bfail.Type(args[0], "int")
+	}
+	return
+}
+
+// \i, s -> [i]|[]
+func timeFromClockOp(args []*expression.T) (ex *expression.T, err error) {
+	switch d := (args[0].Value).(type) {
+	case int64:
+		switch cl := (args[1].Value).(type) {
+		case string:
+			ps := strings.Split(cl, ":")
+			if len(ps) != 3 || !timeAllDigits(ps[0]) ||
+				!timeAllDigits(ps[1]) || !timeAllDigits(ps[2]) ||
+				len(ps[0]) != 2 || len(ps[1]) != 2 || len(ps[2]) != 2 ||
+				timeToInt(ps[0]) < 0 || timeToInt(ps[0]) > 23 ||
+				timeToInt(ps[1]) < 0 || timeToInt(ps[1]) > 59 ||
+				timeToInt(ps[2]) < 0 || timeToInt(ps[1]) > 59 {
+				ex = expression.MkFinal([]*expression.T{})
+			} else {
+				tm := time.UnixMilli(d)
+				var lc *time.Location
+				lc, err = time.LoadLocation("Local")
+				if err == nil {
+					ex = expression.MkFinal(
+						time.Date(tm.Year(), tm.Month(), tm.Day(),
+							timeToInt(ps[0]), timeToInt(ps[1]), timeToInt(ps[2]),
+							0, lc).UnixMilli())
+					ex = expression.MkFinal([]*expression.T{ex})
+				} else {
+					ex = expression.MkFinal([]*expression.T{})
 				}
 			}
 		default:
@@ -538,6 +575,8 @@ func timeGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, timeFromStrOp)
 	case "fromClock":
 		fn = bfunction.New(2, timeFromClock)
+	case "fromClockOp":
+		fn = bfunction.New(2, timeFromClockOp)
 	case "day":
 		fn = bfunction.New(1, timeDay)
 	case "month":

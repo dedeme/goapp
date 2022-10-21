@@ -36,10 +36,10 @@ func trace(
 	var exp *expression.T
 	exp, err = Solve(imports, hp0, hps, st.Value.(*expression.T), stackT)
 	if err == nil {
-    tx := fmt.Sprint(exp)
-    if len(tx) > 70 {
-      tx = tx[:67] + "..."
-    }
+		tx := fmt.Sprint(exp)
+		if len(tx) > 70 {
+			tx = tx[:67] + "..."
+		}
 		fmt.Printf("%v:%v: %v\n", fileix.Get(st.File), st.Nline, tx)
 	}
 	return

@@ -23,8 +23,10 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
-FILE_NAME_0=11040;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdTime.go;0;2
+current_page=1
+FILE_NAME_0=14573;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdTime.go;0;2
+FILE_NAME_1=1863;Kut;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Flibdoc%2Ftime.kut;0;2
+FILE_NAME_2=93;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fgo.mod;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

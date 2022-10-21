@@ -512,12 +512,12 @@ func mathToOp(tpTo token.Type) func([]*expression.T) (
 			switch tpTo {
 			case token.Int:
 				ex = expression.MkFinal([]*expression.T{
-          expression.MkFinal(int64(v))})
+					expression.MkFinal(int64(v))})
 			case token.Float:
 				ex = expression.MkFinal([]*expression.T{e})
 			case token.String:
 				ex = expression.MkFinal([]*expression.T{
-          expression.MkFinal(strconv.FormatFloat(v, 'g', -1, 64))})
+					expression.MkFinal(strconv.FormatFloat(v, 'g', -1, 64))})
 			}
 		case string:
 			var er error
@@ -543,8 +543,8 @@ func mathToOp(tpTo token.Type) func([]*expression.T) (
 			if er != nil {
 				ex = expression.MkFinal([]*expression.T{})
 			} else {
-        ex = expression.MkFinal([]*expression.T{ex})
-      }
+				ex = expression.MkFinal([]*expression.T{ex})
+			}
 		default:
 			err = bfail.Type(e, "int", "float", "string")
 		}

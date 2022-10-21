@@ -24,8 +24,8 @@ long_line_column=80
 
 [files]
 current_page=0
-FILE_NAME_0=466;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2FktTcpTest%2Fmain.go;0;2
-FILE_NAME_1=125;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2FktTcpTest%2Fgo.mod;0;2
+FILE_NAME_0=322;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2FktTcpTest%2Fmain.go;0;2
+FILE_NAME_1=97;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2FktTcpTest%2Fgo.mod;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
