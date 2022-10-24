@@ -204,3 +204,9 @@ assert arr.toStr(A!) == "[3, 2, 1]";
 
 sys.println("  finished.");
 
+sys.println("""
+    A multiline
+  not very long
+      string""");
+
+

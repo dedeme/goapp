@@ -73,9 +73,22 @@ fromIso = \s -> {};
 /// \f, f -> f
 max = \n1, n2 -> {};
 
+/// Returns the maximum value of a float.
+/// NOTE. 'minFloat' is not defined.
+/// \ -> f
+maxFloat = \ -> {};
+
+/// Returns the maximum value of an integer
+/// \ -> i
+maxInt = \ -> {};
+
 /// Returns the less of n1 and n2.
 /// \f, f -> f
 min = \n1, n2 -> {};
+
+/// Returns the minimum value of an integer
+/// \ -> i
+minInt = \ -> {};
 
 /// Returns napierian logarithm of n.
 /// \f -> f

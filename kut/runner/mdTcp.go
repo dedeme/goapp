@@ -100,7 +100,7 @@ func tcpDial(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<tcpConn>, i -> s
+// \<tcpConn>, i -> [s, s]
 func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 	switch cn := (args[0].Value).(type) {
 	case net.Conn:
@@ -112,24 +112,37 @@ func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 			}
 			bs := make([]byte, lim+1)
 			var n int
-			n, err = cn.Read(bs)
-			if err != nil {
-				if err == io.EOF {
-					ex = expression.MkFinal("")
-					err = nil
-				}
+			n, err0 := cn.Read(bs)
+			if err0 != nil {
+				if err0 == io.EOF {
+          ex = expression.MkFinal([]*expression.T {
+            expression.MkFinal(""),
+            expression.MkFinal(""),
+          })
+				} else {
+          ex = expression.MkFinal([]*expression.T {
+            expression.MkFinal(""),
+            expression.MkFinal(err0.Error()),
+          })
+        }
 				return
 			}
 			n2 := int64(n)
 			if n2 > lim {
-				err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
+        ex = expression.MkFinal([]*expression.T {
+          expression.MkFinal(""),
+          expression.MkFinal(fmt.Sprintf("Bytes read out of limit (%v)", lim)),
+        })
 				return
 			}
 			bs2 := make([]byte, n)
 			for i := 0; i < n; i++ {
 				bs2[i] = bs[i]
 			}
-			ex = expression.MkFinal(string(bs2))
+			ex = expression.MkFinal([]*expression.T {
+        expression.MkFinal(string(bs2)),
+        expression.MkFinal(""),
+      })
 		default:
 			err = bfail.Type(args[1], "int")
 		}
@@ -139,7 +152,7 @@ func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<tcpConn>, i -> <bytes>
+// \<tcpConn>, i -> [s, <bytes>]
 func tcpReadBin(args []*expression.T) (ex *expression.T, err error) {
 	switch cn := (args[0].Value).(type) {
 	case net.Conn:
@@ -150,25 +163,38 @@ func tcpReadBin(args []*expression.T) (ex *expression.T, err error) {
 				return
 			}
 			bs := make([]byte, lim+1)
-			var n int
-			n, err = cn.Read(bs)
-			if err != nil {
-				if err == io.EOF {
-					ex = expression.MkFinal([]byte{})
-					err = nil
-				}
+			n, err0 := cn.Read(bs)
+			if err0 != nil {
+				if err0 == io.EOF {
+          ex = expression.MkFinal([]*expression.T {
+            expression.MkFinal(""),
+            expression.MkFinal(""),
+          })
+				} else {
+          ex = expression.MkFinal([]*expression.T {
+            expression.MkFinal(""),
+            expression.MkFinal(err0.Error()),
+          })
+        }
 				return
 			}
 			n2 := int64(n)
 			if n2 > lim {
-				err = bfail.Mk(fmt.Sprintf("Bytes read out of limit (%v)", lim))
+        ex = expression.MkFinal([]*expression.T {
+          expression.MkFinal(""),
+          expression.MkFinal(fmt.Sprintf("Bytes read out of limit (%v)", lim)),
+        })
 				return
 			}
 			bs2 := make([]byte, n)
 			for i := 0; i < n; i++ {
 				bs2[i] = bs[i]
 			}
-			ex = expression.MkFinal(bs2)
+			ex = expression.MkFinal([]*expression.T {
+        expression.MkFinal(bs2),
+        expression.MkFinal(""),
+      })
+
 		default:
 			err = bfail.Type(args[1], "int")
 		}
@@ -194,13 +220,21 @@ func tcpServer(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<tcpConn>, s -> ()
+// \<tcpConn>, s -> [s]|[]
 func tcpWrite(args []*expression.T) (ex *expression.T, err error) {
 	switch cn := (args[0].Value).(type) {
 	case net.Conn:
 		switch s := (args[1].Value).(type) {
 		case string:
-			fmt.Fprintf(cn, s)
+			_, err0 := fmt.Fprintf(cn, s)
+      if err0 != nil {
+        ex = expression.MkFinal([]*expression.T {
+          expression.MkFinal(err0.Error()),
+        })
+      } else {
+        ex = expression.MkFinal([]*expression.T {})
+      }
+      return
 		default:
 			err = bfail.Type(args[1], "string")
 		}
@@ -210,13 +244,20 @@ func tcpWrite(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<tcpConn>, <bytes> -> ()
+// \<tcpConn>, <bytes> -> [s]|[]
 func tcpWriteBin(args []*expression.T) (ex *expression.T, err error) {
 	switch cn := (args[0].Value).(type) {
 	case net.Conn:
 		switch bs := (args[1].Value).(type) {
 		case []byte:
-			_, err = cn.Write(bs)
+			_, err0 := cn.Write(bs)
+      if err0 != nil {
+        ex = expression.MkFinal([]*expression.T {
+          expression.MkFinal(err0.Error()),
+        })
+      } else {
+        ex = expression.MkFinal([]*expression.T {})
+      }
 		default:
 			err = bfail.Type(args[1], "<byte>")
 		}

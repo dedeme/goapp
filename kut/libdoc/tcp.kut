@@ -86,12 +86,14 @@ closeServer = \sv -> {};
 /// \s, i -> [<tcpConn>, s]
 dial = \server, tm -> {};
 
-/// Reads a string from connection 'conn' with a maximum bytes length of 'lim'
-/// \<tcpConnection>, i -> s
+/// Returs an array [request, error], reading a string from connection 'conn'
+/// with a maximum bytes length of 'lim'. If a fail happends, returns an error.
+/// \<tcpConnection>, i -> [s, s]
 read = \conn, lim -> {};
 
-/// Reads a <bytes> from connection 'conn' with a maximum length of 'lim'.
-/// \<tcpConnection>, i -> <bytes>
+/// Returns an array [requests, error], reading a <bytes> from connection
+/// 'conn' with a maximum length of 'lim'.  If a fail happends, returns an error.
+/// \<tcpConnection>, i -> [<bytes>, s]
 readBin = \conn, lim -> {};
 
 /// Returns a tcp server to use with 'tcp.accept'.
@@ -100,11 +102,13 @@ readBin = \conn, lim -> {};
 server = \port -> {};
 
 /// Writes a string through connection 'conn'.
-/// \<tcpConnection>, s -> ()
+/// Returns an option with a error message if a fail happends.
+/// \<tcpConnection>, s -> [s]|[]
 write = \conn, s -> {};
 
 /// Writes a bytes through connection 'conn'.
-/// \<tcpConnection>, <bytes> -> ()
+/// Returns an option with a error message if a fail happends.
+/// \<tcpConnection>, <bytes> -> [s]|[]
 writeBin = \conn, bs -> {};
 
 

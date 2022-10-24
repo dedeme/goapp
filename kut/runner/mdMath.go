@@ -305,6 +305,18 @@ func mathMax(exs []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \ -> f
+func mathMaxFloat(exs []*expression.T) (ex *expression.T, err error) {
+  ex = expression.MkFinal(math.MaxFloat64)
+	return
+}
+
+// \ -> i
+func mathMaxInt(exs []*expression.T) (ex *expression.T, err error) {
+  ex = expression.MkFinal(math.MaxInt64)
+	return
+}
+
 // \f, f -> f
 func mathMin(exs []*expression.T) (ex *expression.T, err error) {
 	switch n1 := (exs[0].Value).(type) {
@@ -318,6 +330,12 @@ func mathMin(exs []*expression.T) (ex *expression.T, err error) {
 	default:
 		err = bfail.Type(exs[0], "float")
 	}
+	return
+}
+
+// \ -> i
+func mathMinInt(exs []*expression.T) (ex *expression.T, err error) {
+  ex = expression.MkFinal(math.MinInt64)
 	return
 }
 
@@ -608,8 +626,14 @@ func mathGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mathLog2)
 	case "max":
 		fn = bfunction.New(2, mathMax)
+	case "maxInt":
+		fn = bfunction.New(0, mathMaxInt)
+	case "maxFloat":
+		fn = bfunction.New(0, mathMaxFloat)
 	case "min":
 		fn = bfunction.New(2, mathMin)
+	case "minInt":
+		fn = bfunction.New(0, mathMinInt)
 	case "pow":
 		fn = bfunction.New(2, mathPow)
 	case "pow10":
