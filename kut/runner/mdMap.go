@@ -109,6 +109,28 @@ func mapFget(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \m, s -> [*]|[]
+func mapGetOp(args []*expression.T) (ex *expression.T, err error) {
+	switch m := (args[0].Value).(type) {
+	case map[string]*expression.T:
+		switch s := (args[1].Value).(type) {
+		case string:
+			ex0, ok := m[s]
+      if ok {
+				ex = expression.MkFinal([]*expression.T{ex0})
+			} else {
+        ex = expression.MkFinal([]*expression.T{})
+      }
+		default:
+			err = bfail.Type(args[1], "string")
+		}
+	default:
+		err = bfail.Type(args[0], "map")
+	}
+	return
+}
+
+// \m, s -> b
 func mapHasKey(args []*expression.T) (ex *expression.T, err error) {
 	switch m := (args[0].Value).(type) {
 	case map[string]*expression.T:
@@ -235,6 +257,8 @@ func mapGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mapFromArr)
 	case "fromIter":
 		fn = bfunction.New(1, mapFromIter)
+	case "get":
+		fn = bfunction.New(2, mapGetOp)
 	case "hasKey":
 		fn = bfunction.New(2, mapHasKey)
 	case "keys":

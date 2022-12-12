@@ -402,7 +402,7 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 		}
 
 		var st *statement.T
-		st, nextTk, eof, err = readStatementx(nil, tx)
+		st, nextTk, eof, err = readStatement(nil, tx)
 		if err != nil {
 			return
 		}

@@ -115,34 +115,34 @@ func tcpRead(args []*expression.T) (ex *expression.T, err error) {
 			n, err0 := cn.Read(bs)
 			if err0 != nil {
 				if err0 == io.EOF {
-          ex = expression.MkFinal([]*expression.T {
-            expression.MkFinal(""),
-            expression.MkFinal(""),
-          })
+					ex = expression.MkFinal([]*expression.T{
+						expression.MkFinal(""),
+						expression.MkFinal(""),
+					})
 				} else {
-          ex = expression.MkFinal([]*expression.T {
-            expression.MkFinal(""),
-            expression.MkFinal(err0.Error()),
-          })
-        }
+					ex = expression.MkFinal([]*expression.T{
+						expression.MkFinal(""),
+						expression.MkFinal(err0.Error()),
+					})
+				}
 				return
 			}
 			n2 := int64(n)
 			if n2 > lim {
-        ex = expression.MkFinal([]*expression.T {
-          expression.MkFinal(""),
-          expression.MkFinal(fmt.Sprintf("Bytes read out of limit (%v)", lim)),
-        })
+				ex = expression.MkFinal([]*expression.T{
+					expression.MkFinal(""),
+					expression.MkFinal(fmt.Sprintf("Bytes read out of limit (%v)", lim)),
+				})
 				return
 			}
 			bs2 := make([]byte, n)
 			for i := 0; i < n; i++ {
 				bs2[i] = bs[i]
 			}
-			ex = expression.MkFinal([]*expression.T {
-        expression.MkFinal(string(bs2)),
-        expression.MkFinal(""),
-      })
+			ex = expression.MkFinal([]*expression.T{
+				expression.MkFinal(string(bs2)),
+				expression.MkFinal(""),
+			})
 		default:
 			err = bfail.Type(args[1], "int")
 		}
@@ -166,34 +166,34 @@ func tcpReadBin(args []*expression.T) (ex *expression.T, err error) {
 			n, err0 := cn.Read(bs)
 			if err0 != nil {
 				if err0 == io.EOF {
-          ex = expression.MkFinal([]*expression.T {
-            expression.MkFinal(""),
-            expression.MkFinal(""),
-          })
+					ex = expression.MkFinal([]*expression.T{
+						expression.MkFinal(""),
+						expression.MkFinal(""),
+					})
 				} else {
-          ex = expression.MkFinal([]*expression.T {
-            expression.MkFinal(""),
-            expression.MkFinal(err0.Error()),
-          })
-        }
+					ex = expression.MkFinal([]*expression.T{
+						expression.MkFinal(""),
+						expression.MkFinal(err0.Error()),
+					})
+				}
 				return
 			}
 			n2 := int64(n)
 			if n2 > lim {
-        ex = expression.MkFinal([]*expression.T {
-          expression.MkFinal(""),
-          expression.MkFinal(fmt.Sprintf("Bytes read out of limit (%v)", lim)),
-        })
+				ex = expression.MkFinal([]*expression.T{
+					expression.MkFinal(""),
+					expression.MkFinal(fmt.Sprintf("Bytes read out of limit (%v)", lim)),
+				})
 				return
 			}
 			bs2 := make([]byte, n)
 			for i := 0; i < n; i++ {
 				bs2[i] = bs[i]
 			}
-			ex = expression.MkFinal([]*expression.T {
-        expression.MkFinal(bs2),
-        expression.MkFinal(""),
-      })
+			ex = expression.MkFinal([]*expression.T{
+				expression.MkFinal(bs2),
+				expression.MkFinal(""),
+			})
 
 		default:
 			err = bfail.Type(args[1], "int")
@@ -227,14 +227,14 @@ func tcpWrite(args []*expression.T) (ex *expression.T, err error) {
 		switch s := (args[1].Value).(type) {
 		case string:
 			_, err0 := fmt.Fprintf(cn, s)
-      if err0 != nil {
-        ex = expression.MkFinal([]*expression.T {
-          expression.MkFinal(err0.Error()),
-        })
-      } else {
-        ex = expression.MkFinal([]*expression.T {})
-      }
-      return
+			if err0 != nil {
+				ex = expression.MkFinal([]*expression.T{
+					expression.MkFinal(err0.Error()),
+				})
+			} else {
+				ex = expression.MkFinal([]*expression.T{})
+			}
+			return
 		default:
 			err = bfail.Type(args[1], "string")
 		}
@@ -251,13 +251,13 @@ func tcpWriteBin(args []*expression.T) (ex *expression.T, err error) {
 		switch bs := (args[1].Value).(type) {
 		case []byte:
 			_, err0 := cn.Write(bs)
-      if err0 != nil {
-        ex = expression.MkFinal([]*expression.T {
-          expression.MkFinal(err0.Error()),
-        })
-      } else {
-        ex = expression.MkFinal([]*expression.T {})
-      }
+			if err0 != nil {
+				ex = expression.MkFinal([]*expression.T{
+					expression.MkFinal(err0.Error()),
+				})
+			} else {
+				ex = expression.MkFinal([]*expression.T{})
+			}
 		default:
 			err = bfail.Type(args[1], "<byte>")
 		}

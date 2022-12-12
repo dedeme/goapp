@@ -112,6 +112,17 @@ func sysEnviron(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \i->()
+func sysExit(args []*expression.T) (ex *expression.T, err error) {
+	switch s := (args[0].Value).(type) {
+	case int64:
+		os.Exit(int(s))
+	default:
+		err = bfail.Type(args[0], "int")
+	}
+	return
+}
+
 // \s->()
 func sysFail(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
@@ -226,6 +237,8 @@ func sysGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(2, sysCmd)
 	case "environ":
 		fn = bfunction.New(0, sysEnviron)
+	case "exit":
+		fn = bfunction.New(1, sysExit)
 	case "fail":
 		fn = bfunction.New(1, sysFail)
 	case "ffail":

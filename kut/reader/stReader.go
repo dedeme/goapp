@@ -231,7 +231,7 @@ func readSymbol(sym string, tx *txReader.T) (
 	return
 }
 
-func readStatementx(tk *token.T, tx *txReader.T) (
+func readStatement(tk *token.T, tx *txReader.T) (
 	st *statement.T, nextTk *token.T, eof bool, err error,
 ) {
 	if tk == nil {
@@ -243,7 +243,7 @@ func readStatementx(tk *token.T, tx *txReader.T) (
 
 	switch tk.Type {
 	case token.LineComment, token.Comment:
-		st, nextTk, eof, err = readStatementx(nil, tx)
+		st, nextTk, eof, err = readStatement(nil, tx)
 	case token.Symbol:
 		st, nextTk, err = readSymbol(tk.Value.(string), tx)
 	case token.Operator:

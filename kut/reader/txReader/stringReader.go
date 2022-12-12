@@ -6,8 +6,8 @@ package txReader
 import (
 	"fmt"
 	"github.com/dedeme/kut/reader/token"
+	"strconv"
 	"strings"
-  "strconv"
 )
 
 func (r *T) readUnicode() (tx string, err error) {
@@ -17,7 +17,7 @@ func (r *T) readUnicode() (tx string, err error) {
 	}
 	var b byte
 	var eof bool
-  uni := ""
+	uni := ""
 	for i := 0; i < 4; i++ {
 		b, eof, err = r.readByte()
 		if err != nil {
@@ -31,16 +31,16 @@ func (r *T) readUnicode() (tx string, err error) {
 			err = r.Fail(fmt.Sprintf("Bad unicode sequence (%v%v).", tx, string(b)))
 			return
 		}
-    uni += string(b)
+		uni += string(b)
 	}
-  var unin int64
-  unin, err = strconv.ParseInt(uni, 16, 64)
-  if err != nil {
-    return
-  }
-  rn := make([]rune, 1)
-  rn[0] = rune(unin)
-  tx = string(rn)
+	var unin int64
+	unin, err = strconv.ParseInt(uni, 16, 64)
+	if err != nil {
+		return
+	}
+	rn := make([]rune, 1)
+	rn[0] = rune(unin)
+	tx = string(rn)
 	return
 }
 

@@ -27,7 +27,7 @@ func ReadMainBlock(tx *txReader.T) (
 	for {
 		var st *statement.T
 		var eof bool
-		st, tk, eof, err = readStatementx(tk, tx) // in stReader.go
+		st, tk, eof, err = readStatement(tk, tx) // in stReader.go
 		if err != nil {
 			break
 		}
@@ -117,7 +117,7 @@ func ReadBlock(tx *txReader.T) (
 	for {
 		var st *statement.T
 		var eof bool
-		st, tk, eof, err = readStatementx(tk, tx) // in stReader.go
+		st, tk, eof, err = readStatement(tk, tx) // in stReader.go
 		if err != nil {
 			break
 		}

@@ -27,6 +27,11 @@ cmd = \c, pars -> {};
 /// \->m[s]
 environ = \-> {};
 
+/// Finalizes immediately the program with 'code'.
+///   code: Code of error. Usually [0-125] and 0 as 'without error' result.
+/// \i -> ()
+exit = \code -> {}
+
 /// Set a function which will be called after 'sys.fail' and just
 /// before of ending the current thread or program.
 ///   fn: A function which receives a string wose first line is the

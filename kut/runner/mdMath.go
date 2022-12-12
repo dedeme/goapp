@@ -307,13 +307,13 @@ func mathMax(exs []*expression.T) (ex *expression.T, err error) {
 
 // \ -> f
 func mathMaxFloat(exs []*expression.T) (ex *expression.T, err error) {
-  ex = expression.MkFinal(math.MaxFloat64)
+	ex = expression.MkFinal(math.MaxFloat64)
 	return
 }
 
 // \ -> i
 func mathMaxInt(exs []*expression.T) (ex *expression.T, err error) {
-  ex = expression.MkFinal(math.MaxInt64)
+	ex = expression.MkFinal(int64(math.MaxInt64))
 	return
 }
 
@@ -335,7 +335,7 @@ func mathMin(exs []*expression.T) (ex *expression.T, err error) {
 
 // \ -> i
 func mathMinInt(exs []*expression.T) (ex *expression.T, err error) {
-  ex = expression.MkFinal(math.MinInt64)
+	ex = expression.MkFinal(int64(math.MinInt64))
 	return
 }
 

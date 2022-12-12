@@ -20,6 +20,11 @@ fromArr = \A -> {};
 /// \<iterator>[[s,*]...] -> m
 fromIter = \it -> {};
 
+/// Returns an array with the value for key 'k' or an empty array if it does
+/// not exist.
+/// \m, s -> [*]|[]
+get = \M, k -> {};
+
 /// Returns 'true' if 'M' has the key 'k'.
 /// \m, s -> b
 hasKey = \M, k -> {};

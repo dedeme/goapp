@@ -283,7 +283,7 @@ func iterFilter(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<iterator>, \*->b -> [*]
+// \<iterator>, \*->b -> [*]|[]
 func iterFind(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
 	case *iterator.T:

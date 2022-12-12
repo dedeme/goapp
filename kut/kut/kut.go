@@ -39,7 +39,7 @@ func main() {
 	check := false
 	p := os.Args[1]
 	if p == "-v" {
-		fmt.Println("Kut version v2022.03")
+		fmt.Println("Kut version v2022.10")
 		return
 	} else if len(os.Args) == 3 && p == "-c" {
 		check = true

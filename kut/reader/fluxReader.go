@@ -44,7 +44,7 @@ func readWhile(nline int, tx *txReader.T) (
 		ex = nil
 	}
 
-	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatement(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
@@ -90,7 +90,7 @@ func readIf(nline int, tx *txReader.T) (
 		return
 	}
 
-	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatement(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
@@ -105,7 +105,7 @@ func readElse(nline int, tx *txReader.T) (
 	st *statement.T, nextTk *token.T, err error,
 ) {
 	var eof bool
-	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatement(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
@@ -226,7 +226,7 @@ func readFor(nline int, tx *txReader.T) (
 		return
 	}
 
-	st, nextTk, eof, err = readStatementx(nil, tx) // stReader.go
+	st, nextTk, eof, err = readStatement(nil, tx) // stReader.go
 	if err == nil {
 		if eof {
 			err = tx.Fail("Unexpected end of file")
