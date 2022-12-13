@@ -224,6 +224,22 @@ func mathFromEn(exs []*expression.T) (ex *expression.T, err error) {
 }
 
 // \s -> [f] | []
+func mathFromHex(exs []*expression.T) (ex *expression.T, err error) {
+	switch s := (exs[0].Value).(type) {
+	case string:
+		i, er := strconv.ParseInt(s, 16, 64)
+		if er == nil {
+			ex = expression.MkFinal([]*expression.T{expression.MkFinal(i)})
+		} else {
+			ex = expression.MkFinal([]*expression.T{})
+		}
+	default:
+		err = bfail.Type(exs[0], "string")
+	}
+	return
+}
+
+// \s -> [f] | []
 func mathFromIso(exs []*expression.T) (ex *expression.T, err error) {
 	switch s := (exs[0].Value).(type) {
 	case string:
@@ -508,6 +524,18 @@ func mathTo(tpTo token.Type) func([]*expression.T) (*expression.T, error) {
 	}
 }
 
+
+// i -> s
+func mathToHex(exs []*expression.T) (ex *expression.T, err error) {
+	switch n := (exs[0].Value).(type) {
+	case int64:
+		ex = expression.MkFinal(strconv.FormatInt(n, 16))
+	default:
+		err = bfail.Type(exs[0], "int")
+	}
+	return
+}
+
 // \i | f | s -> [i | f | s] | []
 func mathToOp(tpTo token.Type) func([]*expression.T) (
 	*expression.T, error,
@@ -614,6 +642,8 @@ func mathGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mathFloor)
 	case "fromEn":
 		fn = bfunction.New(1, mathFromEn)
+	case "fromHex":
+		fn = bfunction.New(1, mathFromHex)
 	case "fromIso":
 		fn = bfunction.New(1, mathFromIso)
 	case "fromStr":
@@ -658,6 +688,8 @@ func mathGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mathTo(token.Float))
 	case "toFloatOp":
 		fn = bfunction.New(1, mathToOp(token.Float))
+	case "toHex":
+		fn = bfunction.New(1, mathToHex)
 	case "toInt":
 		fn = bfunction.New(1, mathTo(token.Int))
 	case "toIntOp":

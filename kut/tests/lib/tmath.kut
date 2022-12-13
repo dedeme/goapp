@@ -27,6 +27,9 @@ assert math.toStr(12.23) == "12.23";
 assert math.toStr("12e2") == "12e2";
 assert math.eq(math.toFloat("12e2"), 1200.0, 0.000001);
 
+assert math.toHex(16) == "10";
+assert math.toHex(math.fromHex("f4Abc")!) == "f4abc";
+
 assert eq(math.abs(3.2), 3.2);
 assert eq(math.abs(-3.2), 3.2);
 

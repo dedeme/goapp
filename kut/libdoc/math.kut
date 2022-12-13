@@ -64,6 +64,10 @@ floor = \n -> {};
 /// \s -> [f]|[]
 fromEn = \s -> {};
 
+/// Returns the int value of a hexadecimal string (option).
+/// \s -> [i]|[]
+fromHex = \s -> {};
+
 /// Returns the float value of 's' (option), which contains a number in ISO
 /// format.
 /// \s -> [f]|[]
@@ -141,22 +145,6 @@ tan = \n -> {};
 /// \f -> f
 tanh = \n -> {};
 
-/// Returns the 'int' matching 'v'.
-/// 'v' admits several types.
-/// If 'v' is a string is in format 'integer'.
-/// \i -> i
-/// \f -> i
-/// \s -> i
-toInt = \v -> {};
-
-/// Returns an 'int' option matching 'v'.
-/// 'v' admits several types.
-/// If 'v' is not a string is in format 'integer', returns [].
-/// \i -> [i]
-/// \f -> [i]
-/// \s -> [i]|[]
-toIntOp = \v -> {};
-
 /// Returns the 'float' matching 'v'.
 /// 'v' admits several types.
 /// If 'v' is a string is in format 'integer.decimals'.
@@ -172,6 +160,26 @@ toFloat = \v -> {};
 /// \f -> [f]
 /// \s -> [f]|[]
 toFloatOp = \v -> {};
+
+/// Return a hexadecimal represention of 'n'.
+/// \i -> s
+toHex = \n -> {};
+
+/// Returns the 'int' matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is a string is in format 'integer'.
+/// \i -> i
+/// \f -> i
+/// \s -> i
+toInt = \v -> {};
+
+/// Returns an 'int' option matching 'v'.
+/// 'v' admits several types.
+/// If 'v' is not a string is in format 'integer', returns [].
+/// \i -> [i]
+/// \f -> [i]
+/// \s -> [i]|[]
+toIntOp = \v -> {};
 
 /// Returns the 'string' matching 'v'.
 /// 'v' admits several types.
