@@ -70,6 +70,18 @@ next = \it -> {};
 /// (\\->b, \->*) -> <iterator>
 new = \hasNext, next -> {};
 
+/// Returns an iterator which generates values from 'start' (inclusive) to
+/// 'end' (exclusive).
+///   start: Start of iteration (inclusive).
+///   end  : End of interation (exclusive).
+/// \i, i -> <iterator>
+range = \start, end -> {};
+
+/// Equals to 'range(0, end)'.
+///   end  : End of interation (exclusive).
+/// \i -> <iterator>
+range0 = \end -> {}
+
 /// Returns the result of apply 'fn' on seed and the current element of 'it',
 /// succesively over every element.
 /// (\iterator, seed, \seed, element->newSeed) -> finalSeed

@@ -459,6 +459,46 @@ func iterNew(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \i, i -> <expression>
+func iterRangeCommon(start, end int64) *expression.T {
+	hasNext := func() bool {
+		return start < end
+	}
+	next := func() *expression.T {
+		r := start
+		start++
+		return expression.MkFinal(r)
+	}
+	return expression.MkFinal(iterator.New(hasNext, next))
+}
+
+// \i, i -> <iterator>
+func iterRange(args []*expression.T) (ex *expression.T, err error) {
+	switch start := (args[0].Value).(type) {
+	case int64:
+		switch end := (args[1].Value).(type) {
+		case int64:
+			ex = iterRangeCommon(start, end)
+		default:
+			err = bfail.Type(args[1], "int")
+		}
+	default:
+		err = bfail.Type(args[0], "int")
+	}
+	return
+}
+
+// \i -> <iterator>
+func iterRange0(args []*expression.T) (ex *expression.T, err error) {
+	switch end := (args[0].Value).(type) {
+	case int64:
+		ex = iterRangeCommon(0, end)
+	default:
+		err = bfail.Type(args[0], "int")
+	}
+	return
+}
+
 // \<iterator>, *1, \*1, *2->*1 -> *1
 func iterReduce(args []*expression.T) (ex *expression.T, err error) {
 	switch it := (args[0].Value).(type) {
@@ -626,6 +666,10 @@ func iterGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, iterNext)
 	case "new":
 		fn = bfunction.New(2, iterNew)
+	case "range":
+		fn = bfunction.New(2, iterRange)
+	case "range0":
+		fn = bfunction.New(1, iterRange0)
 	case "reduce":
 		fn = bfunction.New(3, iterReduce)
 	case "take":

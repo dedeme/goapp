@@ -136,7 +136,7 @@ func readFor(nline int, tx *txReader.T) (
 	}
 
 	var var1, var2 string
-	var ex1, ex2 *expression.T
+	var ex1, ex2, ex3 *expression.T
 	var stType statement.Type
 
 	tk, eof, err = tx.ReadToken()
@@ -206,7 +206,6 @@ func readFor(nline int, tx *txReader.T) (
 			err = tx.Fail("Ranges are not allowed in 'for (i, e : ...)'")
 			return
 		}
-		stType = statement.ForR
 		empty, ex2, tk, err = readExpression(tx) // exReader.go
 		if err != nil {
 			return
@@ -214,6 +213,19 @@ func readFor(nline int, tx *txReader.T) (
 		if empty {
 			err = tx.FailExpect("Expression", tk.String(), tx.Nline)
 			return
+		}
+		if tk.Type == token.Operator && tk.Value.(string) == ":" {
+			empty, ex3, tk, err = readExpression(tx) // exReader.go
+			if err != nil {
+				return
+			}
+			if empty {
+				err = tx.FailExpect("Expression", tk.String(), tx.Nline)
+				return
+			}
+			stType = statement.ForRS
+		} else {
+			stType = statement.ForR
 		}
 	} else {
 		if stType != statement.ForIx {
@@ -237,9 +249,12 @@ func readFor(nline int, tx *txReader.T) (
 			} else if stType == statement.For {
 				st = statement.New(
 					tx.File, nline, stType, []interface{}{var1, ex1, st})
-			} else {
+			} else if stType == statement.ForR {
 				st = statement.New(
 					tx.File, nline, stType, []interface{}{var1, ex1, ex2, st})
+			} else {
+				st = statement.New(
+					tx.File, nline, stType, []interface{}{var1, ex1, ex2, ex3, st})
 			}
 		}
 	}

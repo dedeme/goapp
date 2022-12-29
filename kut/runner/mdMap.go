@@ -116,11 +116,11 @@ func mapGetOp(args []*expression.T) (ex *expression.T, err error) {
 		switch s := (args[1].Value).(type) {
 		case string:
 			ex0, ok := m[s]
-      if ok {
+			if ok {
 				ex = expression.MkFinal([]*expression.T{ex0})
 			} else {
-        ex = expression.MkFinal([]*expression.T{})
-      }
+				ex = expression.MkFinal([]*expression.T{})
+			}
 		default:
 			err = bfail.Type(args[1], "string")
 		}

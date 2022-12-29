@@ -8,6 +8,7 @@ import (
 	"github.com/dedeme/kut/expression"
 	"github.com/dedeme/kut/heap"
 	"github.com/dedeme/kut/heap0"
+	"github.com/dedeme/kut/iterator"
 	"github.com/dedeme/kut/runner/fail"
 	"github.com/dedeme/kut/statement"
 )
@@ -118,8 +119,26 @@ func runFor(
 				break
 			}
 		}
+	case *iterator.T:
+		for v.HasNext() {
+			e := v.Next()
+			var ex *expression.T
+			ex, err = Solve(imports, hp0, hps, e, stackTrace)
+			if err != nil {
+				break
+			}
+			sts[0] = statement.NewBuilt(statement.Assign, []*expression.T{
+				expression.New(expression.Sym, varName), ex})
+			fst2 := statement.NewBuilt(statement.Block, sts)
+			var withBreak bool
+			withReturn, withBreak, _, ret, err, _ =
+				RunStat(stackTrace, imports, hp0, hps, fst2)
+			if withBreak || withReturn || err != nil {
+				break
+			}
+		}
 	default:
-		err = fail.Type(a, stackTrace, "array")
+		err = fail.Type(a, stackTrace, "array or <iterator>")
 	}
 	return
 }
@@ -169,8 +188,31 @@ func runForIx(
 				break
 			}
 		}
+	case *iterator.T:
+		i := 0
+		for v.HasNext() {
+			e := v.Next()
+			var ex *expression.T
+			ex, err = Solve(imports, hp0, hps, e, stackTrace)
+			if err != nil {
+				break
+			}
+			sts[0] = statement.NewBuilt(statement.Assign, []*expression.T{
+				expression.New(expression.Sym, varName), ex})
+			sts[1] = statement.NewBuilt(statement.Assign, []*expression.T{
+				expression.New(expression.Sym, ixName),
+				expression.MkFinal(int64(i))})
+			fst2 := statement.NewBuilt(statement.Block, sts)
+			var withBreak bool
+			withReturn, withBreak, _, ret, err, _ =
+				RunStat(stackTrace, imports, hp0, hps, fst2)
+			if withBreak || withReturn || err != nil {
+				break
+			}
+			i++
+		}
 	default:
-		err = fail.Type(a, stackTrace, "array")
+		err = fail.Type(a, stackTrace, "array or <iterator>")
 	}
 	return
 }
@@ -240,7 +282,7 @@ func runForR(
 	return
 }
 
-func runForRI(
+func runForRS(
 	stackTrace []*statement.T,
 	imports map[string]int, hp0 heap0.T, hps []heap.T,
 	st *statement.T,
@@ -258,7 +300,12 @@ func runForRI(
 	if err != nil {
 		return
 	}
-	fst := ps[3].(*statement.T)
+	var step *expression.T
+	step, err = Solve(imports, hp0, hps, ps[3].(*expression.T), stackTrace)
+	if err != nil {
+		return
+	}
+	fst := ps[4].(*statement.T)
 	sts := []*statement.T{statement.NewBuilt(statement.Empty, nil)}
 	if fst.Type == statement.Block {
 		sts = append(sts, fst.Value.([]*statement.T)...)
@@ -269,32 +316,39 @@ func runForRI(
 	case int64:
 		switch vend := (end.Value).(type) {
 		case int64:
-			if vend >= vstart {
-				for i := vstart; i <= vend; i++ {
-					sts[0] = statement.NewBuilt(statement.Assign, []*expression.T{
-						expression.New(expression.Sym, varName),
-						expression.MkFinal(i)})
-					fst2 := statement.NewBuilt(statement.Block, sts)
-					var withBreak bool
-					withReturn, withBreak, _, ret, err, _ =
-						RunStat(stackTrace, imports, hp0, hps, fst2)
-					if withBreak || withReturn || err != nil {
-						break
+			switch step := (step.Value).(type) {
+			case int64:
+				if step > 0 {
+					for i := vstart; i <= vend; i += step {
+						sts[0] = statement.NewBuilt(statement.Assign, []*expression.T{
+							expression.New(expression.Sym, varName),
+							expression.MkFinal(i)})
+						fst2 := statement.NewBuilt(statement.Block, sts)
+						var withBreak bool
+						withReturn, withBreak, _, ret, err, _ =
+							RunStat(stackTrace, imports, hp0, hps, fst2)
+						if withBreak || withReturn || err != nil {
+							break
+						}
 					}
-				}
-			} else {
-				for i := vstart; i >= vend; i-- {
-					sts[0] = statement.NewBuilt(statement.Assign, []*expression.T{
-						expression.New(expression.Sym, varName),
-						expression.MkFinal(i)})
-					fst2 := statement.NewBuilt(statement.Block, sts)
-					var withBreak bool
-					withReturn, withBreak, _, ret, err, _ =
-						RunStat(stackTrace, imports, hp0, hps, fst2)
-					if withBreak || withReturn || err != nil {
-						break
+				} else if step < 0 {
+					for i := vstart; i >= vend; i += step {
+						sts[0] = statement.NewBuilt(statement.Assign, []*expression.T{
+							expression.New(expression.Sym, varName),
+							expression.MkFinal(i)})
+						fst2 := statement.NewBuilt(statement.Block, sts)
+						var withBreak bool
+						withReturn, withBreak, _, ret, err, _ =
+							RunStat(stackTrace, imports, hp0, hps, fst2)
+						if withBreak || withReturn || err != nil {
+							break
+						}
 					}
+				} else {
+					err = fail.Mk("'step' paramter of 'for' can not be 0", stackTrace)
 				}
+			default:
+				err = fail.Type(end, stackTrace, "int")
 			}
 		default:
 			err = fail.Type(end, stackTrace, "int")

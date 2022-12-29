@@ -98,6 +98,12 @@ func checkMainSymbol(
 		if tk.Type == token.Operator && tk.Value.(string) == ":" {
 			tk, ers = checkExpression(layers, tx) // exChecker.go
 			errs = append(errs, ers...)
+			// tk is ')' or ":"
+
+			if tk.Type == token.Operator && tk.Value.(string) == ":" {
+				tk, ers = checkExpression(layers, tx) // exChecker.go
+				errs = append(errs, ers...)
+			}
 		}
 		// tk is ')'
 

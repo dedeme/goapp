@@ -137,6 +137,61 @@ for (i = 4:1) sum[0] += i;
 assert sum[0] == 9;
 
 sum[0] = 0;
+for (i = 1:4:2) sum[0] += i;
+assert sum[0] == 4;
+
+sum[0] = 0;
+for (i = 2-1:5-1:2-4) sum[0] += i;
+assert sum[0] == 0;
+
+sum[0] = 0;
+for (i = 5-1:2-2:2-4) sum[0] += i;
+assert sum[0] == 6;
+
+//for (i = 5-1:2-2:2-2) sum[0] += i;
+
+c[0] = 1;
+for (e = iter.range(1, 4)) {
+  assert e == c[0];
+  c[0] += 1;
+}
+
+c[0] = 1;
+for (e = iter.range(1, 4)) {
+  if (e < 2) continue;
+  assert e == c[0] + 1;
+  c[0] += 1;
+}
+
+c[0] = 1;
+for (e = iter.range(1, 4)) {
+  assert e == c[0];
+  if (e == 1) break;
+}
+
+c[0] = 1;
+for (e, i = iter.range(1, 4)) {
+  assert i == c[0] - 1;
+  assert e == c[0];
+  c[0] += 1;
+}
+
+c[0] = 1;
+for (e, i = iter.range(1, 4)) {
+  if (e < 2) continue;
+  assert i == c[0];
+  assert e == c[0] + 1;
+  c[0] += 1;
+}
+
+c[0] = 1;
+for (e, i = iter.range(1, 4)) {
+  assert i == c[0] - 1;
+  assert e == c[0];
+  if (e == 1) break;
+}
+
+sum[0] = 0;
 v = 3;
 switch (v) {
   1: sum[0] = 11;

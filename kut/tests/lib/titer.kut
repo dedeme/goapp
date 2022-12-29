@@ -101,5 +101,14 @@ assert arr.toStr(iter.find(iter.empty(), \i -> return i == 3;)) == "[]";
 assert arr.toStr(iter.find([0:124], \i -> return i == 3;)) == "[3]";
 assert arr.toStr(iter.find([0:124], \i -> return i == -100;)) == "[]";
 
+assert iter.reduce(iter.range(1, 0), 0, \r, e -> return r + e;) == 0;
+assert iter.reduce(iter.range(1, 1), 0, \r, e -> return r + e;) == 0;
+assert iter.reduce(iter.range(1, 2), 0, \r, e -> return r + e;) == 1;
+assert iter.reduce(iter.range(-1, 5), 0, \r, e -> return r + e;) == 9;
+assert iter.reduce(iter.range0(-1), 0, \r, e -> return r + e;) == 0;
+assert iter.reduce(iter.range0(0), 0, \r, e -> return r + e;) == 0;
+assert iter.reduce(iter.range0(2), 0, \r, e -> return r + e;) == 1;
+assert iter.reduce(iter.range0(5), 0, \r, e -> return r + e;) == 10;
+
 sys.println("  finished.");
 

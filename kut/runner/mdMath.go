@@ -524,7 +524,6 @@ func mathTo(tpTo token.Type) func([]*expression.T) (*expression.T, error) {
 	}
 }
 
-
 // i -> s
 func mathToHex(exs []*expression.T) (ex *expression.T, err error) {
 	switch n := (exs[0].Value).(type) {

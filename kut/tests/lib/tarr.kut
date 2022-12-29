@@ -195,6 +195,11 @@ assert arr.toStr(A!) == "[3, 2, 1]";
 //arr.shuffle(A!);
 //sys.println(arr.toStr(A!));
 
+//sys.println("""
+//    A multiline
+//  not very long
+//      string""");
+
 A! = [3, 1, 2];
 arr.sort(A!, \n1, n2 -> return n1 < n2;);
 assert arr.toStr(A!) == "[1, 2, 3]";
@@ -204,9 +209,5 @@ assert arr.toStr(A!) == "[3, 2, 1]";
 
 sys.println("  finished.");
 
-sys.println("""
-    A multiline
-  not very long
-      string""");
 
 

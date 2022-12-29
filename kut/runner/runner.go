@@ -346,6 +346,9 @@ func RunStat(
 	case statement.ForR:
 		withReturn, ret, err =
 			runForR(stackT, imports, hp0, hps, st) // fluxRunner.go
+	case statement.ForRS:
+		withReturn, ret, err =
+			runForRS(stackT, imports, hp0, hps, st) // fluxRunner.go
 	case statement.Switch:
 		withReturn, withBreak, withContinue, ret, err, stackT =
 			runSwitch(stackT, imports, hp0, hps, st) // fluxRunner.go
