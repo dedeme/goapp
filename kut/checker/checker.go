@@ -14,10 +14,10 @@ import (
 	"github.com/dedeme/kut/reader/txReader"
 )
 
-func checkCode(isTop bool, isFor bool, layers [][]*cksym.T, tx *txReader.T) (
+func checkCode(isTop bool, isForCatch bool, layers [][]*cksym.T, tx *txReader.T) (
 	errs []error,
 ) {
-	if !isFor {
+	if !isForCatch {
 		lastLayer := []*cksym.T{}
 		if isTop {
 			md := modules.GetOk(tx.File)

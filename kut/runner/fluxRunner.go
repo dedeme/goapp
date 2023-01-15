@@ -13,6 +13,47 @@ import (
 	"github.com/dedeme/kut/statement"
 )
 
+func runTry(
+	stackTrace []*statement.T,
+	imports map[string]int, hp0 heap0.T, hps []heap.T,
+	st *statement.T,
+) (
+	withReturn bool, withBreak bool, withContinue bool,
+	ret *expression.T, err error,
+	stackT []*statement.T,
+) {
+	ps := st.Value.([]any)
+	withReturn, withBreak, withContinue, ret, err, stackT =
+		RunStat(stackTrace, imports, hp0, hps, ps[0].(*statement.T))
+	if err != nil {
+		ex := expression.MkFinal(err.Error())
+		st := statement.NewBuilt(statement.Assign, []*expression.T{
+			expression.New(expression.Sym, ps[1].(string)), ex})
+		var sts = []*statement.T{st}
+		ps2St := ps[2].(*statement.T)
+		if ps2St.Type == statement.Block {
+			sts = append(sts, ps2St.Value.([]*statement.T)...)
+		} else {
+			sts = append(sts, ps2St)
+		}
+
+		catchSt := statement.NewBuilt(statement.Block, sts)
+		withReturn, withBreak, withContinue, ret, err, stackT =
+			RunStat(stackTrace, imports, hp0, hps, catchSt)
+	}
+	if withReturn || withBreak || withContinue || err != nil {
+		return
+	}
+
+	ps3 := ps[3].(*statement.T)
+	if ps3 != nil {
+		withReturn, withBreak, withContinue, ret, err, stackT =
+			RunStat(stackTrace, imports, hp0, hps, ps3)
+	}
+
+	return
+}
+
 func runIf(
 	stackTrace []*statement.T,
 	imports map[string]int, hp0 heap0.T, hps []heap.T,
@@ -217,6 +258,7 @@ func runForIx(
 	return
 }
 
+// Range
 func runForR(
 	stackTrace []*statement.T,
 	imports map[string]int, hp0 heap0.T, hps []heap.T,
@@ -282,6 +324,7 @@ func runForR(
 	return
 }
 
+// Range Step
 func runForRS(
 	stackTrace []*statement.T,
 	imports map[string]int, hp0 heap0.T, hps []heap.T,

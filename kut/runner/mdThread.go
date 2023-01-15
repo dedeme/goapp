@@ -52,12 +52,6 @@ func threadRun(args []*expression.T) (ex *expression.T, err error) {
 			return
 		}
 		go func() {
-			defer func() {
-				if e := recover(); e != nil {
-					err = fail.Mk(fmt.Sprintf("%v", e), []*statement.T{})
-				}
-			}()
-
 			_, withBreak, withContinue, _, er, stackT :=
 				RunStat([]*statement.T{}, fn.Imports, fn.Hp0, fn.Hps, fn.Stat)
 
@@ -104,13 +98,6 @@ func threadStart(args []*expression.T) (ex *expression.T, err error) {
 		ex = expression.MkFinal(th)
 
 		go func() {
-			defer func() {
-				if e := recover(); e != nil {
-					err = fail.Mk(fmt.Sprintf("%v", e), []*statement.T{})
-				}
-				th.ch <- true
-			}()
-
 			_, withBreak, withContinue, _, er, stackT :=
 				RunStat([]*statement.T{}, fn.Imports, fn.Hp0, fn.Hps, fn.Stat)
 
@@ -122,7 +109,20 @@ func threadStart(args []*expression.T) (ex *expression.T, err error) {
 			}
 
 			if er != nil {
-				fmt.Println("[THREAD]:", er)
+				if SysFffail != nil {
+					e2 := fail.MkSysError(er.Error(), SysFffail)
+					fn := e2.Fn
+					ex := expression.New(expression.ExPr, []interface{}{
+						expression.MkFinal(fn),
+						[]*expression.T{expression.MkFinal(e2.Msg)}})
+					_, er3 := Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{})
+					if er3 != nil {
+						fmt.Printf("Error in custom function sys.fail:\n%v\n%v\n",
+							expression.MkFinal(fn), er3)
+					}
+				} else {
+					fmt.Println("[THREAD]:", er)
+				}
 			}
 
 			th.ch <- true

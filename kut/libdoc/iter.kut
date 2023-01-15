@@ -27,11 +27,6 @@ drop = \it, n -> {};
 /// (\<iterator>, \*->b) -> <iterator>
 dropWhile = \it, fn -> {};
 
-/// Applies 'fn' to each element of 'it'.
-/// Values returned by 'fn' are discarded.
-/// (\<iterator>, \*->()) -> ()
-each = \it, fn -> {};
-
 /// Returns an iterator without any element.
 /// \-> <iterator>
 empty = \-> {};
@@ -80,7 +75,7 @@ range = \start, end -> {};
 /// Equals to 'range(0, end)'.
 ///   end  : End of interation (exclusive).
 /// \i -> <iterator>
-range0 = \end -> {}
+range0 = \end -> {};
 
 /// Returns the result of apply 'fn' on seed and the current element of 'it',
 /// succesively over every element.

@@ -85,6 +85,10 @@ func (f *T) IsMale() bool {
 	return f.isMale
 }
 
+func (f *T) Id() int64 {
+	return f.id
+}
+
 func (f *T) HasModel(modelId string) bool {
 	return f.models[0].modelId == modelId ||
 		f.models[1].modelId == modelId ||
@@ -151,9 +155,9 @@ func Generate(id int64, cycle int, f1, f2 *T) *T {
 		}
 	} else if newMds[1].modelId == newMds[2].modelId {
 		if mds[3].modelId == newMds[2].modelId {
-			newMds[0] = mds[4]
+			newMds[1] = mds[4]
 		} else {
-			newMds[0] = mds[3]
+			newMds[1] = mds[3]
 		}
 	}
 

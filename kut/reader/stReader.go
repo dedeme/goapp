@@ -86,6 +86,15 @@ func readSymbol(sym string, tx *txReader.T) (
 			}
 		}
 		return
+	case "try":
+		st, nextTk, err = readTry(nline, tx) // fluxReader.go
+		return
+	case "catch":
+		err = tx.Fail("'catch' without 'try'")
+		return
+	case "finally":
+		err = tx.Fail("'finaly' without 'try'")
+		return
 	case "while":
 		st, nextTk, err = readWhile(nline, tx) // fluxReader.go
 		return

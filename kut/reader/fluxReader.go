@@ -10,6 +10,85 @@ import (
 	"github.com/dedeme/kut/statement"
 )
 
+func readTry(nline int, tx *txReader.T) (
+	st *statement.T, nextTk *token.T, err error,
+) {
+	var tk *token.T
+	var varName string
+	var eof bool
+	var st1, st2, st3 *statement.T
+
+	st1, nextTk, eof, err = readStatement(nil, tx) // stReader.go
+	if err != nil {
+		return
+	}
+	if eof {
+		err = tx.Fail("Unexpected end of file.")
+		return
+	}
+
+	tk, eof, err = tx.ReadToken()
+	if err != nil {
+		return
+	}
+	if eof {
+		err = tx.Fail("Unexpected end of file.")
+		return
+	}
+	if tk.Value.(string) != "catch" {
+		err = tx.FailExpect("catch", tk.String(), tx.Nline)
+		return
+	}
+
+	tk, eof, err = tx.ReadToken()
+	if err != nil {
+		return
+	}
+	if eof {
+		err = tx.Fail("Unexpected end of file.")
+		return
+	}
+	if tk.Type != token.Symbol {
+		err = tx.FailExpect("Parameter name", tk.String(), tx.Nline)
+		return
+	}
+	varName = tk.Value.(string)
+
+	st2, nextTk, eof, err = readStatement(nil, tx) // stReader.go
+	if err != nil {
+		return
+	}
+	if eof {
+		err = tx.Fail("Unexpected end of file.")
+		return
+	}
+
+	tk, eof, err = tx.ReadToken()
+	if err != nil {
+		return
+	}
+
+	if !eof {
+		if tk.Value.(string) == "finally" {
+			st3, nextTk, eof, err = readStatement(nil, tx) // stReader.go
+			if err != nil {
+				return
+			}
+			if eof {
+				err = tx.Fail("Unexpected end of file.")
+				return
+			}
+		} else {
+			nextTk = tk
+		}
+	}
+
+	st = statement.New(tx.File, nline, statement.Try,
+		[]interface{}{st1, varName, st2, st3})
+
+	return
+}
+
 func readWhile(nline int, tx *txReader.T) (
 	st *statement.T, nextTk *token.T, err error,
 ) {

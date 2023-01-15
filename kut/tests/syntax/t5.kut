@@ -1,0 +1,53 @@
+// error tests
+
+// Main and thread fails
+//sys.ffail(\m -> {
+//  sys.println("in ffail:\n" + m);
+//});
+/*
+th = thread.start(\-> {
+  sys.fail("A fail");
+  trace (2 / 0);
+});
+
+sys.sleep(1000);
+thread.join(th);
+
+trace("here");
+*/
+
+A = [""];
+try
+  A! = "No error";
+catch a
+  A! = str.split(a, "\n")[0];
+assert A! == "No error";
+
+try
+  A! = sys.fail("error");
+catch a
+  A! = str.split(a, "\n")[0];
+assert A! == "error";
+
+try
+  trace(2 / 0);
+catch a
+  A! = "error2";
+assert A! == "error2";
+
+try {
+  A! = "No error";
+} catch a {
+  A! = str.split(a, "\n")[0];
+} finally
+  A! += " and more";
+assert A! == "No error and more";
+
+try {
+  A! = sys.fail("error");
+} catch a {
+  A! = str.split(a, "\n")[0];
+} finally {
+  A! += " and more";
+}
+assert A! == "error and more";

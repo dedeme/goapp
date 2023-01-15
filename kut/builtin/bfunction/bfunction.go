@@ -51,7 +51,7 @@ func (bf *T) Run(name string, vars []*expression.T, stackT []*statement.T) (
 		case *fail.SysErrorT:
 			e.Msg = fail.Mk(err.Error(), stackT).Error()
 		default:
-			err = fail.Mk("Function "+name+":\n    "+err.Error(), stackT)
+			err = fail.Mk(err.Error(), stackT)
 		}
 	}
 	if ex == nil {

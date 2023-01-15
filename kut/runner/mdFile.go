@@ -12,6 +12,7 @@ import (
 	"github.com/dedeme/kut/expression"
 	"github.com/dedeme/kut/runner/file"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -150,6 +151,36 @@ func fileIsDirectory(args []*expression.T) (ex *expression.T, err error) {
 	switch path := (args[0].Value).(type) {
 	case string:
 		if info, err := os.Stat(path); err == nil && info.IsDir() {
+			ex = expression.MkFinal(true)
+		} else {
+			ex = expression.MkFinal(false)
+		}
+	default:
+		err = bfail.Type(args[0], "string")
+	}
+	return
+}
+
+// \s -> b
+func fileIsLink(args []*expression.T) (ex *expression.T, err error) {
+	switch path := (args[0].Value).(type) {
+	case string:
+		if info, err := os.Stat(path); err == nil && (info.Mode()&fs.ModeSymlink != 0) {
+			ex = expression.MkFinal(true)
+		} else {
+			ex = expression.MkFinal(false)
+		}
+	default:
+		err = bfail.Type(args[0], "string")
+	}
+	return
+}
+
+// \s -> b
+func fileIsRegular(args []*expression.T) (ex *expression.T, err error) {
+	switch path := (args[0].Value).(type) {
+	case string:
+		if info, err := os.Stat(path); err == nil && info.Mode().IsRegular() {
 			ex = expression.MkFinal(true)
 		} else {
 			ex = expression.MkFinal(false)
@@ -421,6 +452,10 @@ func fileGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(0, fileHome)
 	case "isDirectory":
 		fn = bfunction.New(1, fileIsDirectory)
+	case "isLink":
+		fn = bfunction.New(1, fileIsLink)
+	case "isRegular":
+		fn = bfunction.New(1, fileIsRegular)
 	case "mkdir":
 		fn = bfunction.New(1, fileMkdir)
 	case "read":

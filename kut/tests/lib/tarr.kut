@@ -94,12 +94,6 @@ assert arr.size([1, 2]) == 2;
 assert arr.toStr(arr.mp([], \i -> return i * 2;)) == "[]";
 assert arr.toStr(arr.mp([1, 2, 3], \i -> return i * 2;)) == "[2, 4, 6]";
 
-Sum = [0];
-arr.each([], \i -> Sum! += i;);
-assert Sum! == 0;
-arr.each([1, 2, 3], \i -> Sum! += i;);
-assert Sum! == 6;
-
 assert arr.all([], \i -> return i < 3;);
 assert arr.all([0, 1, 2], \i -> return i < 3;);
 assert !arr.all([0, 1, 2, 4, 5], \i -> return i < 3;);

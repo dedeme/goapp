@@ -222,30 +222,6 @@ func arrDuplicates(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \a, \*->() -> ()
-func arrEach(args []*expression.T) (ex *expression.T, err error) {
-	switch a := (args[0].Value).(type) {
-	case []*expression.T:
-		switch fn := (args[1].Value).(type) {
-		case function.I:
-			for _, e := range a {
-				_, err = solveIsolateFunction(fn, []*expression.T{e}) // exSolver.go
-				if err != nil {
-					break
-				}
-			}
-			if err == nil {
-				ex = expression.MkEmpty()
-			}
-		default:
-			err = bfail.Type(args[1], "function")
-		}
-	default:
-		err = bfail.Type(args[0], "array")
-	}
-	return
-}
-
 // \a -> b
 func arrEmpty(args []*expression.T) (ex *expression.T, err error) {
 	switch a := (args[0].Value).(type) {
@@ -945,8 +921,6 @@ func arrGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(2, arrDropWhile)
 	case "duplicates":
 		fn = bfunction.New(2, arrDuplicates)
-	case "each":
-		fn = bfunction.New(2, arrEach)
 	case "empty":
 		fn = bfunction.New(1, arrEmpty)
 	case "filter":

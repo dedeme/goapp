@@ -329,6 +329,9 @@ func RunStat(
 			Run(stackT, imports, hp0, hps, st.Value.([]*statement.T))
 	case statement.FunctionCalling:
 		_, err = Solve(imports, hp0, hps, st.Value.(*expression.T), stackT)
+	case statement.Try:
+		withReturn, withBreak, withContinue, ret, err, stackT =
+			runTry(stackT, imports, hp0, hps, st) // fluxRunner.go
 	case statement.If:
 		withReturn, withBreak, withContinue, ret, err, stackT =
 			runIf(stackT, imports, hp0, hps, st) // fluxRunner.go

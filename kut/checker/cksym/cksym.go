@@ -21,7 +21,7 @@ type T struct {
 //    name: Symbol name.
 //    fileIx: Index of file where 'sym' apears.
 //    nline : File number in 'fileIx'.
-// NOTE: Field User is set to 'false'
+// NOTE: Field Used is set to 'false'
 func New(name string, fileIx, nline int) *T {
 	return &T{name, fileIx, nline, false}
 }

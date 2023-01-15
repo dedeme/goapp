@@ -23,14 +23,9 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=4
-FILE_NAME_0=14578;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdIter.go;0;2
-FILE_NAME_1=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fiterator%2Fiterator.go;0;2
-FILE_NAME_2=9805;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2Frunner.go;0;2
-FILE_NAME_3=5001;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FfluxRunner.go;0;2
-FILE_NAME_4=2560;Kut;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Ftests%2Fsyntax%2Ft3.kut;0;2
-FILE_NAME_5=5170;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Freader%2FfluxReader.go;0;2
-FILE_NAME_6=1685;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fchecker%2FstChecker.go;0;2
+current_page=0
+FILE_NAME_0=1168;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2Ffail%2Ffail.go;0;2
+FILE_NAME_1=1556;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fbuiltin%2Fbfunction%2Fbfunction.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

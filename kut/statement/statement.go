@@ -30,6 +30,7 @@ const (
 	Assert
 	Return
 
+	Try
 	While
 	If
 	Else
@@ -105,6 +106,13 @@ func (st *T) String() (s string) {
 			s = "return;"
 		} else {
 			s = "return " + (st.Value.(*expression.T)).String() + ";"
+		}
+	case Try:
+		ps := st.Value.([]interface{})
+		s = "try " + (ps[0].(*T)).String() +
+			"\ncatch " + ps[1].(string) + (ps[2].(*T)).String()
+		if ps[3] != nil {
+			s = s + "\nfinally " + (ps[3].(*T)).String()
 		}
 	case While:
 		ps := st.Value.([]interface{})

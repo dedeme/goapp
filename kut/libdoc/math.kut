@@ -190,7 +190,7 @@ toIntOp = \v -> {};
 /// \s -> s
 toStr = \v -> {};
 
-/// Returns a 'string' optoin matching 'v'.
+/// Returns a 'string' option matching 'v'.
 /// 'v' admits several types.
 /// If 'v' is a string containing a number, returns the same string as an option.
 /// In other case retuns [].

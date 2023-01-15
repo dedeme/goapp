@@ -11,6 +11,7 @@ import (
 	"github.com/dedeme/fmarket/data/model"
 	"github.com/dedeme/fmarket/db"
 	"github.com/dedeme/ktlib/math"
+	"github.com/dedeme/ktlib/thread"
 )
 
 func Run() {
@@ -25,6 +26,7 @@ func Run() {
 	id := fleasTbData.NextId()
 	cycle := fleasTbData.NextCycle()
 	fleas := fleasTbData.Fleas()
+
 	var males []*flea.T
 	var females []*flea.T
 	for _, f := range fleas {
@@ -43,9 +45,16 @@ func Run() {
 
 	activityTb.Write("Evaluating")
 	qs := db.QuotesTb().Read()
-	for _, f := range fleas {
-		f.Update(qs)
+  var chs []chan bool
+  for _, f := range fleas {
+    f2 := f
+    chs = append(chs, thread.Start(func () {
+      f2.Update(qs)
+    }))
 	}
+  for _, ch := range chs {
+    thread.Join(ch)
+  }
 
 	models := model.List()
 	activityTb.Write("Selecting")

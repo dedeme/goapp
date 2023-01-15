@@ -184,30 +184,6 @@ func iterDropWhile(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
-// \<iterator>, \*->() -> ()
-func iterEach(args []*expression.T) (ex *expression.T, err error) {
-	switch it := (args[0].Value).(type) {
-	case *iterator.T:
-		switch fn := (args[1].Value).(type) {
-		case function.I:
-			for it.HasNext() {
-				_, err = solveIsolateFunction(fn, []*expression.T{it.Next()})
-				if err != nil {
-					break
-				}
-			}
-			if err == nil {
-				ex = expression.MkEmpty()
-			}
-		default:
-			err = bfail.Type(args[1], "function")
-		}
-	default:
-		err = bfail.Type(args[0], "<iterator>")
-	}
-	return
-}
-
 // \-> <iterator>
 func iterEmpty(args []*expression.T) (ex *expression.T, err error) {
 	hasNext := func() bool {
@@ -648,8 +624,6 @@ func iterGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(2, iterDrop)
 	case "dropWhile":
 		fn = bfunction.New(2, iterDropWhile)
-	case "each":
-		fn = bfunction.New(2, iterEach)
 	case "empty":
 		fn = bfunction.New(0, iterEmpty)
 	case "filter":

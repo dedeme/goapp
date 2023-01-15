@@ -43,6 +43,30 @@ func checkMainSymbol(
 	case "return":
 		_, errs = checkExpression(layers, tx) // exChecker.go
 		return
+	case "try":
+		_, nextTk, errs = checkStatement(false, false, nil, layers, tx)
+
+		tk := readToken(tx)
+		if tk.Type != token.Symbol || tk.Value.(string) != "catch" {
+			errs = append(errs, tx.FailLine(fmt.Sprintf(
+				"Expected: 'catch'.\nFound   : '%v'", tk), tx.Nline))
+		}
+		tk = readToken(tx)
+		// tk is Symbol
+		sym := cksym.New(tk.Value.(string), tx.File, tx.Nline)
+		sym.Used = true
+		catchLayer := []*cksym.T{sym}
+		_, nextTk, ers = checkStatement(
+			false, true, nil, append(layers, catchLayer), tx)
+		errs = append(errs, ers...)
+
+		tk = readToken(tx)
+		if tk.Type == token.Symbol && tk.Value.(string) == "finally" {
+			_, nextTk, errs = checkStatement(false, false, nil, layers, tx)
+		} else {
+			nextTk = tk
+		}
+		return
 	case "while":
 		readToken(tx)
 		// read '('
@@ -164,7 +188,7 @@ func checkMainSymbol(
 }
 
 func checkStatement(
-	isTop, isFor bool, tk *token.T, layers [][]*cksym.T, tx *txReader.T,
+	isTop, isForCatch bool, tk *token.T, layers [][]*cksym.T, tx *txReader.T,
 ) (end bool, nextTk *token.T, errs []error) {
 	if tk == nil {
 		if isTop {
@@ -187,7 +211,7 @@ func checkStatement(
 		switch tk.Value.(string) {
 		case ";":
 		case "{":
-			errs = checkCode(false, isFor, layers, tx) //checker.go
+			errs = checkCode(false, isForCatch, layers, tx) //checker.go
 		case "}":
 			end = true
 		default:

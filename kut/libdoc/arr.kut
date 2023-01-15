@@ -46,11 +46,6 @@ dropWhile = \A, fn -> {};
 /// \a -> [a, a]
 duplicates = \A -> {};
 
-/// Executes 'fn' with each element of 'A'.
-/// Values returned by 'fn' are discarded.
-/// (\a, \*->()) -> ()
-each = \A, fn -> {};
-
 /// Returns 'true' if 'A' has no element.
 /// \a -> b
 empty = \A -> {};

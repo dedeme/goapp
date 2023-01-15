@@ -5,7 +5,7 @@
 
 /// Open 'fpath' for appending.
 /// \s -> <file>
-aopen = \s -> {};
+aopen = \fpath -> {};
 
 /// Returns 'true' if 'v' is a <file>.
 /// \* -> b
@@ -33,15 +33,15 @@ copy = \source, target -> {};
 /// subdirectories, although they are not empty.
 /// If 'fpath' does not exists, 'del' do nothing.
 /// \s -> ()
-del = \s -> {};
+del = \fpath -> {};
 
 /// Returns base names of files and directories of 'dir'.
 /// \s -> [s...]
-dir = \s -> {};
+dir = \dir -> {};
 
-/// Returns 'true' if 'fpath' is a file or directory.
+/// Returns 'true' if 'fpath' is a file, link or directory.
 /// \s -> b
-exists = \s -> {};
+exists = \fpath -> {};
 
 /// Returns home directory.
 /// \-> s
@@ -49,11 +49,19 @@ home = \-> {};
 
 /// Returns 'true' if 'fpath' is a directory.
 /// \s -> b
-isDirectory = \s -> {};
+isDirectory = \fpath -> {};
+
+/// Returns 'true' if 'fpath' is a link.
+/// \s -> b
+isLink = \fpath -> {};
+
+/// Returns 'true' if 'fpath' is a regular file.
+/// \s -> b
+isRegular = \fpath -> {};
 
 /// Creates the directory 'fpath' and its parents directory if is necessary.
 /// \s -> ()
-mkdir = \s -> {};
+mkdir = \fpath -> {};
 
 /// Read the complete file 'fpath'.
 /// \s -> s
@@ -76,15 +84,15 @@ rename = \oldPath, newPath -> {};
 
 /// Open 'fpath' for reading.
 /// \s -> <file>
-ropen = \s -> {};
+ropen = \fpath -> {};
 
 /// Returns the size of file 'fpath'.
 /// \s -> i
-size = \s -> {};
+size = \fpath -> {};
 
 /// Returns the time of the last modification of file 'fpath'.
 /// \s -> i
-tm = \s -> {};
+tm = \fpath -> {};
 
 /// Returns a random name for a file in "dir" + "/" + 'fpath' + "xxxxxxxx".
 /// The return is checked that does not match any existing file.
@@ -98,7 +106,7 @@ wd = \-> {};
 
 /// Open 'fpath' for writing.
 /// \s -> <file>
-wopen = \s -> {};
+wopen = \fpath -> {};
 
 /// Creates, writes and closes 'fpath'.
 /// \s, s -> ()
