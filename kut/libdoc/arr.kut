@@ -12,7 +12,7 @@
 /// These subarrays are shallow copies of the original.
 ///   - If subindices are '< 0', they are converted en 'len(A) + i'.
 ///   - If the final value is '< 0' or '>= len(A)', a fail is raised.
-///   - In case of 's[i, j]', if 'j < i', a fail is raised.
+///   - In case of 'A[i:j]', if 'j < i', a fail is raised.
 ///   - The expresion 'A[:]' returns a shallow copy of 'A' (althoug 'arr.copy'
 ///   - is more efficient.
 

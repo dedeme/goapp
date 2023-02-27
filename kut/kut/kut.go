@@ -82,7 +82,7 @@ func main() {
 			ex := expression.New(expression.ExPr, []interface{}{
 				expression.MkFinal(fn),
 				[]*expression.T{expression.MkFinal(e.Msg)}})
-			_, err = runner.Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{})
+			_, err = runner.Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{}) //runner.exSolver
 			if err != nil {
 				fmt.Printf("Error in custom function sys.fail:\n%v\n%v\n",
 					expression.MkFinal(fn), err)
@@ -94,7 +94,7 @@ func main() {
 				ex := expression.New(expression.ExPr, []interface{}{
 					expression.MkFinal(fn),
 					[]*expression.T{expression.MkFinal(e2.Msg)}})
-				_, err = runner.Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{})
+				_, err = runner.Solve(fn.Imports, fn.Hp0, fn.Hps, ex, []*statement.T{}) //runner.exSolver
 				if err != nil {
 					fmt.Printf("Error in custom function sys.fail:\n%v\n%v\n",
 						expression.MkFinal(fn), err)

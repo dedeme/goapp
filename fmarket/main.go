@@ -7,6 +7,7 @@ package main
 import (
 	"github.com/dedeme/fmarket/data/cts"
 	"github.com/dedeme/fmarket/data/model"
+	"github.com/dedeme/fmarket/db"
 	"github.com/dedeme/fmarket/start"
 	"github.com/dedeme/fmarket/tests"
 	"github.com/dedeme/ktlib/arr"
@@ -21,7 +22,7 @@ func help() {
 			"  fmarket [parameter]\n" +
 			"Where parameter can be:\n" +
 			"  start : Starts daily calculations.\n" +
-			"  models: Returns a JSON array with model identifiers" +
+			"  models: Returns a JSON array with model identifiers\n" +
 			"  test  : Makes program tests.\n" +
 			"  help  : Shows this message.\n",
 	)
@@ -35,13 +36,14 @@ func main() {
 	}
 
 	sys.Rand()
+	db.Initialize()
 	log.Initialize(cts.LogPath)
 
 	switch args[1] {
 	case "start":
 		start.Run()
 	case "models":
-		sys.Print(js.Wa(arr.Map(model.List(), func(md *model.T) string {
+		sys.Println(js.Wa(arr.Map(model.List(), func(md *model.T) string {
 			return js.Ws(md.Id())
 		})))
 	case "test":

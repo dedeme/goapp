@@ -5,8 +5,9 @@
 ///
 /// Beside the functions described below, map also allows:
 ///
-/// M[k]: Returns the value of key 'k'.
-///   - If M does not have such key, a fail is raised.
+/// M["k"]: Returns the value of key 'k', equals to 'set'.
+///           - If M does not have such key, a fail is raised.
+/// M.k   : Equals to M[k], but using the symbol 'k' as string.
 
 /// Returns a shallow copy of 'm'.
 /// \m -> m
@@ -19,6 +20,19 @@ fromArr = \A -> {};
 /// Creates a map from one iterator with pairs [key, value].
 /// \<iterator>[[s,*]...] -> m
 fromIter = \it -> {};
+
+/// Adds a new value 'v' with key 'k'. If 'v' is duplicate an error is raised.
+/// \m, s, * -> ()
+add = \M, k, v -> {};
+
+/// Changes the value of key 'k' to 'v'. If 'k' does not exist an error is raised.
+/// \m, s, * -> ()
+set = \M, k, v -> {};
+
+/// Adds a new value 'v' with key 'k' if such key does not exists. Otherwise
+/// change the value of 'k' with 'v'.
+/// \m, s, * -> ()
+put = \M, k, v -> {};
 
 /// Returns an array with the value for key 'k' or an empty array if it does
 /// not exist.

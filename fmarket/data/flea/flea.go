@@ -24,6 +24,13 @@ func NewFmodel(modelId string, params []float64) *FmodelT {
 	return &FmodelT{modelId, params}
 }
 
+func (fm *FmodelT) fmodelEq(fm2 *FmodelT) bool {
+	return fm.modelId == fm2.modelId &&
+		arr.Eqf(fm.params, fm2.params, func(f1, f2 float64) bool {
+			return math.Eq(f1, f2, 0.000001)
+		})
+}
+
 func fmodelToJs(md *FmodelT) string {
 	return js.Wa([]string{
 		js.Ws(md.modelId),
@@ -89,6 +96,12 @@ func (f *T) Id() int64 {
 	return f.id
 }
 
+func (f *T) EqModel(f2 *T) bool {
+	return arr.Eqf(f.models, f2.models, func(m1, m2 *FmodelT) bool {
+		return m1.fmodelEq(m2)
+	})
+}
+
 func (f *T) HasModel(modelId string) bool {
 	return f.models[0].modelId == modelId ||
 		f.models[1].modelId == modelId ||
@@ -138,32 +151,19 @@ func FromJs(j string) *T {
 // Generates a new flea from 'f1' and 'f2'.
 func Generate(id int64, cycle int, f1, f2 *T) *T {
 	mds := arr.Copy(f1.models)
-	arr.Cat(&mds, f2.models)
-	arr.Shuffle(mds)
-	newMds := arr.Copy(mds[:3])
-	if newMds[0].modelId == newMds[1].modelId {
-		if mds[3].modelId == newMds[2].modelId {
-			newMds[1] = mds[4]
-		} else {
-			newMds[1] = mds[3]
-		}
-	} else if newMds[0].modelId == newMds[2].modelId {
-		if mds[3].modelId == newMds[1].modelId {
-			newMds[2] = mds[4]
-		} else {
-			newMds[2] = mds[3]
-		}
-	} else if newMds[1].modelId == newMds[2].modelId {
-		if mds[3].modelId == newMds[2].modelId {
-			newMds[1] = mds[4]
-		} else {
-			newMds[1] = mds[3]
+	for _, md := range f2.models {
+		if !arr.Anyf(mds, func(e *FmodelT) bool {
+			return e.modelId == md.modelId
+		}) {
+			arr.Push(&mds, md)
 		}
 	}
+	arr.Shuffle(mds)
+	newMds := arr.Copy(mds[:3])
 
 	// Mutations
 	for i, md := range newMds {
-		if math.Rndi(300) == 120 {
+		if math.Rndi(200) == 120 {
 			models := model.List()
 			arr.Shuffle(models)
 			for _, m2 := range models {
@@ -174,7 +174,7 @@ func Generate(id int64, cycle int, f1, f2 *T) *T {
 					break
 				}
 			}
-		} else if math.Rndi(30) == 12 {
+		} else if math.Rndi(20) == 12 {
 			m2 := model.FromId(md.modelId)
 			newMds[i] = NewFmodel(m2.Id(), m2.Mutation())
 		}
@@ -231,6 +231,7 @@ func TbToJs(tb *TbT) string {
 
 func TbFromJs(j string) *TbT {
 	a := js.Ra(j)
+
 	return NewTbFromSorted(
 		js.Rl(a[0]),
 		js.Ri(a[1]),

@@ -41,7 +41,7 @@ exit = \code -> {}
 ffail = \fn -> {};
 
 /// Prints messages and ends the current thread or the total program if is
-/// invocked in the current thread is the main one.
+/// invocked in the main one.
 /// \s -> ()
 fail = \msg -> {};
 

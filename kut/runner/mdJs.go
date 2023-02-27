@@ -65,7 +65,7 @@ func nextByte(s string, ch byte, ix int) (pos int, ok bool) {
 func jsIsNull(args []*expression.T) (ex *expression.T, err error) {
 	switch s := (args[0].Value).(type) {
 	case string:
-		ex = expression.MkFinal(s == "null")
+		ex = expression.MkFinal(strings.TrimSpace(s) == "null")
 	default:
 		err = bfail.Type(args[0], "string")
 	}

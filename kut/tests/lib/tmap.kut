@@ -9,12 +9,19 @@ assert arr.empty(map.values(M0));
 assert arr.empty(map.toArr(M0));
 assert !iter.hasNext(map.toIter(M0));
 
+map.add(M0, "one", 1);
+
 M1 = {"one": 1, "two": 2, "three": 3};
 assert map.hasKey(M1, "one");
 assert !map.hasKey(M1, "onex");
 map.remove(M1, "one");
 assert !map.hasKey(M1, "one");
-M1["one"] = 1;
+map.add(M1, "one", 1);
+assert(M1.one == 1);
+map.set(M1, "one", 2);
+assert(M1.one == 2);
+map.put(M1, "one", 1);
+assert(M1.one == 1);
 
 A = [""];
 B = [""];
@@ -54,7 +61,7 @@ A[0] = map.values(M2);
 arr.sort(A[0], \a, b -> return a < b;);
 assert arr.toStr(A[0]) == "[1, 2, 3]";
 M2.one = 112;
-M2.four = 4;
+map.add(M2, "four", 4);
 A[0] = map.keys(M1);
 arr.sort(A[0], \a, b -> return a < b;);
 assert arr.toStr(A[0]) == '["one", "three", "two"]';

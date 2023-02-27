@@ -119,7 +119,12 @@ func assign(
 							if ex.IsEmpty() {
 								err = fail.Type(ex, stackT, "expression")
 							}
-							v[i] = ex
+              _, ok := v[i]
+              if ok {
+                v[i] = ex
+              } else {
+                err = fail.Mk("Key '" + i + "' does not exists.", stackT)
+              }
 						}
 					default:
 						err = fail.Type(ex2, stackT, "string")
@@ -142,7 +147,13 @@ func assign(
 						if ex.IsEmpty() {
 							err = fail.Type(ex, stackT, "expression")
 						}
-						v[ex2.Value.(string)] = ex
+            key := ex2.Value.(string)
+            _, ok := v[key]
+            if ok {
+              v[key] = ex
+            } else {
+              err = fail.Mk("Key '" + key + "' does not exists.", stackT)
+            }
 					}
 				} else {
 					err = fail.Type(ex2, stackT, "symbol")
@@ -266,7 +277,7 @@ func Run(
 	return
 }
 
-// Run a statement.
+// Run a single statement.
 //    stackTrace: Current stack trace when calling
 //    imports: Module imports.
 //    hp0: Module heap of not solved symbols.

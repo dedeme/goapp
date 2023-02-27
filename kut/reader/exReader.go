@@ -322,7 +322,15 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 				if !tk.IsComma() {
 					break
 				}
-				vs[kex.Value.(string)] = ex
+        key := kex.Value.(string);
+        _, ok := vs[key];
+        if ok {
+          err = tx.FailExpect(
+            "A new key", "The duplicate key '" + key + "'", tx.Nline)
+          return
+        } else {
+          vs[kex.Value.(string)] = ex
+        }
 				empty, kex, tk, err = readExpression(tx)
 				if err != nil {
 					return
@@ -332,7 +340,15 @@ func readExpression1(tk *token.T, tx *txReader.T) (
 					return
 				}
 			}
-			vs[kex.Value.(string)] = ex
+      key := kex.Value.(string);
+      _, ok := vs[key];
+      if ok {
+        err = tx.FailExpect(
+          "A new key", "The duplicate key '" + key + "'", tx.Nline)
+        return
+      } else {
+        vs[key] = ex
+      }
 		}
 
 		if tk.IsCloseBracket() {

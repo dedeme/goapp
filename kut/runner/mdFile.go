@@ -165,7 +165,7 @@ func fileIsDirectory(args []*expression.T) (ex *expression.T, err error) {
 func fileIsLink(args []*expression.T) (ex *expression.T, err error) {
 	switch path := (args[0].Value).(type) {
 	case string:
-		if info, err := os.Stat(path); err == nil && (info.Mode()&fs.ModeSymlink != 0) {
+		if info, err := os.Lstat(path); err == nil && (info.Mode()&fs.ModeSymlink != 0) {
 			ex = expression.MkFinal(true)
 		} else {
 			ex = expression.MkFinal(false)

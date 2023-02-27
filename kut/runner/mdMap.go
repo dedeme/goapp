@@ -91,6 +91,63 @@ func mapFromIter(args []*expression.T) (ex *expression.T, err error) {
 	return
 }
 
+// \m, s, * -> ()
+func mapAdd(args []*expression.T) (ex *expression.T, err error) {
+	switch m := (args[0].Value).(type) {
+	case map[string]*expression.T:
+		switch s := (args[1].Value).(type) {
+		case string:
+			if _, ok := m[s]; ok {
+				err = bfail.Mk("Key '" + s + "' is duplicate")
+			} else {
+        m[s] = args[2];
+      }
+		default:
+			err = bfail.Type(args[1], "string")
+		}
+	default:
+		err = bfail.Type(args[0], "map")
+	}
+	return
+}
+
+// \m, s, * -> ()
+func mapSet(args []*expression.T) (ex *expression.T, err error) {
+	switch m := (args[0].Value).(type) {
+	case map[string]*expression.T:
+		switch s := (args[1].Value).(type) {
+		case string:
+			if _, ok := m[s]; !ok {
+				err = bfail.Mk("Key '" + s + "' not found")
+			} else {
+        m[s] = args[2];
+      }
+		default:
+			err = bfail.Type(args[1], "string")
+		}
+	default:
+		err = bfail.Type(args[0], "map")
+	}
+	return
+}
+
+// \m, s, * -> ()
+func mapPut(args []*expression.T) (ex *expression.T, err error) {
+	switch m := (args[0].Value).(type) {
+	case map[string]*expression.T:
+		switch s := (args[1].Value).(type) {
+		case string:
+      m[s] = args[2];
+		default:
+			err = bfail.Type(args[1], "string")
+		}
+	default:
+		err = bfail.Type(args[0], "map")
+	}
+	return
+}
+
+// Used in get through '.' and [].
 func mapFget(args []*expression.T) (ex *expression.T, err error) {
 	switch m := (args[0].Value).(type) {
 	case map[string]*expression.T:
@@ -259,6 +316,12 @@ func mapGet(fname string) (fn *bfunction.T, ok bool) {
 		fn = bfunction.New(1, mapFromIter)
 	case "get":
 		fn = bfunction.New(2, mapGetOp)
+	case "add":
+		fn = bfunction.New(3, mapAdd)
+	case "set":
+		fn = bfunction.New(3, mapSet)
+	case "put":
+		fn = bfunction.New(3, mapPut)
 	case "hasKey":
 		fn = bfunction.New(2, mapHasKey)
 	case "keys":

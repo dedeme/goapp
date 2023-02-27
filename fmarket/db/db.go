@@ -13,10 +13,18 @@ import (
 	"github.com/dedeme/fmarket/data/quotes"
 	"github.com/dedeme/fmarket/data/ranking"
 	"github.com/dedeme/ktlib/arr"
+	"github.com/dedeme/ktlib/file"
 	"github.com/dedeme/ktlib/js"
 	"github.com/dedeme/ktlib/jstb"
 	"github.com/dedeme/ktlib/path"
 )
+
+// Initialize data base
+func Initialize() {
+	if !file.IsDirectory(cts.FMarketPath) {
+		file.Mkdir(cts.FMarketPath)
+	}
+}
 
 // Returns KtMMarket 'quotes.tb'
 func QuotesTb() *jstb.T[*quotes.T] {

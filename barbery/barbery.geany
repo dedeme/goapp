@@ -23,9 +23,10 @@ long_line_behaviour=1
 long_line_column=80
 
 [files]
-current_page=0
+current_page=2
 FILE_NAME_0=508;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fmain.go;0;2
-FILE_NAME_1=97;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fgo.mod;0;2
+FILE_NAME_1=96;None;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fgo.mod;0;2
+FILE_NAME_2=0;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fbarbery%2Fcts%2Fcts.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files

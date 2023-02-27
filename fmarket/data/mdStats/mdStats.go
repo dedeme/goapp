@@ -137,12 +137,14 @@ func MakeDbFromSorted(fleas []*flea.T) *DbT {
 			}
 		}
 		lenFs := len(fs)
-		position := sumPositions / lenFs
-		assets := sumAssets / float64(lenFs)
-		if lenFs < 4 {
-			models = append(models, new(mdId, fs, fs, lenFs, position, assets))
-		} else {
-			models = append(models, new(mdId, fs[:3], fs[lenFs-3:], lenFs, position, assets))
+		if lenFs > 0 {
+			position := sumPositions / lenFs
+			assets := sumAssets / float64(lenFs)
+			if lenFs < 4 {
+				models = append(models, new(mdId, fs, fs, lenFs, position, assets))
+			} else {
+				models = append(models, new(mdId, fs[:3], fs[lenFs-3:], lenFs, position, assets))
+			}
 		}
 	}
 
@@ -161,6 +163,9 @@ func MakeDbFromSorted(fleas []*flea.T) *DbT {
 	arr.Sort(groups, func(g1, g2 *GroupT) bool {
 		return g1.duplicates > g2.duplicates // Reverse order
 	})
+	for len(groups) < cts.GroupsInModelRanking {
+		groups = append(groups, groups[len(groups)-1])
+	}
 
 	return newDb(models, groups[:cts.GroupsInModelRanking])
 }

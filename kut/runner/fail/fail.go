@@ -42,14 +42,8 @@ func Mk(msg string, stackTrace []*statement.T) error {
 }
 
 func Type(expr *expression.T, stackTrace []*statement.T, expected ...string) error {
-	msg := "Type error:"
-	if len(expected) == 1 {
-		msg += fmt.Sprintf(
-			"\n    Expected: %v\n    Found   : %T (%v)", expected[0], expr.Value, expr)
-	} else {
-		msg += fmt.Sprintf(
-			"\n    Expected: %v\n    Found   : %T (%v)",
-			strings.Join(expected, ", "), expr.Value, expr)
-	}
+	msg := "Type error:" + fmt.Sprintf(
+		"\n    Expected: %v\n    Found   : %T (%v)",
+		strings.Join(expected, ", "), expr.Value, expr)
 	return Mk(expression.ReplaceGoName(msg), stackTrace)
 }

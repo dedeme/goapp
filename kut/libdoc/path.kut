@@ -11,7 +11,7 @@ base = \p -> {};
 
 /// Removes duplicates '/' and redundant '..'.
 /// The returns ends in a slash only if it is the root "/".
-/// If the result were an empty strint, it returns ".".
+/// If the result were an empty string, it returns ".".
 /// \s -> s
 canonical = \p -> {};
 

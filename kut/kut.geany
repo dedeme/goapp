@@ -24,8 +24,7 @@ long_line_column=80
 
 [files]
 current_page=0
-FILE_NAME_0=1168;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2Ffail%2Ffail.go;0;2
-FILE_NAME_1=1556;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Fbuiltin%2Fbfunction%2Fbfunction.go;0;2
+FILE_NAME_0=2945;Go;0;EUTF-8;0;1;0;%2Fdm%2FdmGo%2Fgoapp%2Fkut%2Frunner%2FmdMap.go;0;2
 
 [VTE]
 last_dir=/home/deme/.local/share/Trash/files
